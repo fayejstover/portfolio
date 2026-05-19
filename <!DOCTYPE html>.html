@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Faye — Product Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --brand:#283FD6;
+  --bg:#E9E8E5;
+  --glass-bg:rgba(255,255,255,0.48);
+  --glass-bd:rgba(255,255,255,0.72);
+  --glass-sh:0 8px 32px rgba(0,0,0,0.10),0 1.5px 6px rgba(0,0,0,0.07);
+  --win-sh:0 16px 52px rgba(0,0,0,0.15),0 4px 14px rgba(0,0,0,0.08);
+  --modal-sh:0 44px 110px rgba(0,0,0,0.24),0 12px 36px rgba(0,0,0,0.14);
+  --text:#181818;--text-mid:#5a5a5a;--text-muted:#9a9a9a;
+  --mono:'DM Mono',monospace;--serif:'DM Serif Display',serif;--sans:'DM Sans',sans-serif;
+  --r:10px;--rnav:100px;
+}
+html,body{width:100%;height:100%;overflow:hidden}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);cursor:none}
+
+/* grain */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.038'/%3E%3C/svg%3E")}
+
+/* ── CURSOR ─────────────────────────────────── */
+#cur{position:fixed;width:28px;height:28px;border-radius:50%;
+  background:rgba(200,200,200,0.28);border:1px solid rgba(255,255,255,0.65);
+  pointer-events:none;z-index:500;transform:translate(-50%,-50%);
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+  mix-blend-mode:multiply;
+  transition:width .28s cubic-bezier(.34,1.56,.64,1),height .28s cubic-bezier(.34,1.56,.64,1),
+    background .2s ease,border-color .2s ease}
+#cur.hand{width:24px;height:24px;background:rgba(40,63,214,.22);border-color:rgba(40,63,214,.5)}
+#cur.open{width:86px;height:86px;background:rgba(40,63,214,.12);border-color:rgba(40,63,214,.35)}
+#cur-lbl{font-family:var(--mono);font-size:8px;letter-spacing:.04em;color:var(--brand);
+  opacity:0;text-align:center;line-height:1.4;transition:opacity .2s ease;user-select:none;mix-blend-mode:normal}
+#cur.open #cur-lbl{opacity:1}
+
+/* ── NAV ────────────────────────────────────── */
+#nav{
+  position:fixed;top:22px;left:50%;transform:translateX(-50%);z-index:1000;
+  background:rgba(255,255,255,0.52);backdrop-filter:blur(24px) saturate(200%);
+  -webkit-backdrop-filter:blur(24px) saturate(200%);
+  border:1px solid var(--glass-bd);border-radius:var(--rnav);
+  padding:6px 6px;
+  box-shadow:var(--glass-sh);white-space:nowrap;
+  display:inline-flex;
+}
+#nav-inner{position:relative;display:inline-flex;align-items:center;gap:0}
+#nav-pill{
+  position:absolute;top:0;left:0;
+  border-radius:var(--rnav);background:var(--brand);
+  z-index:0;pointer-events:none;
+}
+.ni{
+  font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:.05em;
+  color:var(--text-mid);padding:8px 20px;border-radius:var(--rnav);
+  cursor:none;position:relative;z-index:1;
+  transition:color .35s ease;user-select:none;
+}
+.ni.active{color:#fff}
+
+/* ── VIEWPORT / PAGES ───────────────────────── */
+#vp{position:fixed;inset:0;will-change:transform}
+.page{position:absolute;left:0;right:0;top:0;height:100vh;background:var(--bg)}
+#p-home{display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
+#p-work,#p-visual,#p-about{
+  overflow-y:auto;overflow-x:hidden;
+  padding:80px 0 60px;
+}
+#p-work::-webkit-scrollbar,#p-visual::-webkit-scrollbar,#p-about::-webkit-scrollbar{display:none}
+.page-inner{width:100%;max-width:960px;margin:0 auto;padding:0 48px}
+
+/* ── FLOATING WINDOWS ────────────────────────── */
+.ws{position:relative;width:780px;height:510px}
+.bw{position:absolute;background:#fff;border-radius:var(--r);box-shadow:var(--win-sh);user-select:none;will-change:transform;overflow:visible}
+
+/* chrome */
+.wc{background:#F0EFEC;padding:9px 13px 7px;border-bottom:1px solid rgba(0,0,0,0.07);border-radius:var(--r) var(--r) 0 0;display:flex;flex-direction:column;gap:6px}
+.tls{display:flex;gap:5px;align-items:center}
+.tl{width:11px;height:11px;border-radius:50%;background:#CCCBC9;flex-shrink:0}
+.wtitle{font-family:var(--mono);font-size:9px;color:#b0afac;text-align:center;letter-spacing:.07em;text-transform:uppercase}
+.wurl{background:rgba(0,0,0,0.05);border-radius:5px;padding:3.5px 9px;font-family:var(--mono);font-size:9px;color:#999;display:flex;align-items:center;gap:4px}
+.wurl::before{content:'⊕';font-size:8px;opacity:.55}
+
+/* bodies */
+.wb{position:relative;overflow:hidden}
+.wb::before{content:'';position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.84' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.36'/%3E%3C/svg%3E");
+  background-size:160px;mix-blend-mode:overlay;pointer-events:none;z-index:1}
+
+.wbig{background:linear-gradient(148deg,#FF3CA0 0%,#D22B70 58%,#B01E5C 100%);
+  height:248px;width:100%;padding:26px 28px;display:flex;flex-direction:column;justify-content:flex-end;
+  border-radius:0 0 var(--r) var(--r)}
+.wname{font-family:var(--serif);font-size:40px;color:#fff;line-height:1;position:relative;z-index:2;text-shadow:0 2px 18px rgba(0,0,0,0.18)}
+.wrole{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.6);letter-spacing:.1em;text-transform:uppercase;position:relative;z-index:2;margin-top:6px}
+
+.wme{background:linear-gradient(155deg,#FF5AB5 0%,#E6347A 50%,#C81F6C 100%);
+  height:188px;width:100%;display:flex;align-items:center;justify-content:center;
+  border-radius:0 0 var(--r) var(--r)}
+.photo{width:68px;height:68px;border-radius:50%;border:1.5px solid rgba(255,255,255,.48);
+  background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.68);text-align:center;line-height:1.5;position:relative;z-index:2}
+
+.wtex{background:#C8C6BC;height:128px;width:100%;display:flex;align-items:center;justify-content:center;position:relative;border-radius:0 0 var(--r) var(--r)}
+.tlines{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.04) 3px,rgba(0,0,0,0.04) 4px),repeating-linear-gradient(90deg,transparent,transparent 4px,rgba(0,0,0,0.02) 4px,rgba(0,0,0,0.02) 5px)}
+.texlbl{font-family:var(--mono);font-size:10px;color:rgba(0,0,0,.35);letter-spacing:.07em;text-align:center;position:relative;z-index:2;line-height:1.8}
+
+.wtag{background:linear-gradient(135deg,#FF3CA0 0%,#B81C67 100%);height:70px;width:100%;display:flex;align-items:center;justify-content:center;border-radius:0 0 var(--r) var(--r)}
+.tagtxt{font-family:var(--serif);font-size:19px;font-style:italic;color:#fff;position:relative;z-index:2}
+
+.rh{position:absolute;bottom:0;right:0;width:18px;height:18px;cursor:se-resize;opacity:0;transition:opacity .2s}
+.bw:hover .rh{opacity:1}
+.rh::after{content:'';position:absolute;bottom:4px;right:4px;width:8px;height:8px;border-right:1.5px solid rgba(0,0,0,.22);border-bottom:1.5px solid rgba(0,0,0,.22)}
+
+/* ── WORK ────────────────────────────────────── */
+.wk-hd{display:flex;align-items:baseline;gap:16px;margin-bottom:40px}
+.wk-lbl{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
+.wk-line{flex:1;height:1px;background:rgba(0,0,0,0.10)}
+
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;width:100%}
+.cc{background:#fff;border-radius:12px;overflow:hidden;cursor:none;
+  box-shadow:0 2px 14px rgba(0,0,0,0.07),0 1px 3px rgba(0,0,0,0.04);position:relative;
+  transition:box-shadow .3s ease;display:flex;flex-direction:column}
+.cc::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,0);
+  transition:background .28s ease;pointer-events:none;border-radius:12px}
+.cc:hover::after{background:rgba(255,255,255,0.10)}
+.cc:hover{box-shadow:0 10px 38px rgba(0,0,0,0.13),0 3px 12px rgba(0,0,0,0.07)}
+
+.ci{width:100%;flex-shrink:0;height:160px;display:flex;align-items:flex-end;padding:13px;position:relative;overflow:hidden}
+.badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.17);
+  border:1px solid rgba(255,255,255,.32);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-radius:100px;padding:5px 11px 5px 8px}
+.bdot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.58);flex-shrink:0}
+.bco{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.96);font-weight:500}
+.byr{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.40)}
+
+.cb{padding:20px 22px;flex:1;display:flex;flex-direction:column;justify-content:center}
+.crow{display:flex;align-items:flex-start;justify-content:space-between}
+.ctitle{font-family:var(--serif);font-size:20px;color:var(--text);line-height:1.15}
+.carr{font-size:17px;color:var(--brand);opacity:.32;flex-shrink:0;margin-top:3px;
+  transition:opacity .28s ease,transform .28s ease}
+.cc:hover .carr{opacity:.9;transform:translate(3px,-3px)}
+.cdesc{font-size:13px;color:var(--text-muted);line-height:1.65;margin-top:7px}
+.ctags{display:flex;gap:5px;margin-top:12px;flex-wrap:wrap}
+.tag{font-family:var(--mono);font-size:10px;letter-spacing:.05em;color:var(--brand);
+  background:rgba(40,63,214,0.09);border-radius:100px;padding:3px 9px;text-transform:uppercase}
+
+.bg-a{background:linear-gradient(155deg,#141420 0%,#1a2240 52%,#0e2048 100%)}
+.bg-r{background:linear-gradient(155deg,#170738 0%,#291860 52%,#283fd6 100%)}
+.bg-l{background:linear-gradient(155deg,#091d0f 0%,#183828 52%,#1e5535 100%)}
+.bg-4{background:linear-gradient(155deg,#1f0707 0%,#481313 52%,#682020 100%)}
+
+/* placeholder pages */
+.ph-txt{font-family:var(--mono);font-size:12px;color:var(--text-muted);letter-spacing:.05em}
+
+/* ── MODAL ───────────────────────────────────── */
+#mov{position:fixed;inset:0;background:rgba(16,16,16,0.56);
+  backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);
+  z-index:800;display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none}
+#mov.open{pointer-events:all}
+#mo{width:88%;max-width:960px;height:86vh;background:#fff;border-radius:14px;
+  overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--modal-sh);position:relative}
+
+.mtb{position:absolute;top:0;left:0;right:0;height:42px;
+  background:rgba(246,245,243,0.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(0,0,0,0.07);display:flex;align-items:center;gap:7px;padding:0 15px;z-index:5}
+.mtl{width:11px;height:11px;border-radius:50%;cursor:none;transition:filter .18s}
+.mtl:hover{filter:brightness(.76)}
+.mtl.r{background:#FF5F57}.mtl.y{background:#FEBC2E}.mtl.g{background:#28C840}
+
+.mi{display:flex;width:100%;flex:1;min-height:0;padding-top:42px}
+
+/* sidebar */
+.msb{width:168px;flex-shrink:0;background:rgba(246,245,243,0.88);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-right:1px solid rgba(0,0,0,0.07);padding:22px 14px;
+  display:flex;flex-direction:column;gap:3px;box-shadow:2px 0 8px rgba(0,0,0,0.04)}
+.sb-back{font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--text-muted);
+  display:flex;align-items:center;gap:5px;cursor:none;margin-bottom:16px;
+  padding:6px 8px;border-radius:6px;transition:background .2s,color .2s}
+.sb-back:hover{background:rgba(0,0,0,0.04);color:var(--text)}
+.sbi{font-family:var(--mono);font-size:10px;letter-spacing:.04em;color:var(--text-muted);
+  text-transform:uppercase;padding:7px 9px;border-radius:6px;cursor:none;
+  transition:background .2s,color .2s}
+.sbi:hover{background:rgba(40,63,214,0.07);color:var(--brand)}
+.sbi.active{color:var(--brand)}
+.sbf{margin-top:auto;font-family:var(--mono);font-size:9.5px;color:var(--text-muted);
+  letter-spacing:.06em;cursor:none;opacity:.5;transition:opacity .2s}
+.sbf:hover{opacity:1}
+
+/* content */
+.msc{flex:1;min-height:0;overflow-y:auto;padding:34px 42px 56px;scroll-behavior:smooth}
+.msc::-webkit-scrollbar{width:3px}
+.msc::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.11);border-radius:2px}
+
+.mico{font-size:34px;margin-bottom:12px}
+.mco{font-family:var(--serif);font-size:29px;color:var(--text);margin-bottom:18px;line-height:1.1}
+.mmeta{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:26px;padding-bottom:24px;border-bottom:1px solid rgba(0,0,0,0.08)}
+.ml{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:3px}
+.mv{font-size:13px;color:var(--text);line-height:1.45}
+.mimg{width:100%;height:310px;border-radius:9px;margin-bottom:26px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.mimlbl{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.38);letter-spacing:.1em;text-transform:uppercase}
+.mh{font-family:var(--serif);font-size:20px;color:var(--text);margin-bottom:11px;margin-top:30px}
+.mp{font-size:14px;color:var(--text-mid);line-height:1.78;margin-bottom:12px}
+.mimg2{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin:18px 0}
+.misms{height:165px;border-radius:8px;display:flex;align-items:center;justify-content:center}
+.mismlbl{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.36);letter-spacing:.08em}
+</style>
+</head>
+<body>
+
+<div id="cur"><div id="cur-lbl">open<br>study</div></div>
+
+<nav id="nav">
+  <div id="nav-inner">
+    <div id="nav-pill"></div>
+    <span class="ni active" data-page="home">home</span>
+    <span class="ni" data-page="work">work</span>
+    <span class="ni" data-page="visual">visual</span>
+    <span class="ni" data-page="about">about</span>
+  </div>
+</nav>
+
+<div id="vp">
+
+  <!-- HOME -->
+  <div class="page" id="p-home">
+    <div class="ws" id="ws">
+
+      <!-- Win 1: identity (large) -->
+      <div class="bw" id="w1" style="left:44px;top:50px;width:408px">
+        <div class="wc">
+          <div class="tls"><div class="tl"></div><div class="tl"></div><div class="tl"></div></div>
+          <div class="wtitle">WHAT IF WE TOLD EACH OTHER</div>
+          <div class="wurl">faye.design/moving/you.html?=12</div>
+        </div>
+        <div class="wb wbig">
+          <div class="wname">Faye.</div>
+          <div class="wrole">Product Designer · Clarity · Systems</div>
+        </div>
+        <div class="rh"></div>
+      </div>
+
+      <!-- Win 2: photo (top right) -->
+      <div class="bw" id="w2" style="right:16px;top:14px;width:210px">
+        <div class="wc">
+          <div class="tls"><div class="tl"></div><div class="tl"></div><div class="tl"></div></div>
+          <div class="wtitle">ME</div>
+          <div class="wurl">faye.design/moving/me.html</div>
+        </div>
+        <div class="wb wme">
+          <div class="photo">photo<br>here</div>
+        </div>
+        <div class="rh"></div>
+      </div>
+
+      <!-- Win 3: texture -->
+      <div class="bw" id="w3" style="right:82px;bottom:36px;width:306px">
+        <div class="wc">
+          <div class="tls"><div class="tl"></div><div class="tl"></div><div class="tl"></div></div>
+          <div class="wurl">faye.design/texture/rope.gif</div>
+        </div>
+        <div class="wb wtex">
+          <div class="tlines"></div>
+          <div class="texlbl">rope.gif (888×261)<br>· looping gif goes here ·</div>
+        </div>
+        <div class="rh"></div>
+      </div>
+
+      <!-- Win 4: tagline (small) -->
+      <div class="bw" id="w4" style="left:38px;bottom:80px;width:152px">
+        <div class="wc">
+          <div class="tls"><div class="tl"></div><div class="tl"></div><div class="tl"></div></div>
+          <div class="wtitle">LOOKING</div>
+          <div class="wurl">faye.design/...</div>
+        </div>
+        <div class="wb wtag">
+          <div class="tagtxt">clarity.</div>
+        </div>
+        <div class="rh"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- WORK -->
+  <div class="page" id="p-work" style="top:100vh">
+    <div class="page-inner">
+      <div class="wk-hd">
+        <span class="wk-lbl">Selected Work</span>
+        <div class="wk-line"></div>
+        <span class="wk-lbl">04 projects</span>
+      </div>
+      <div class="cgrid">
+
+      <div class="cc" data-case="apple">
+        <div class="ci bg-a">
+          <div class="badge"><div class="bdot"></div><span class="bco">Apple</span><span class="byr">· 2025</span></div>
+        </div>
+        <div class="cb">
+          <div class="crow"><div class="ctitle">Physical AI Companion</div><div class="carr">↗</div></div>
+          <p class="cdesc">AI beyond the screen — into physical companions that listen, assist, and adapt.</p>
+          <div class="ctags"><span class="tag">Product</span><span class="tag">Hardware</span><span class="tag">AI</span></div>
+        </div>
+      </div>
+
+      <div class="cc" data-case="roblox">
+        <div class="ci bg-r">
+          <div class="badge"><div class="bdot"></div><span class="bco">Roblox</span><span class="byr">· 2025</span></div>
+        </div>
+        <div class="cb">
+          <div class="crow"><div class="ctitle">Social Communication</div><div class="carr">↗</div></div>
+          <p class="cdesc">Redesigning group communication for 60M+ daily active users.</p>
+          <div class="ctags"><span class="tag">Product</span><span class="tag">Social</span><span class="tag">Scale</span></div>
+        </div>
+      </div>
+
+      <div class="cc" data-case="libby">
+        <div class="ci bg-l">
+          <div class="badge"><div class="bdot"></div><span class="bco">LibbyU / OverDrive</span><span class="byr">· 2025</span></div>
+        </div>
+        <div class="cb">
+          <div class="crow"><div class="ctitle">Onboarding Redesign</div><div class="carr">↗</div></div>
+          <p class="cdesc">Four-round research program from scratch — reframing a broken IA into a modular solution.</p>
+          <div class="ctags"><span class="tag">Research</span><span class="tag">UX</span><span class="tag">Mobile</span></div>
+        </div>
+      </div>
+
+      <div class="cc" data-case="four">
+        <div class="ci bg-4">
+          <div class="badge"><div class="bdot"></div><span class="bco">Project 4</span><span class="byr">· 2024</span></div>
+        </div>
+        <div class="cb">
+          <div class="crow"><div class="ctitle">Case Study Title</div><div class="carr">↗</div></div>
+          <p class="cdesc">Brief description of the project and your role in solving it.</p>
+          <div class="ctags"><span class="tag">Product</span><span class="tag">Research</span></div>
+        </div>
+      </div>
+
+    </div><!-- cgrid -->
+    </div><!-- page-inner -->
+  </div>
+
+  <!-- VISUAL -->
+  <div class="page" id="p-visual" style="top:200vh">
+    <div class="page-inner">
+      <div class="wk-hd">
+        <span class="wk-lbl">Visual Work</span>
+        <div class="wk-line"></div>
+      </div>
+      <p class="ph-txt">· image grid goes here ·</p>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="page" id="p-about" style="top:300vh">
+    <div class="page-inner">
+      <div class="wk-hd">
+        <span class="wk-lbl">About</span>
+        <div class="wk-line"></div>
+      </div>
+      <p class="ph-txt">· bio content goes here ·</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- MODAL -->
+<div id="mov">
+  <div id="mo">
+    <div class="mtb">
+      <div class="mtl r" id="mc"></div>
+      <div class="mtl y" id="mm"></div>
+      <div class="mtl g" id="mf"></div>
+    </div>
+    <div class="mi">
+      <div class="msb">
+        <div class="sb-back" id="sbb">← HOME</div>
+        <div class="sbi active">Overview</div>
+        <div class="sbi">Context</div>
+        <div class="sbi">Process</div>
+        <div class="sbi">Solution</div>
+        <div class="sbi">Outcomes</div>
+        <div class="sbi">More</div>
+        <div class="sbf">↑ BACK TO TOP</div>
+      </div>
+      <div class="msc" id="mscroll"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+gsap.registerPlugin(Draggable);
+
+// ── CURSOR ───────────────────────────────────────────────────
+const cur = document.getElementById('cur');
+let mx=innerWidth/2, my=innerHeight/2, cx=mx, cy=my;
+document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+gsap.ticker.add(() => {
+  cx += (mx-cx)*0.13;
+  cy += (my-cy)*0.13;
+  gsap.set(cur, {x:cx, y:cy});
+});
+const setCur = m => { cur.className = m||''; };
+
+// ── PAGES ────────────────────────────────────────────────────
+const pages = ['home','work','visual','about'];
+let pidx = 0, animating = false, modalOpen = false;
+const vp = document.getElementById('vp');
+const nis = document.querySelectorAll('.ni');
+const pill = document.getElementById('nav-pill');
+
+function pillTo(el, anim=true) {
+  const inner = document.getElementById('nav-inner');
+  const ir_container = inner.getBoundingClientRect();
+  const ir = el.getBoundingClientRect();
+  const props = {
+    x: ir.left - ir_container.left,
+    y: ir.top - ir_container.top,
+    width: ir.width,
+    height: ir.height
+  };
+  if (anim) gsap.to(pill, {...props, duration:0.55, ease:'expo.out'});
+  else gsap.set(pill, props);
+}
+
+setTimeout(() => pillTo(nis[0], false), 80);
+
+function goTo(pageId, instant=false) {
+  const idx = pages.indexOf(pageId);
+  if (idx === pidx || animating) return;
+  animating = true;
+  pidx = idx;
+  nis.forEach(n => {
+    n.classList.toggle('active', n.dataset.page === pageId);
+    if (n.dataset.page === pageId) pillTo(n);
+  });
+  if (instant) {
+    gsap.set(vp, {y: -idx*100+'vh'});
+    animating = false;
+    return;
+  }
+  gsap.to(vp, {
+    y: -idx*100+'vh',
+    duration: 1.55,
+    ease: 'power3.inOut',
+    onComplete: () => { animating = false; }
+  });
+}
+
+nis.forEach(n => {
+  n.addEventListener('click', () => goTo(n.dataset.page));
+  n.addEventListener('mouseenter', () => setCur('hand'));
+  n.addEventListener('mouseleave', () => setCur(''));
+});
+
+// ── SCROLL SNAP ──────────────────────────────────────────────
+let cooldown = false;
+
+function getActiveScrollEl() {
+  const ids = ['p-home','p-work','p-visual','p-about'];
+  return document.getElementById(ids[pidx]);
+}
+
+window.addEventListener('wheel', e => {
+  if (modalOpen || cooldown) return;
+  if (Math.abs(e.deltaY) < 3) return;
+
+  const el = getActiveScrollEl();
+  const scrollable = el && el.scrollHeight > el.clientHeight;
+
+  if (scrollable) {
+    const atTop = el.scrollTop <= 0;
+    const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 2;
+    // if scrolling down and not at bottom, let the page scroll naturally
+    if (e.deltaY > 0 && !atBottom) return;
+    // if scrolling up and not at top, let the page scroll naturally
+    if (e.deltaY < 0 && !atTop) return;
+  }
+
+  cooldown = true;
+  setTimeout(() => { cooldown = false; }, 1700);
+  if (e.deltaY > 0 && pidx < pages.length-1) goTo(pages[pidx+1]);
+  else if (e.deltaY < 0 && pidx > 0) goTo(pages[pidx-1]);
+}, {passive:true});
+
+let tsy = 0;
+window.addEventListener('touchstart', e => { tsy = e.touches[0].clientY; }, {passive:true});
+window.addEventListener('touchend', e => {
+  if (modalOpen) return;
+  const dy = tsy - e.changedTouches[0].clientY;
+  if (Math.abs(dy) < 44) return;
+  if (dy>0 && pidx<pages.length-1) goTo(pages[pidx+1]);
+  else if (dy<0 && pidx>0) goTo(pages[pidx-1]);
+});
+
+// ── DRAGGABLE WINDOWS ────────────────────────────────────────
+['w1','w2','w3','w4'].forEach(id => {
+  const el = document.getElementById(id);
+  Draggable.create(el, {
+    bounds:'#p-home',
+    onDragStart(){ gsap.to(el,{scale:1.03,duration:.2,ease:'power2.out'}); },
+    onDragEnd(){ gsap.to(el,{scale:1,duration:.5,ease:'elastic.out(1,.55)'}); }
+  });
+  el.addEventListener('mouseenter', () => setCur('hand'));
+  el.addEventListener('mouseleave', () => setCur(''));
+});
+
+// ── WINDOW FLOAT ─────────────────────────────────────────────
+gsap.to('#w1',{y:'-=10',duration:5.9,repeat:-1,yoyo:true,ease:'sine.inOut'});
+gsap.to('#w2',{y:'-=7', duration:6.6,repeat:-1,yoyo:true,ease:'sine.inOut',delay:.9});
+gsap.to('#w3',{y:'-=8', duration:5.3,repeat:-1,yoyo:true,ease:'sine.inOut',delay:1.5});
+gsap.to('#w4',{y:'-=9', duration:7.1,repeat:-1,yoyo:true,ease:'sine.inOut',delay:.4});
+
+// ── CASE STUDY CARDS ─────────────────────────────────────────
+document.querySelectorAll('.cc').forEach(c => {
+  c.addEventListener('mouseenter', () => setCur('open'));
+  c.addEventListener('mouseleave', () => setCur(''));
+  c.addEventListener('click', () => openModal(c.dataset.case));
+});
+
+// ── MODAL DATA ────────────────────────────────────────────────
+const data = {
+  apple:{
+    ico:'🍎',co:'Apple',tl:'2025',role:'Product Design',
+    team:'Hardware × Software',with:'Internship Team',
+    bg:'linear-gradient(155deg,#141420 0%,#1a2240 52%,#0e2048 100%)',
+    desc:'Exploring what it means to bring AI beyond an app, and into physical companions that listen, assist, and adapt to life.',
+    body:'The challenge was to reimagine how an AI assistant could exist in physical form — one that doesn\'t require a screen to be useful. Starting from first principles, the project explored ambient computing paradigms and the emotional design language of hardware.\n\nKey insight: most smart devices are still app-controlled, which defeats the purpose of ambient presence. This led to a custom device architecture that could operate independently from a phone — closer to a Hatch than an Echo, but with a deeply personalized intelligence layer.'
+  },
+  roblox:{
+    ico:'🟥',co:'Roblox',tl:'Jun – Sept 2025',role:'Product Design',
+    team:'User Group > Social > Comms',with:'David Navarro · Ahmed Saleh',
+    bg:'linear-gradient(155deg,#170738 0%,#291860 52%,#283fd6 100%)',
+    desc:'Redesigning group communication for 60M+ daily active players across a massively distributed social platform.',
+    body:'Roblox\'s user group communication tools had grown organically across years of incremental shipping — creating a fragmented experience that served no user type well. The project started by mapping the full communication surface across 40M groups.\n\nThe primary reframe: users don\'t think in "features," they think in relationships. Rebuilding around relationship context rather than notification types changed everything about the IA.'
+  },
+  libby:{
+    ico:'📚',co:'LibbyU / OverDrive',tl:'2025',role:'Lead Designer',
+    team:'Design · Research · PM',with:'Research Lead · Doc Lead',
+    bg:'linear-gradient(155deg,#091d0f 0%,#183828 52%,#1e5535 100%)',
+    desc:'Built a four-round research program — 25 interviews, zero inherited files — to uncover a broken IA beneath what looked like an onboarding problem.',
+    body:'The beta app arrived with no design files, no prior research, and no component library. The brief said "fix onboarding." The research revealed the real problem was broken information architecture and confusing iconography.\n\nFour research rounds: Diverge (contextual inquiry), Cluster (affinity diagramming), Validate (usability testing), Refine (card sorting). ICP was Maya — a non-technical infrequent user, desktop-first, a few times per semester.\n\nThe solution: a modular collapsible modal anchored to existing nav — not a new nav tab. AI accelerated the workflow from Figma Make prototype → VS Code → localhost testing.'
+  },
+  four:{
+    ico:'📁',co:'Project 4',tl:'2024',role:'Product Design',
+    team:'TBD',with:'TBD',
+    bg:'linear-gradient(155deg,#1f0707 0%,#481313 52%,#682020 100%)',
+    desc:'Brief description of the project and what made it interesting.',
+    body:'Project description goes here. Describe the problem space, your approach, and what you learned along the way.'
+  }
+};
+
+let isFS = false;
+
+function openModal(key) {
+  const d = data[key];
+  const paras = d.body.split('\n\n').map(p=>`<p class="mp">${p}</p>`).join('');
+  document.getElementById('mscroll').innerHTML = `
+    <div class="mico">${d.ico}</div>
+    <div class="mco">${d.co}</div>
+    <div class="mmeta">
+      <div><div class="ml">Timeline</div><div class="mv">${d.tl}</div></div>
+      <div><div class="ml">Role</div><div class="mv">${d.role}</div></div>
+      <div><div class="ml">Team</div><div class="mv">${d.team}</div></div>
+      <div><div class="ml">With</div><div class="mv">${d.with}</div></div>
+    </div>
+    <div class="mimg" style="background:${d.bg}"><span class="mimlbl">· hero image placeholder ·</span></div>
+    <div class="mh">Overview</div><p class="mp">${d.desc}</p>
+    <div class="mh">Process</div>${paras}
+    <div class="mimg2">
+      <div class="misms" style="background:${d.bg};opacity:.82"><span class="mismlbl">· image ·</span></div>
+      <div class="misms" style="background:${d.bg};opacity:.65"><span class="mismlbl">· image ·</span></div>
+    </div>
+    <div class="mh">Solution</div>
+    <p class="mp">Solution details, design decisions, and final screens will be documented here with supporting imagery and prototype links.</p>
+    <div class="mimg" style="background:${d.bg};opacity:.72;margin-top:0"><span class="mimlbl">· final designs ·</span></div>
+    <div class="mh">Outcomes</div>
+    <p class="mp">Key metrics, learnings, and impact from the project go here.</p>
+    <div style="height:56px"></div>`;
+  document.getElementById('mscroll').scrollTop = 0;
+  modalOpen = true;
+  const ov = document.getElementById('mov');
+  const mo = document.getElementById('mo');
+  ov.classList.add('open');
+  gsap.fromTo(ov,{opacity:0},{opacity:1,duration:.32,ease:'power2.out'});
+  gsap.fromTo(mo,{scale:.93,y:26,opacity:0},{scale:1,y:0,opacity:1,duration:.52,ease:'expo.out',delay:.04});
+}
+
+function closeModal() {
+  const ov=document.getElementById('mov'), mo=document.getElementById('mo');
+  modalOpen=false; isFS=false;
+  gsap.set(mo,{width:'',height:'',maxWidth:'',borderRadius:''});
+  gsap.to(mo,{scale:.94,y:18,opacity:0,duration:.32,ease:'power2.in'});
+  gsap.to(ov,{opacity:0,duration:.38,ease:'power2.in',onComplete:()=>ov.classList.remove('open')});
+}
+
+document.getElementById('mc').addEventListener('click', closeModal);
+document.getElementById('mm').addEventListener('click', closeModal);
+document.getElementById('sbb').addEventListener('click', closeModal);
+document.getElementById('mf').addEventListener('click', () => {
+  const mo = document.getElementById('mo');
+  isFS = !isFS;
+  gsap.to(mo,{width:isFS?'100%':'88%',maxWidth:isFS?'100%':'960px',height:isFS?'100vh':'86vh',borderRadius:isFS?0:14,duration:.42,ease:'expo.out'});
+});
+document.getElementById('mov').addEventListener('click', e => { if(e.target===e.currentTarget) closeModal(); });
+
+// cursor on modal controls
+['mc','mm','mf','sbb'].forEach(id => {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.addEventListener('mouseenter', () => setCur('hand'));
+  el.addEventListener('mouseleave', () => setCur(''));
+});
+document.querySelectorAll('.sbi,.sbf').forEach(el => {
+  el.addEventListener('mouseenter', () => setCur('hand'));
+  el.addEventListener('mouseleave', () => setCur(''));
+});
+
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
+
+// ── ENTRANCE ─────────────────────────────────────────────────
+gsap.from('#nav',{y:-22,opacity:0,duration:.8,ease:'expo.out',delay:.25});
+gsap.from('#w1',{opacity:0,y:28,duration:.9,ease:'expo.out',delay:.5});
+gsap.from('#w2',{opacity:0,y:22,duration:.9,ease:'expo.out',delay:.64});
+gsap.from('#w3',{opacity:0,y:18,duration:.9,ease:'expo.out',delay:.76});
+gsap.from('#w4',{opacity:0,y:16,duration:.9,ease:'expo.out',delay:.86});
+</script>
+</body>
+</html>
