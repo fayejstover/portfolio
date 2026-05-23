@@ -58,7 +58,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
   white-space:nowrap;display:inline-flex;
 }
 #nav-inner{position:relative;display:inline-flex;align-items:center;gap:0}
-#nav-pill{position:absolute;top:0;left:0;border-radius:var(--rnav);background:var(--brand);z-index:0;pointer-events:none}
+#nav-pill{position:absolute;top:0;left:0;border-radius:var(--rnav);background:var(--brand);z-index:0;pointer-events:none;opacity:0}
 .ni{
   font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:.05em;
   color:var(--text-mid);padding:8px 20px;border-radius:var(--rnav);
@@ -107,9 +107,8 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
 <nav id="nav">
   <div id="nav-inner">
     <div id="nav-pill"></div>
-    <span class="ni" data-href="index.html">home</span>
     <span class="ni" data-href="index.html#work">work</span>
-    <span class="ni active">visual</span>
+    <span class="ni active">playground</span>
     <span class="ni" data-href="about.html">about</span>
   </div>
 </nav>
@@ -167,7 +166,10 @@ function pillTo(el, anim=true) {
 
 setTimeout(() => {
   const active = document.querySelector('.ni.active');
-  if (active) pillTo(active, false);
+  if (active) {
+    pillTo(active, false);
+    gsap.to(pill, {opacity:1, duration:.22, delay:.06});
+  }
 }, 80);
 
 nis.forEach(n => {

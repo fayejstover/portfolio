@@ -1,0 +1,419 @@
+From fae777ca9927b9139d84f4a042b08e01c53da278 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 23 May 2026 21:18:00 +0000
+Subject: [PATCH] Polish: nav, cursors, case study UX, landing CTAs
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+- Nav: collapse home/work into single 'work' item; rename visual→playground; 3-item nav across all pages
+- Nav pill: fade in after position snap to eliminate jump glitch on page load
+- Landing windows: w1 clicks→work, w2→about, w3→playground; Intuit/Figma/Viget hyperlinked in tagline
+- Cursors: dark retro pill with destination label for window CTAs (↓ work, → about, → play); friendly 🔒 error state for locked sidebar items
+- Sidebar: hovering/clicking locked sections shows 🔒 cursor message instead of broken scroll
+- Case study scrollbar: 8px wide, visible track, hover state
+- Prev/next cards: gradient backgrounds matching case study colors with cover image overlay
+- First section whitespace: reduced .mh margin-top (52px→4px) + .ms-section spacing pattern
+- LibbyU: badge year 2025→2026, add password lock (libby2026)
+- Password system: each case uses data[key].password instead of shared constant
+
+https://claude.ai/code/session_01QmEbxdVHT1qGpUNNfHtQLc
+---
+ about.html  |  10 ++--
+ index.html  | 154 ++++++++++++++++++++++++++++++++++++++--------------
+ visual.html |  10 ++--
+ 3 files changed, 124 insertions(+), 50 deletions(-)
+
+diff --git a/about.html b/about.html
+index 2ca6f92..d37c7b6 100644
+--- a/about.html
++++ b/about.html
+@@ -49,7 +49,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
+   white-space:nowrap;display:inline-flex;
+ }
+ #nav-inner{position:relative;display:inline-flex;align-items:center;gap:0}
+-#nav-pill{position:absolute;top:0;left:0;border-radius:var(--rnav);background:var(--brand);z-index:0;pointer-events:none}
++#nav-pill{position:absolute;top:0;left:0;border-radius:var(--rnav);background:var(--brand);z-index:0;pointer-events:none;opacity:0}
+ .ni{
+   font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:.05em;
+   color:var(--text-mid);padding:8px 20px;border-radius:var(--rnav);
+@@ -88,9 +88,8 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
+ <nav id="nav">
+   <div id="nav-inner">
+     <div id="nav-pill"></div>
+-    <span class="ni" data-href="index.html">home</span>
+     <span class="ni" data-href="index.html#work">work</span>
+-    <span class="ni" data-href="visual.html">visual</span>
++    <span class="ni" data-href="visual.html">playground</span>
+     <span class="ni active">about</span>
+   </div>
+ </nav>
+@@ -153,7 +152,10 @@ function pillTo(el, anim=true) {
+ 
+ setTimeout(() => {
+   const active = document.querySelector('.ni.active');
+-  if (active) pillTo(active, false);
++  if (active) {
++    pillTo(active, false);
++    gsap.to(pill, {opacity:1, duration:.22, delay:.06});
++  }
+ }, 80);
+ 
+ nis.forEach(n => {
+diff --git a/index.html b/index.html
+index 546a3ed..9b52060 100644
+--- a/index.html
++++ b/index.html
+@@ -47,6 +47,23 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
+   mix-blend-mode:normal;
+   box-shadow:0 4px 16px rgba(0,0,0,0.10),0 1px 0 rgba(255,255,255,0.8) inset;
+ }
++/* dark retro pill for window navigation CTAs */
++#cur.go{
++  width:96px;height:36px;border-radius:100px;
++  background:rgba(18,18,18,0.88);
++  border:1px solid rgba(255,255,255,0.18);
++  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
++  mix-blend-mode:normal;
++  box-shadow:0 4px 16px rgba(0,0,0,0.22);
++}
++/* friendly lock error */
++#cur.locked{
++  width:140px;height:36px;border-radius:100px;
++  background:rgba(240,232,232,0.94);
++  border:1px solid rgba(200,100,100,0.38);
++  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
++  mix-blend-mode:normal;
++}
+ /* old-tech crosshair for draggable windows */
+ #cur.win{
+   width:18px;height:18px;border-radius:0;
+@@ -60,14 +77,12 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
+   mix-blend-mode:normal;overflow:visible;
+ }
+ #cur-lbl{
+-  font-family:var(--mono);
+-  font-size:14px;
+-  letter-spacing:-.04em;
+-  color:white;
+-  mix-blend-mode:difference;
+-
+-  opacity:0;text-align:center;line-height:1;transition:opacity .2s ease;user-select:none;mix-blend-mode:normal}
+-#cur.open #cur-lbl{opacity:1}
++  font-family:var(--mono);font-size:11px;letter-spacing:.06em;
++  color:white;opacity:0;text-align:center;line-height:1.2;
++  transition:opacity .2s ease;user-select:none;white-space:nowrap;}
++#cur.open #cur-lbl{opacity:1;color:#fff}
++#cur.go #cur-lbl{opacity:1;color:rgba(255,255,255,.92)}
++#cur.locked #cur-lbl{opacity:1;color:#a33;font-size:10px}
+ 
+ /* ── NAV ────────────────────────────────────── */
+ #nav{
+@@ -91,7 +106,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
+ #nav-pill{
+   position:absolute;top:0;left:0;
+   border-radius:var(--rnav);background:var(--brand);
+-  z-index:0;pointer-events:none;
++  z-index:0;pointer-events:none;opacity:0;
+ }
+ .ni{
+   font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:.05em;
+@@ -444,9 +459,12 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
+ 
+ /* content scroll area */
+ .msc{flex:1;min-height:0;overflow-y:auto;padding:0 52px 80px;scroll-behavior:smooth}
+-.msc::-webkit-scrollbar{width:3px}
+-.msc::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.11);border-radius:2px}
+-.ms-section{padding-top:16px;margin-bottom:8px}
++.msc::-webkit-scrollbar{width:8px}
++.msc::-webkit-scrollbar-track{background:rgba(0,0,0,0.03);border-radius:4px}
++.msc::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.18);border-radius:4px}
++.msc::-webkit-scrollbar-thumb:hover{background:rgba(0,0,0,0.28)}
++.ms-section{padding-top:4px;margin-bottom:8px}
++.ms-section+.ms-section{margin-top:44px}
+ 
+ /* hero banner — full bleed image, supports bg img or gradient */
+ .mhero-banner{
+@@ -470,7 +488,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
+ .mv{font-size:13px;color:var(--text);line-height:1.45}
+ 
+ /* section headings hierarchy */
+-.mh{font-family:var(--serif);font-size:22px;color:var(--text);margin-bottom:14px;margin-top:52px;line-height:1.1}
++.mh{font-family:var(--serif);font-size:22px;color:var(--text);margin-bottom:14px;margin-top:4px;line-height:1.1}
+ .mh-sub{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px;margin-top:32px}
+ .mp{font-size:14px;color:var(--text-mid);line-height:1.85;margin-bottom:14px}
+ .mp-large{font-family:var(--serif);font-size:20px;color:var(--text);line-height:1.4;margin-bottom:16px}
+@@ -541,24 +559,34 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
+ 
+ /* prev/next nav */
+ .m-prevnext{display:flex;gap:12px;margin-top:64px;padding-top:32px;border-top:1px solid rgba(0,0,0,0.08)}
+-.m-nav-btn{flex:1;border-radius:12px;border:1px solid rgba(0,0,0,0.09);padding:20px 24px;cursor:none;transition:background .2s,border-color .2s,transform .2s;display:flex;flex-direction:column;gap:5px;background:#fff}
+-.m-nav-btn:hover{background:#f7f6f4;border-color:rgba(0,0,0,0.16);transform:translateY(-2px)}
++.m-nav-btn{
++  flex:1;border-radius:14px;padding:24px 28px;cursor:none;
++  transition:transform .28s cubic-bezier(.34,1.28,.64,1),box-shadow .28s ease;
++  display:flex;flex-direction:column;justify-content:flex-end;gap:6px;
++  min-height:140px;overflow:hidden;position:relative;
++  border:none;
++}
++.m-nav-btn::after{
++  content:'';position:absolute;inset:0;
++  background:linear-gradient(to bottom,transparent 30%,rgba(0,0,0,0.48) 100%);
++  pointer-events:none;
++}
++.m-nav-btn:hover{transform:translateY(-3px);box-shadow:0 14px 44px rgba(0,0,0,0.22)}
+ .m-nav-btn.next{align-items:flex-end}
+-.m-nav-dir{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted)}
+-.m-nav-co{font-family:var(--mono);font-size:10px;color:var(--brand);letter-spacing:.06em;text-transform:uppercase;margin-top:2px}
+-.m-nav-title{font-family:var(--serif);font-size:16px;color:var(--text);margin-top:2px;line-height:1.25}
++.m-nav-dir{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.55);position:relative;z-index:1}
++.m-nav-co{font-family:var(--serif);font-size:22px;color:rgba(255,255,255,.96);position:relative;z-index:1;line-height:1;margin-top:auto}
++.m-nav-title{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.55);letter-spacing:.04em;position:relative;z-index:1;margin-top:4px;line-height:1.45}
+ </style>
+ </head>
+ <body>
+ 
+-<div id="cur"><div id="cur-lbl">open<br>study</div></div>
++<div id="cur"><div id="cur-lbl"></div></div>
+ 
+ <nav id="nav">
+   <div id="nav-inner">
+     <div id="nav-pill"></div>
+-    <span class="ni active" data-page="home">home</span>
+-    <span class="ni" data-page="work">work</span>
+-    <span class="ni" data-href="visual.html">visual</span>
++    <span class="ni active" data-page="work">work</span>
++    <span class="ni" data-href="visual.html">playground</span>
+     <span class="ni" data-href="about.html">about</span>
+   </div>
+ </nav>
+@@ -579,7 +607,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
+           <img src="assets/landing1.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;display:block;">
+           <div class="wbig" style="background:transparent;position:absolute;inset:0;z-index:2">
+             <div class="wname">Faye J.Stover</div>
+-            <div class="wtagline">Designing tools that break down technical nuances into efficient and delightful work. Previously at <span class="wprev-co">Intuit</span> · <span class="wprev-co">Figma</span> · <span class="wprev-co">Viget</span></div>
++            <div class="wtagline">Designing tools that break down technical nuances into efficient and delightful work. Previously at <a href="https://www.intuit.com" target="_blank" class="wprev-co" style="color:inherit;text-decoration:none;cursor:none">Intuit</a> · <a href="https://www.figma.com" target="_blank" class="wprev-co" style="color:inherit;text-decoration:none;cursor:none">Figma</a> · <a href="https://www.viget.com" target="_blank" class="wprev-co" style="color:inherit;text-decoration:none;cursor:none">Viget</a></div>
+           </div>
+         </div>
+         <div class="rh-edge rh-n" data-dir="n"></div><div class="rh-edge rh-s" data-dir="s"></div>
+@@ -677,8 +705,9 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
+         <div class="cw" data-case="libby">
+           <div class="cc bg-l">
+             <div class="ci">
+-              <div class="badge"><div class="bdot"></div><span class="bco">LibbyU / OverDrive</span><span class="byr">· 2025</span></div>
++              <div class="badge"><div class="bdot"></div><span class="bco">LibbyU / OverDrive</span><span class="byr">· 2026</span></div>
+             </div>
++            <div class="lock-badge"><svg width="11" height="13" viewBox="0 0 11 13" fill="none"><rect x="1.5" y="5.5" width="8" height="7" rx="1.5" stroke="rgba(255,255,255,.7)" stroke-width="1.3"/><path d="M3.5 5.5V3.5a2 2 0 0 1 4 0v2" stroke="rgba(255,255,255,.7)" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+           </div>
+           <div class="cb">
+             <div class="ctitle">Research-First Onboarding Redesign Translating Pain Points into Scalable Designs.</div>
+@@ -760,6 +789,7 @@ const IMGS = {
+ 
+ // ── CURSOR ───────────────────────────────────────────────────
+ const cur = document.getElementById('cur');
++const curLbl = document.getElementById('cur-lbl');
+ let mx=innerWidth/2, my=innerHeight/2, cx=mx, cy=my;
+ document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+ gsap.ticker.add(() => {
+@@ -767,7 +797,10 @@ gsap.ticker.add(() => {
+   cy += (my-cy)*0.13;
+   gsap.set(cur, {x:cx, y:cy});
+ });
+-const setCur = m => { cur.className = m||''; };
++const setCur = m => { cur.className = m||''; curLbl.innerHTML = ''; };
++const setCurGo = (label) => { cur.className = 'go'; curLbl.textContent = label; };
++const setCurLocked = () => { cur.className = 'locked'; curLbl.textContent = '🔒 unlock first'; };
++let lockedTimer = null;
+ 
+ // ── PAGES ────────────────────────────────────────────────────
+ const pages = ['home','work'];
+@@ -793,9 +826,13 @@ function pillTo(el, anim=true) {
+ // Handle #work hash when arriving from another page
+ const initTarget = location.hash === '#work' ? 'work' : 'home';
+ if (initTarget !== 'home') goTo(initTarget, true);
++// Position pill immediately (opacity hidden → fade in to avoid jump)
+ setTimeout(() => {
+   const activeNi = document.querySelector('.ni.active');
+-  if (activeNi) pillTo(activeNi, false);
++  if (activeNi) {
++    pillTo(activeNi, false);
++    gsap.to(pill, {opacity:1, duration:.22, delay:.06});
++  }
+ }, 80);
+ 
+ function goTo(pageId, instant=false) {
+@@ -803,9 +840,11 @@ function goTo(pageId, instant=false) {
+   if (idx === pidx || animating) return;
+   animating = true;
+   pidx = idx;
++  // 'home' and 'work' both map to the single 'work' nav item
++  const navId = pageId === 'home' ? 'work' : pageId;
+   nis.forEach(n => {
+-    n.classList.toggle('active', n.dataset.page === pageId);
+-    if (n.dataset.page === pageId) pillTo(n, !instant);
++    n.classList.toggle('active', n.dataset.page === navId);
++    if (n.dataset.page === navId) pillTo(n, !instant);
+   });
+   if (instant) {
+     gsap.set(vp, {y: -idx*100+'vh'});
+@@ -998,21 +1037,38 @@ winIds.forEach(id => {
+ window.addEventListener('mousemove', e => { (window._winMouseMove||[]).forEach(fn=>fn(e)); });
+ window.addEventListener('mouseup',   e => { (window._winMouseUp  ||[]).forEach(fn=>fn(e)); });
+ 
++// ── WINDOW CTA CLICKS ────────────────────────────────────────
++// Track if a drag happened so we don't fire a nav click after dragging
++let _anyDrag = false;
++document.addEventListener('mousedown', () => { _anyDrag = false; });
++document.addEventListener('mousemove', () => { _anyDrag = true; }, {capture:true, passive:true});
++
++[
++  { id:'w1', action:()=>goTo('work'),                   label:'↓ work' },
++  { id:'w2', action:()=>{ location.href='about.html'; }, label:'→ about' },
++  { id:'w3', action:()=>{ location.href='visual.html'; }, label:'→ play' },
++].forEach(({id, action, label}) => {
++  const wb = document.querySelector(`#${id} .wb`);
++  if (!wb) return;
++  wb.addEventListener('mouseenter', () => setCurGo(label));
++  wb.addEventListener('mouseleave', () => setCur(''));
++  wb.addEventListener('mousedown', () => { _anyDrag = false; });
++  wb.addEventListener('click', () => { if (!_anyDrag) action(); });
++});
++
+ // ── CASE STUDY CARDS ─────────────────────────────────────────
+ document.querySelectorAll('.cw').forEach(c => {
+-  c.addEventListener('mouseenter', () => setCur('open'));
++  c.addEventListener('mouseenter', () => { cur.className='open'; curLbl.innerHTML='open<br>study'; });
+   c.addEventListener('mouseleave', () => setCur(''));
+   c.addEventListener('click', () => openModal(c.dataset.case));
+ });
+ 
+ // ── MODAL DATA ────────────────────────────────────────────────
+-const INTUIT_PW = 'intuit2026';
+-
+ const data = {
+   intuit:{
+     co:'Intuit', navTitle:'Human-in-the-Loop AI System', tl:'FY2026', role:'Product Designer',
+     bg:'linear-gradient(155deg,#0d1a2e 0%,#1a3a6e 52%,#1f5fa8 100%)',
+-    locked: true,
++    locked: true, password:'intuit2026',
+     sections: ['Overview','Context','Solution','Research & Telemetry','Challenges','Outcomes','Final Designs'],
+     desc:'I led the design of Intuit\'s Human-Driven Data Labeling (HITL) system within the Expert Network platform — embedding AI evaluation tasks directly into expert workflows.',
+     stats:[['85.7%','Reduction in task time'],['50%','Increase in annotators'],['V1','Shipped']],
+@@ -1056,10 +1112,10 @@ const data = {
+     outcomes:'Live Demo at Config: Selected to demo how students use Figma to organize their lives — sharing a stage with Dylan Field, Ivan Zhao, and Josh Miller to 260 live attendees. The recording reached 45k+ YouTube views.\n\nMedia Team: As Midwest regional lead for @figmacampusleaders, I ideated and posted foundational Instagram content, developed cross-regional templates, and represented Midwest campus communities nationally.',
+   },
+   libby:{
+-    co:'LibbyU / OverDrive', navTitle:'Onboarding Redesign', tl:'2025', role:'Lead Designer',
++    co:'LibbyU / OverDrive', navTitle:'Onboarding Redesign', tl:'2026', role:'Lead Designer',
+     team:'Design · Research · PM · Doc Lead', type:'UX Research · Mobile · 0→1',
+     bg:'linear-gradient(155deg,#091d0f 0%,#183828 52%,#1e5535 100%)',
+-    locked: false,
++    locked: true, password:'libby2026',
+     sections: ['Overview','Context','Research','Solution','Outcomes','Final Designs'],
+     desc:'Built a four-round research program — 25 interviews, zero inherited files — to uncover a broken IA beneath what looked like an onboarding problem.',
+     stats:[['25','User interviews'],['4','Research rounds'],['0','Inherited files']],
+@@ -1121,12 +1177,15 @@ function img(key, caption='', full=false, size='med') {
+ 
+ function buildPrevNext(key) {
+   const idx = caseOrder.indexOf(key);
+-  // wrap around: first gets last as prev, last gets first as next
+   const prev = caseOrder[(idx - 1 + caseOrder.length) % caseOrder.length];
+   const next = caseOrder[(idx + 1) % caseOrder.length];
+   const btn = (k, dir) => {
+     const d2 = data[k];
+-    return `<div class="m-nav-btn${dir==='next'?' next':''}" data-nav="${k}">
++    const heroSrc = { intuit: IMGS['intuit_hero'], figma: IMGS['figma_hero'], libby: IMGS['libby_hero'], ktp: IMGS['ktp_hero'] }[k];
++    const bgStyle = heroSrc
++      ? `background:${d2.bg};background-image:url(${heroSrc});background-size:cover;background-position:center`
++      : `background:${d2.bg}`;
++    return `<div class="m-nav-btn${dir==='next'?' next':''}" data-nav="${k}" style="${bgStyle}">
+       <div class="m-nav-dir">${dir==='prev'?'← Previous':'Next →'}</div>
+       <div class="m-nav-co">${d2.co}</div>
+       <div class="m-nav-title">${d2.navTitle}</div>
+@@ -1513,7 +1572,6 @@ function buildModalContent(key) {
+ function buildSidebar(key) {
+   const d = data[key];
+   const msb = document.getElementById('msb');
+-  // remove old .sbi items
+   msb.querySelectorAll('.sbi').forEach(el=>el.remove());
+   const sbf = document.getElementById('sbf');
+   d.sections.forEach((label, i) => {
+@@ -1523,14 +1581,26 @@ function buildSidebar(key) {
+     btn.dataset.target = sectionId(label);
+     msb.insertBefore(btn, sbf);
+   });
+-  // click to scroll
+   msb.querySelectorAll('.sbi').forEach(btn => {
+     btn.addEventListener('click', () => {
+       const target = document.getElementById(btn.dataset.target);
+-      if (target) target.scrollIntoView({behavior:'smooth', block:'start'});
++      if (target) {
++        target.scrollIntoView({behavior:'smooth', block:'start'});
++      } else {
++        // Section is locked — show friendly cursor error
++        if (lockedTimer) clearTimeout(lockedTimer);
++        setCurLocked();
++        lockedTimer = setTimeout(() => { setCur(''); lockedTimer = null; }, 2200);
++      }
++    });
++    btn.addEventListener('mouseenter', () => {
++      const target = document.getElementById(btn.dataset.target);
++      if (!target) { setCurLocked(); } else { setCur('hand'); }
++    });
++    btn.addEventListener('mouseleave', () => {
++      if (lockedTimer) return; // keep error showing
++      setCur('');
+     });
+-    btn.addEventListener('mouseenter', () => setCur('hand'));
+-    btn.addEventListener('mouseleave', () => setCur(''));
+   });
+ }
+ 
+@@ -1555,7 +1625,7 @@ function attachPwListeners(key) {
+   const err = document.getElementById(`pw-err-${key}`);
+   if (!input || !btn) return;
+   const attempt = () => {
+-    if (input.value === INTUIT_PW) {
++    if (input.value === (data[key].password || '')) {
+       unlockedCases.add(key);
+       document.getElementById('mscroll').innerHTML = buildModalContent(key);
+       document.getElementById('mscroll').scrollTop = 0;
+diff --git a/visual.html b/visual.html
+index 8171f8d..7cca489 100644
+--- a/visual.html
++++ b/visual.html
+@@ -58,7 +58,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
+   white-space:nowrap;display:inline-flex;
+ }
+ #nav-inner{position:relative;display:inline-flex;align-items:center;gap:0}
+-#nav-pill{position:absolute;top:0;left:0;border-radius:var(--rnav);background:var(--brand);z-index:0;pointer-events:none}
++#nav-pill{position:absolute;top:0;left:0;border-radius:var(--rnav);background:var(--brand);z-index:0;pointer-events:none;opacity:0}
+ .ni{
+   font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:.05em;
+   color:var(--text-mid);padding:8px 20px;border-radius:var(--rnav);
+@@ -107,9 +107,8 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
+ <nav id="nav">
+   <div id="nav-inner">
+     <div id="nav-pill"></div>
+-    <span class="ni" data-href="index.html">home</span>
+     <span class="ni" data-href="index.html#work">work</span>
+-    <span class="ni active">visual</span>
++    <span class="ni active">playground</span>
+     <span class="ni" data-href="about.html">about</span>
+   </div>
+ </nav>
+@@ -167,7 +166,10 @@ function pillTo(el, anim=true) {
+ 
+ setTimeout(() => {
+   const active = document.querySelector('.ni.active');
+-  if (active) pillTo(active, false);
++  if (active) {
++    pillTo(active, false);
++    gsap.to(pill, {opacity:1, duration:.22, delay:.06});
++  }
+ }, 80);
+ 
+ nis.forEach(n => {
+-- 
+2.43.0
+
