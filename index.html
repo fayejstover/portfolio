@@ -558,8 +558,8 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
     <div id="nav-pill"></div>
     <span class="ni active" data-page="home">home</span>
     <span class="ni" data-page="work">work</span>
-    <span class="ni" data-page="visual">visual</span>
-    <span class="ni" data-page="about">about</span>
+    <span class="ni" data-href="visual.html">visual</span>
+    <span class="ni" data-href="about.html">about</span>
   </div>
 </nav>
 
@@ -702,64 +702,6 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
     </div><!-- page-inner -->
   </div>
 
-  <!-- VISUAL -->
-  <div class="page" id="p-visual" style="top:200vh">
-    <div class="page-inner">
-      <div class="wk-hd">
-        <span class="wk-lbl">Visual Work</span>
-        <div class="wk-line"></div>
-      </div>
-      <div class="vf-row" id="vf-row">
-        <button class="vf-btn active" data-filter="all">All</button>
-        <button class="vf-btn" data-filter="vibe">Vibe-coded</button>
-        <button class="vf-btn" data-filter="sketching">Sketching</button>
-        <button class="vf-btn" data-filter="motion">Motion Graphics</button>
-      </div>
-      <div class="vgrid" id="vgrid">
-        <div class="vi-item" data-cat="vibe"><div class="vi-lbl">Vibe-coded · 01</div></div>
-        <div class="vi-item" data-cat="sketching"><div class="vi-lbl">Sketching · 01</div></div>
-        <div class="vi-item" data-cat="motion"><div class="vi-lbl">Motion · 01</div></div>
-        <div class="vi-item" data-cat="vibe"><div class="vi-lbl">Vibe-coded · 02</div></div>
-        <div class="vi-item" data-cat="motion"><div class="vi-lbl">Motion · 02</div></div>
-        <div class="vi-item" data-cat="sketching"><div class="vi-lbl">Sketching · 02</div></div>
-        <div class="vi-item" data-cat="sketching"><div class="vi-lbl">Sketching · 03</div></div>
-        <div class="vi-item" data-cat="vibe"><div class="vi-lbl">Vibe-coded · 03</div></div>
-        <div class="vi-item" data-cat="motion"><div class="vi-lbl">Motion · 03</div></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ABOUT -->
-  <div class="page" id="p-about" style="top:300vh">
-    <div class="page-inner" style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;padding-top:0">
-      <div>
-        <div class="wk-hd" style="margin-bottom:28px">
-          <span class="wk-lbl">About</span>
-          <div class="wk-line"></div>
-        </div>
-        <div class="about-name">Faye Stover</div>
-        <p class="about-role">Product Designer</p>
-        <p class="about-body">I design systems that make complex things feel simple. Currently a senior at the University of Michigan studying Information Science — focused on the intersection of research, clarity, and the aesthetics of how information moves.</p>
-        <p class="about-body">My work spans B2B AI tooling (Intuit), consumer social (Roblox, LibbyU), and community design (Figma). I care about the moment a user goes from confused to confident.</p>
-        <p class="about-body">I build fast with AI — Figma Make, v0, Claude Code — but always evaluate outputs as a user, not as the person who built it.</p>
-        <div class="about-links">
-          <a href="mailto:fayejstover@gmail.com" class="alink">Email ↗</a>
-          <a href="https://linkedin.com/in/fayestover" target="_blank" class="alink">LinkedIn ↗</a>
-          <a href="https://read.cv/fayestover" target="_blank" class="alink">Read.cv ↗</a>
-        </div>
-      </div>
-      <div style="padding-top:56px">
-        <div class="about-section-lbl">Currently</div>
-        <div class="about-item"><span class="ai-co">Intuit</span><span class="ai-role">Product Design Intern · FY26</span></div>
-        <div class="about-item"><span class="ai-co">University of Michigan</span><span class="ai-role">B.S. Information Science · 2026</span></div>
-        <div class="about-divider"></div>
-        <div class="about-section-lbl">Previously</div>
-        <div class="about-item"><span class="ai-co">Figma</span><span class="ai-role">Campus Ambassador · Founding Cohort</span></div>
-        <div class="about-item"><span class="ai-co">Kappa Theta Pi</span><span class="ai-role">Principal Designer · KTP LIFE</span></div>
-        <div class="about-item"><span class="ai-co">LibbyU / OverDrive</span><span class="ai-role">Lead Designer · Onboarding</span></div>
-      </div>
-    </div>
-  </div>
 
 </div>
 
@@ -828,7 +770,7 @@ gsap.ticker.add(() => {
 const setCur = m => { cur.className = m||''; };
 
 // ── PAGES ────────────────────────────────────────────────────
-const pages = ['home','work','visual','about'];
+const pages = ['home','work'];
 let pidx = 0, animating = false, modalOpen = false;
 const vp = document.getElementById('vp');
 const nis = document.querySelectorAll('.ni');
@@ -848,7 +790,13 @@ function pillTo(el, anim=true) {
   else gsap.set(pill, props);
 }
 
-setTimeout(() => pillTo(nis[0], false), 80);
+// Handle #work hash when arriving from another page
+const initTarget = location.hash === '#work' ? 'work' : 'home';
+if (initTarget !== 'home') goTo(initTarget, true);
+setTimeout(() => {
+  const activeNi = document.querySelector('.ni.active');
+  if (activeNi) pillTo(activeNi, false);
+}, 80);
 
 function goTo(pageId, instant=false) {
   const idx = pages.indexOf(pageId);
@@ -857,7 +805,7 @@ function goTo(pageId, instant=false) {
   pidx = idx;
   nis.forEach(n => {
     n.classList.toggle('active', n.dataset.page === pageId);
-    if (n.dataset.page === pageId) pillTo(n);
+    if (n.dataset.page === pageId) pillTo(n, !instant);
   });
   if (instant) {
     gsap.set(vp, {y: -idx*100+'vh'});
@@ -873,7 +821,11 @@ function goTo(pageId, instant=false) {
 }
 
 nis.forEach(n => {
-  n.addEventListener('click', () => goTo(n.dataset.page));
+  if (n.dataset.href) {
+    n.addEventListener('click', () => { window.location.href = n.dataset.href; });
+  } else {
+    n.addEventListener('click', () => goTo(n.dataset.page));
+  }
   n.addEventListener('mouseenter', () => setCur('hand'));
   n.addEventListener('mouseleave', () => setCur(''));
 });
@@ -882,7 +834,7 @@ nis.forEach(n => {
 let cooldown = false;
 
 function getActiveScrollEl() {
-  const ids = ['p-home','p-work','p-visual','p-about'];
+  const ids = ['p-home','p-work'];
   return document.getElementById(ids[pidx]);
 }
 
@@ -1697,28 +1649,6 @@ document.getElementById('sbf').addEventListener('click', () => {
 });
 
 document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
-
-// ── VISUAL FILTERS ───────────────────────────────────────────
-document.querySelectorAll('.vf-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.vf-btn').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    const filter = btn.dataset.filter;
-    document.querySelectorAll('.vi-item').forEach(item => {
-      const show = filter === 'all' || item.dataset.cat === filter;
-      gsap.to(item, {opacity: show?1:0, scale: show?1:0.94, duration:.28, ease:'power2.out',
-        onComplete(){ item.style.display = show ? '' : 'none'; },
-        onStart(){ if(show) item.style.display = ''; }
-      });
-    });
-  });
-  btn.addEventListener('mouseenter', () => setCur('hand'));
-  btn.addEventListener('mouseleave', () => setCur(''));
-});
-document.querySelectorAll('.vi-item').forEach(item => {
-  item.addEventListener('mouseenter', () => setCur('open'));
-  item.addEventListener('mouseleave', () => setCur(''));
-});
 
 // ── ENTRANCE ─────────────────────────────────────────────────
 gsap.from('#nav',{y:-22,opacity:0,duration:.9,ease:'expo.out',delay:.15});

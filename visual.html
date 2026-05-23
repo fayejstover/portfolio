@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Faye — Visual Work</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --brand:#283FD6;
+  --bg:#E9E8E5;
+  --text:#181818;--text-mid:#5a5a5a;--text-muted:#9a9a9a;
+  --mono:'DM Mono',monospace;--serif:'DM Serif Display',serif;--sans:'DM Sans',sans-serif;
+  --r:10px;--rnav:100px;
+}
+html{width:100%}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);cursor:none;overflow-y:auto;min-height:100vh}
+
+/* grain */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.038'/%3E%3C/svg%3E")}
+
+/* cursor */
+#cur{position:fixed;width:28px;height:28px;border-radius:50%;
+  background:rgba(200,200,200,0.28);border:1px solid rgba(255,255,255,0.65);
+  pointer-events:none;z-index:9999;transform:translate(-50%,-50%);
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+  mix-blend-mode:multiply;
+  transition:width .28s cubic-bezier(.34,1.56,.64,1),height .28s cubic-bezier(.34,1.56,.64,1),
+    background .2s ease,border-color .2s ease,border-radius .2s ease}
+#cur.hand{width:24px;height:24px;background:rgba(40,63,214,.22);border-color:rgba(40,63,214,.5)}
+#cur.open{
+  width:90px;height:36px;border-radius:100px;
+  background:rgba(255,255,255,0.55);
+  border:1px solid rgba(255,255,255,0.90);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  mix-blend-mode:normal;
+  box-shadow:0 4px 16px rgba(0,0,0,0.10),0 1px 0 rgba(255,255,255,0.8) inset;
+}
+#cur-lbl{font-family:var(--mono);font-size:14px;letter-spacing:-.04em;color:white;
+  opacity:0;text-align:center;line-height:1;transition:opacity .2s ease;user-select:none;mix-blend-mode:normal}
+#cur.open #cur-lbl{opacity:1}
+
+/* nav */
+#nav{
+  position:fixed;top:22px;left:50%;transform:translateX(-50%);z-index:1000;
+  background:rgba(232,231,228,0.62);
+  backdrop-filter:blur(28px) saturate(180%) brightness(1.04);
+  -webkit-backdrop-filter:blur(28px) saturate(180%) brightness(1.04);
+  border:1px solid rgba(255,255,255,0.78);
+  border-bottom-color:rgba(255,255,255,0.48);
+  border-radius:var(--rnav);padding:6px 6px;
+  box-shadow:0 1px 0 rgba(255,255,255,0.90) inset,0 -1px 0 rgba(0,0,0,0.04) inset,
+    0 8px 28px rgba(0,0,0,0.09),0 2px 6px rgba(0,0,0,0.06);
+  white-space:nowrap;display:inline-flex;
+}
+#nav-inner{position:relative;display:inline-flex;align-items:center;gap:0}
+#nav-pill{position:absolute;top:0;left:0;border-radius:var(--rnav);background:var(--brand);z-index:0;pointer-events:none}
+.ni{
+  font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:.05em;
+  color:var(--text-mid);padding:8px 20px;border-radius:var(--rnav);
+  cursor:none;position:relative;z-index:1;
+  transition:color .35s ease;user-select:none;
+}
+.ni.active{color:#fff}
+
+/* content wrapper */
+.page-inner{width:100%;max-width:1340px;margin:0 auto;padding:0 52px}
+
+/* section header */
+.wk-hd{display:flex;align-items:baseline;gap:16px;margin-bottom:32px}
+.wk-lbl{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
+.wk-line{flex:1;height:1px;background:rgba(0,0,0,0.10)}
+
+/* visual filters */
+.vf-row{display:flex;gap:8px;margin-bottom:32px;flex-wrap:wrap}
+.vf-btn{
+  font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--text-muted);padding:7px 16px;border-radius:100px;
+  border:1px solid rgba(0,0,0,0.12);background:transparent;
+  cursor:none;transition:all .22s ease;
+}
+.vf-btn.active{background:var(--text);color:#fff;border-color:var(--text)}
+.vf-btn:hover:not(.active){background:rgba(0,0,0,0.05)}
+
+.vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.vi-item{border-radius:12px;aspect-ratio:4/3;background:#d4d3d0;overflow:hidden;
+  position:relative;cursor:none;
+  transition:transform .28s ease,box-shadow .28s ease;
+}
+.vi-item:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,0.14)}
+.vi-item[data-cat="sketching"]{background:linear-gradient(135deg,#e8e5df 0%,#d4cfc8 100%)}
+.vi-item[data-cat="motion"]{background:linear-gradient(135deg,#0f0f1a 0%,#1a1a3e 100%)}
+.vi-item[data-cat="vibe"]{background:linear-gradient(135deg,#1a0828 0%,#3d1060 100%)}
+.vi-lbl{position:absolute;bottom:12px;left:14px;font-family:var(--mono);font-size:10px;
+  letter-spacing:.06em;color:rgba(255,255,255,.6);text-transform:uppercase}
+.vi-item[data-cat="sketching"] .vi-lbl{color:rgba(0,0,0,.35)}
+</style>
+</head>
+<body>
+
+<div id="cur"><div id="cur-lbl">open<br>study</div></div>
+
+<nav id="nav">
+  <div id="nav-inner">
+    <div id="nav-pill"></div>
+    <span class="ni" data-href="index.html">home</span>
+    <span class="ni" data-href="index.html#work">work</span>
+    <span class="ni active">visual</span>
+    <span class="ni" data-href="about.html">about</span>
+  </div>
+</nav>
+
+<div style="padding-top:90px;padding-bottom:60px">
+  <div class="page-inner">
+    <div class="wk-hd">
+      <span class="wk-lbl">Visual Work</span>
+      <div class="wk-line"></div>
+    </div>
+    <div class="vf-row" id="vf-row">
+      <button class="vf-btn active" data-filter="all">All</button>
+      <button class="vf-btn" data-filter="vibe">Vibe-coded</button>
+      <button class="vf-btn" data-filter="sketching">Sketching</button>
+      <button class="vf-btn" data-filter="motion">Motion Graphics</button>
+    </div>
+    <div class="vgrid" id="vgrid">
+      <div class="vi-item" data-cat="vibe"><div class="vi-lbl">Vibe-coded · 01</div></div>
+      <div class="vi-item" data-cat="sketching"><div class="vi-lbl">Sketching · 01</div></div>
+      <div class="vi-item" data-cat="motion"><div class="vi-lbl">Motion · 01</div></div>
+      <div class="vi-item" data-cat="vibe"><div class="vi-lbl">Vibe-coded · 02</div></div>
+      <div class="vi-item" data-cat="motion"><div class="vi-lbl">Motion · 02</div></div>
+      <div class="vi-item" data-cat="sketching"><div class="vi-lbl">Sketching · 02</div></div>
+      <div class="vi-item" data-cat="sketching"><div class="vi-lbl">Sketching · 03</div></div>
+      <div class="vi-item" data-cat="vibe"><div class="vi-lbl">Vibe-coded · 03</div></div>
+      <div class="vi-item" data-cat="motion"><div class="vi-lbl">Motion · 03</div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── CURSOR ───────────────────────────────────────────────────
+const cur = document.getElementById('cur');
+let mx=innerWidth/2, my=innerHeight/2, cx=mx, cy=my;
+document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+gsap.ticker.add(() => {
+  cx += (mx-cx)*0.13;
+  cy += (my-cy)*0.13;
+  gsap.set(cur, {x:cx, y:cy});
+});
+const setCur = m => { cur.className = m||''; };
+
+// ── NAV ──────────────────────────────────────────────────────
+const nis = document.querySelectorAll('.ni');
+const pill = document.getElementById('nav-pill');
+
+function pillTo(el, anim=true) {
+  const inner = document.getElementById('nav-inner');
+  const ic = inner.getBoundingClientRect();
+  const ir = el.getBoundingClientRect();
+  const props = { x: ir.left-ic.left, y: ir.top-ic.top, width: ir.width, height: ir.height };
+  if (anim) gsap.to(pill, {...props, duration:0.55, ease:'expo.out'});
+  else gsap.set(pill, props);
+}
+
+setTimeout(() => {
+  const active = document.querySelector('.ni.active');
+  if (active) pillTo(active, false);
+}, 80);
+
+nis.forEach(n => {
+  const href = n.dataset.href;
+  if (href) n.addEventListener('click', () => { window.location.href = href; });
+  n.addEventListener('mouseenter', () => setCur('hand'));
+  n.addEventListener('mouseleave', () => setCur(''));
+});
+
+// ── VISUAL FILTERS ───────────────────────────────────────────
+document.querySelectorAll('.vf-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.vf-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    document.querySelectorAll('.vi-item').forEach(item => {
+      const show = filter === 'all' || item.dataset.cat === filter;
+      gsap.to(item, {opacity: show?1:0, scale: show?1:0.94, duration:.28, ease:'power2.out',
+        onComplete(){ item.style.display = show ? '' : 'none'; },
+        onStart(){ if(show) item.style.display = ''; }
+      });
+    });
+  });
+  btn.addEventListener('mouseenter', () => setCur('hand'));
+  btn.addEventListener('mouseleave', () => setCur(''));
+});
+document.querySelectorAll('.vi-item').forEach(item => {
+  item.addEventListener('mouseenter', () => setCur('open'));
+  item.addEventListener('mouseleave', () => setCur(''));
+});
+
+// ── ENTRANCE ─────────────────────────────────────────────────
+gsap.from('#nav',{y:-22,opacity:0,duration:.9,ease:'expo.out',delay:.15});
+</script>
+</body>
+</html>
