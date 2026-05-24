@@ -98,6 +98,73 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
 .vi-lbl{position:absolute;bottom:12px;left:14px;font-family:var(--mono);font-size:10px;
   letter-spacing:.06em;color:rgba(255,255,255,.6);text-transform:uppercase}
 .vi-item[data-cat="sketching"] .vi-lbl{color:rgba(0,0,0,.35)}
+
+/* ── FOOTER ──────────────────────────────────── */
+footer#ft{width:100%;padding:0 56px 18px;position:relative}
+.ft-top{padding-top:44px;padding-bottom:0;display:grid;grid-template-columns:1fr auto;gap:80px;align-items:start}
+.ft-quote{font-family:var(--serif);font-size:26px;line-height:1.18;color:var(--text);letter-spacing:-.01em;max-width:520px}
+.ft-quote em{font-style:italic;color:rgba(40,63,214,.75)}
+.ft-byline{font-family:var(--mono);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--text-muted);margin-top:14px}
+.ft-copy{font-family:var(--mono);font-size:9px;color:var(--text-muted);letter-spacing:.05em;margin-top:36px;opacity:.38}
+.ft-nav{display:flex;gap:52px;flex-shrink:0}
+.ft-col-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted);margin-bottom:14px}
+.ft-link{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;color:var(--text-mid);letter-spacing:.03em;text-decoration:none;padding:4px 0;cursor:none;transition:color .18s ease}
+.ft-link:hover{color:var(--brand)}
+.ft-link .arr{opacity:.4;font-size:9px;transition:opacity .18s,transform .18s}
+.ft-link:hover .arr{opacity:1;transform:translate(1px,-1px)}
+.ft-link-email{display:block;font-family:var(--mono);font-size:11px;color:var(--text-muted);letter-spacing:.03em;text-decoration:none;padding:4px 0;cursor:none;margin-top:4px;transition:color .18s}
+.ft-link-email:hover{color:var(--text)}
+.ft-stage{position:relative;height:380px;overflow:hidden;background:transparent;margin-top:-60px}
+.ft-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.ft-connline{stroke:rgba(40,63,214,0.10);stroke-width:1;stroke-dasharray:3 5;fill:none;animation:ft-dash 4s linear infinite;opacity:0;transition:opacity .6s ease}
+.ft-connline.show{opacity:1}
+@keyframes ft-dash{to{stroke-dashoffset:-32}}
+.ft-frag{position:absolute;font-family:var(--mono);font-size:10px;color:rgba(0,0,0,0.10);pointer-events:none;user-select:none;line-height:1.4;letter-spacing:.05em;white-space:nowrap;transition:color .3s ease,text-shadow .3s ease}
+.ft-frag.near{color:rgba(40,63,214,.28)}
+.ft-frag.active{color:rgba(40,63,214,.60);text-shadow:0 0 8px rgba(40,63,214,.18)}
+.ft-frag.lit{color:rgba(40,63,214,.88);text-shadow:0 0 14px rgba(40,63,214,.35)}
+.ft-led{position:absolute;width:5px;height:5px;border-radius:50%;background:rgba(40,63,214,0.12);pointer-events:none;transition:background .35s,box-shadow .35s;animation:ft-led-idle 2.8s ease-in-out infinite}
+.ft-led.near{background:rgba(40,63,214,.45);box-shadow:0 0 5px rgba(40,63,214,.32);animation:none}
+.ft-led.active{background:rgba(40,63,214,.88);box-shadow:0 0 9px rgba(40,63,214,.55),0 0 2px rgba(255,255,255,.8);animation:none}
+@keyframes ft-led-idle{0%,100%{opacity:.22}50%{opacity:.70}}
+.ft-pulse{position:absolute;width:8px;height:8px;border-radius:50%;border:1.5px solid rgba(40,63,214,0.75);pointer-events:none;transform:translate(-50%,-50%);animation:ft-pulse-out .9s cubic-bezier(.1,.8,.3,1) forwards}
+@keyframes ft-pulse-out{0%{width:8px;height:8px;opacity:1}100%{width:260px;height:260px;opacity:0}}
+.ft-node{position:absolute;width:8px;height:8px;border-radius:50%;background:rgba(40,63,214,.65);box-shadow:0 0 10px rgba(40,63,214,.4);pointer-events:none;transform:translate(-50%,-50%);animation:ft-node-in .3s cubic-bezier(.34,1.56,.64,1) forwards}
+@keyframes ft-node-in{from{transform:translate(-50%,-50%) scale(0)}to{transform:translate(-50%,-50%) scale(1)}}
+.ft-miniwin{position:absolute;background:rgba(235,234,231,0.45);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);border:1px solid rgba(255,255,255,0.72);border-bottom-color:rgba(0,0,0,0.05);border-right-color:rgba(255,255,255,0.55);border-radius:10px;box-shadow:0 4px 24px rgba(0,0,0,0.05),0 1px 0 rgba(255,255,255,0.85) inset;font-family:var(--mono);font-size:9.5px;color:rgba(40,63,214,0.72);padding:11px 15px;line-height:1.75;pointer-events:none;opacity:0;transform:translateY(6px) scale(.98);transition:opacity .5s cubic-bezier(.2,.8,.4,1),transform .5s cubic-bezier(.2,.8,.4,1);white-space:nowrap;z-index:4;min-width:170px}
+.ft-miniwin .dim{color:rgba(40,63,214,.38)}
+.ft-miniwin .ok{color:#27ae60}
+.ft-miniwin .tag{display:inline-block;background:rgba(40,63,214,.08);border-radius:3px;padding:1px 6px;font-size:8.5px;color:rgba(40,63,214,.65);margin:1px 2px 1px 0}
+.ft-miniwin.show{opacity:1;transform:translateY(0) scale(1)}
+.ft-cmdwin{position:absolute;background:rgba(235,234,231,0.40);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);border:1px solid rgba(255,255,255,0.68);border-bottom-color:rgba(0,0,0,0.05);border-radius:10px;box-shadow:0 4px 24px rgba(0,0,0,0.05),0 1px 0 rgba(255,255,255,0.85) inset;font-family:var(--mono);font-size:9.5px;color:rgba(40,63,214,0.72);padding:10px 14px;line-height:1.7;pointer-events:none;z-index:5;min-width:160px;animation:ft-win-in .35s cubic-bezier(.2,.8,.4,1) forwards}
+@keyframes ft-win-in{from{opacity:0;transform:translateY(8px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+.ft-terminal{position:absolute;bottom:0;left:0;right:0;background:rgba(233,232,229,0.75);backdrop-filter:blur(12px);border-top:1px solid rgba(0,0,0,0.07);font-family:var(--mono);font-size:9px;color:var(--text-muted);padding:6px 20px;display:flex;align-items:center;gap:18px;letter-spacing:.05em;z-index:10}
+.term-seg{display:flex;align-items:center;gap:6px}
+.term-dot{width:6px;height:6px;border-radius:50%;background:rgba(0,0,0,0.15);flex-shrink:0;transition:background .4s,box-shadow .4s}
+.term-dot.active{background:#27ae60;box-shadow:0 0 5px rgba(39,174,96,.5)}
+.term-dot.warn{background:#e8a838;box-shadow:0 0 5px rgba(232,168,56,.45)}
+.term-dot.err{background:rgba(0,0,0,.18)}
+.term-val{color:var(--text-mid);transition:color .3s;font-weight:500}
+.term-val.blue{color:var(--brand)}
+.term-val.green{color:#27ae60}
+.term-sep{opacity:.18}
+.term-cursor{display:inline-block;width:5px;height:10px;background:rgba(40,63,214,.65);animation:ft-blink .9s step-end infinite;vertical-align:middle;margin-left:2px}
+@keyframes ft-blink{0%,100%{opacity:1}50%{opacity:0}}
+.term-progress{flex:1;height:2px;background:rgba(0,0,0,.08);border-radius:1px;overflow:hidden;margin-left:4px}
+.term-progress-fill{height:100%;background:var(--brand);border-radius:1px;width:0%;transition:width .7s cubic-bezier(.4,0,.2,1)}
+.ft-input-wrap{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:0;z-index:20;opacity:0;transition:opacity .4s ease;pointer-events:none}
+.ft-input-wrap.show{opacity:1;pointer-events:all}
+.ft-input-prompt{font-family:var(--mono);font-size:10px;color:rgba(40,63,214,.70);background:rgba(235,234,231,0.5);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.70);border-right:none;border-radius:7px 0 0 7px;padding:7px 10px;letter-spacing:.04em;white-space:nowrap}
+.ft-input{font-family:var(--mono);font-size:10px;color:var(--text);background:rgba(235,234,231,0.5);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.70);border-left:1px solid rgba(40,63,214,.18);border-right:none;outline:none;padding:7px 10px;width:200px;cursor:text;letter-spacing:.04em;transition:border-color .2s}
+.ft-input:focus{border-color:rgba(40,63,214,.35)}
+.ft-input::placeholder{color:rgba(0,0,0,.22)}
+.ft-input-submit{font-family:var(--mono);font-size:10px;color:rgba(40,63,214,.75);background:rgba(235,234,231,0.55);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.70);border-left:none;border-radius:0 7px 7px 0;padding:7px 12px;cursor:none;transition:background .18s,color .18s}
+.ft-input-submit:hover{background:rgba(40,63,214,.08);color:var(--brand)}
+.ft-hint{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(0,0,0,0.16);pointer-events:none;transition:opacity .4s ease;text-align:center;line-height:1.9}
+.ft-hint.hidden{opacity:0}
+#cur.ft-scan{width:20px;height:20px;border-radius:50%;background:rgba(40,63,214,0.06);border:1.5px solid rgba(40,63,214,0.60);mix-blend-mode:normal;animation:ft-scan-pulse 1.4s ease-in-out infinite}
+#cur.ft-type{width:14px;height:14px;border-radius:2px;background:rgba(40,63,214,0.15);border:1.5px solid rgba(40,63,214,0.5);mix-blend-mode:normal}
+@keyframes ft-scan-pulse{0%,100%{box-shadow:0 0 0 3px rgba(40,63,214,0.07)}50%{box-shadow:0 0 0 8px rgba(40,63,214,0.03)}}
 </style>
 </head>
 <body>
@@ -138,6 +205,90 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
     </div>
   </div>
 </div>
+
+<footer id="ft">
+  <div class="ft-top">
+    <div>
+      <div class="ft-quote">Good systems aren't built once —<br>they're <em>tended to,</em> detail by detail,<br>from every side of the process.</div>
+      <div class="ft-copy">© 2026</div>
+    </div>
+    <div class="ft-nav">
+      <div>
+        <div class="ft-col-lbl">Connect</div>
+        <a href="https://www.linkedin.com/in/fayejstover" target="_blank" class="ft-link">LinkedIn <span class="arr">↗</span></a>
+        <a href="https://drive.google.com/file/d/1NQFnbqJz2KkjVvQpp4jeBfD62jfv5fdN/view?usp=sharing" target="_blank" class="ft-link">Resume <span class="arr">↗</span></a>
+        <a href="mailto:hello@fayejstover.com" class="ft-link-email">hello@fayejstover.com</a>
+      </div>
+      <div>
+        <div class="ft-col-lbl">Navigate</div>
+        <a href="index.html" class="ft-link ft-nav-link">Work</a>
+        <a href="visual.html" class="ft-link ft-nav-link">Playground</a>
+        <a href="about.html" class="ft-link ft-nav-link">About</a>
+      </div>
+    </div>
+  </div>
+  <div class="ft-stage" id="ft-stage">
+    <svg class="ft-svg" id="ft-svg">
+      <line class="ft-connline" x1="100" y1="60" x2="290" y2="140"/>
+      <line class="ft-connline" x1="290" y1="140" x2="520" y2="80"/>
+      <line class="ft-connline" x1="520" y1="80" x2="740" y2="160"/>
+      <line class="ft-connline" x1="740" y1="160" x2="920" y2="100"/>
+      <line class="ft-connline" x1="200" y1="240" x2="440" y2="260"/>
+      <line class="ft-connline" x1="440" y1="260" x2="660" y2="230"/>
+      <circle cx="100" cy="60" r="2.5" fill="rgba(40,63,214,0)" class="svg-node"/>
+      <circle cx="290" cy="140" r="2.5" fill="rgba(40,63,214,0)" class="svg-node"/>
+      <circle cx="520" cy="80" r="2.5" fill="rgba(40,63,214,0)" class="svg-node"/>
+      <circle cx="740" cy="160" r="2.5" fill="rgba(40,63,214,0)" class="svg-node"/>
+      <circle cx="920" cy="100" r="2.5" fill="rgba(40,63,214,0)" class="svg-node"/>
+      <circle cx="200" cy="240" r="2.5" fill="rgba(40,63,214,0)" class="svg-node"/>
+      <circle cx="440" cy="260" r="2.5" fill="rgba(40,63,214,0)" class="svg-node"/>
+      <circle cx="660" cy="230" r="2.5" fill="rgba(40,63,214,0)" class="svg-node"/>
+    </svg>
+    <div class="ft-frag" style="top:18px;left:80px">╭────</div>
+    <div class="ft-frag" style="top:40px;left:90px">_</div>
+    <div class="ft-frag" style="top:24px;left:168px">:::</div>
+    <div class="ft-frag" style="top:62px;left:148px">▸ _</div>
+    <div class="ft-frag" style="top:108px;left:270px">01001</div>
+    <div class="ft-frag" style="top:144px;left:248px">––––</div>
+    <div class="ft-frag" style="top:88px;left:500px">◌</div>
+    <div class="ft-frag" style="top:152px;left:470px">[ ]</div>
+    <div class="ft-frag" style="top:54px;left:690px">╌╌╌╌╌</div>
+    <div class="ft-frag" style="top:88px;left:710px">■</div>
+    <div class="ft-frag" style="top:186px;left:620px">v.01</div>
+    <div class="ft-frag" style="top:206px;left:760px">EOF</div>
+    <div class="ft-frag" style="top:48px;left:840px">0x2FD6</div>
+    <div class="ft-frag" style="top:160px;left:880px">◈</div>
+    <div class="ft-frag" style="top:100px;left:940px">↺</div>
+    <div class="ft-frag" style="top:230px;left:340px">■■</div>
+    <div class="ft-led" style="top:52px;left:72px"></div>
+    <div class="ft-led" style="top:120px;left:262px;animation-delay:.8s"></div>
+    <div class="ft-led" style="top:82px;left:492px;animation-delay:1.5s"></div>
+    <div class="ft-led" style="top:62px;left:682px;animation-delay:.4s"></div>
+    <div class="ft-led" style="top:168px;left:612px;animation-delay:2.1s"></div>
+    <div class="ft-led" style="top:52px;left:832px;animation-delay:1.1s"></div>
+    <div class="ft-led" style="top:196px;left:200px;animation-delay:1.7s"></div>
+    <div class="ft-miniwin" id="mw-boot" style="top:14px;left:68px">╭──────────────────╮<br>│ &nbsp;sys.status: <span class="ok">online</span>&nbsp; │</div>
+    <div class="ft-miniwin" id="mw-zero" style="top:100px;left:240px"><span class="dim">// project lifecycle</span><br><span class="ok">✓</span> research &nbsp;&nbsp;<span class="ok">✓</span> design<br><span class="ok">✓</span> prototype &nbsp;<span class="ok">✓</span> ship</div>
+    <div class="ft-miniwin" id="mw-stack" style="top:42px;left:470px"><span class="dim">$ skills --list</span><br><span class="tag">product</span><span class="tag">design</span><span class="tag">dev</span><br><span class="tag">research</span><span class="tag">systems</span></div>
+    <div class="ft-miniwin" id="mw-e2e" style="top:130px;left:660px"><span class="dim">// ownership model</span><br>0→1 &nbsp;·&nbsp; end-to-end<br><span class="dim">from brief to shipped</span></div>
+    <div class="ft-miniwin" id="mw-process" style="top:22px;left:860px"><span class="dim">$ faye --mode full</span><br>design-led &nbsp;·&nbsp; ships<br><span class="dim">detail-first always</span></div>
+    <div class="ft-miniwin" id="mw-care" style="top:190px;left:370px"><span class="dim">// philosophy</span><br>systems built with care<br><span class="dim">from every side of the process</span></div>
+    <div class="ft-input-wrap" id="ft-input-wrap">
+      <div class="ft-input-prompt">&gt; _</div>
+      <input class="ft-input" id="ft-input" type="text" placeholder="type a command…" autocomplete="off" spellcheck="false">
+      <button class="ft-input-submit" id="ft-submit">↵</button>
+    </div>
+    <div class="ft-hint" id="ft-hint">click anywhere to boot<br><span style="opacity:.4">↓</span></div>
+    <div class="ft-terminal">
+      <div class="term-seg"><div class="term-dot err" id="ft-td"></div><span style="opacity:.5">sys</span></div>
+      <div class="term-seg"><span class="term-sep">│</span><span style="opacity:.45">status:</span><span class="term-val" id="ft-tv-status">dormant</span></div>
+      <div class="term-seg"><span class="term-sep">│</span><span style="opacity:.45">modules:</span><span class="term-val blue" id="ft-tv-mod">0/6</span></div>
+      <div class="term-seg"><span class="term-sep">│</span><span style="opacity:.45">stack:</span><span class="term-val" id="ft-tv-stack">–</span></div>
+      <div class="term-seg" style="flex:1"><span class="term-sep">│</span><div class="term-progress"><div class="term-progress-fill" id="ft-tv-prog"></div></div></div>
+      <div class="term-seg"><span style="opacity:.3">faye.sys</span><span class="term-cursor"></span></div>
+    </div>
+  </div>
+</footer>
 
 <script>
 // ── CURSOR ───────────────────────────────────────────────────
@@ -203,6 +354,83 @@ document.querySelectorAll('.vi-item').forEach(item => {
 
 // ── ENTRANCE ─────────────────────────────────────────────────
 gsap.from('#nav',{y:-22,opacity:0,duration:.9,ease:'expo.out',delay:.15});
+
+// ── FOOTER ───────────────────────────────────────────────────
+(function() {
+  const stage     = document.getElementById('ft-stage');
+  if (!stage) return;
+  const frags     = Array.from(stage.querySelectorAll('.ft-frag'));
+  const leds      = Array.from(stage.querySelectorAll('.ft-led'));
+  const lines     = Array.from(stage.querySelectorAll('.ft-connline'));
+  const svgNodes  = Array.from(stage.querySelectorAll('.svg-node'));
+  const hint      = document.getElementById('ft-hint');
+  const inputWrap = document.getElementById('ft-input-wrap');
+  const ftInput   = document.getElementById('ft-input');
+  const ftSubmit  = document.getElementById('ft-submit');
+  const mws = ['mw-boot','mw-zero','mw-stack','mw-e2e','mw-process','mw-care'].map(id=>document.getElementById(id));
+  const tvStatus=document.getElementById('ft-tv-status'),tvMod=document.getElementById('ft-tv-mod'),tvStack=document.getElementById('ft-tv-stack'),tvProg=document.getElementById('ft-tv-prog'),tdDot=document.getElementById('ft-td');
+  let ftLevel=0,inStage=false;
+  const LEVELS=[
+    {status:'dormant',      mod:'0/6', stack:'–',                     prog:0,   dot:'err'   },
+    {status:'initialising', mod:'1/6', stack:'–',                     prog:16,  dot:'warn'  },
+    {status:'assembling',   mod:'2/6', stack:'thoughtful design',      prog:33,  dot:'warn'  },
+    {status:'connecting',   mod:'3/6', stack:'detail by detail',       prog:50,  dot:'warn'  },
+    {status:'deploying',    mod:'4/6', stack:'tended to · with care',  prog:66,  dot:'active'},
+    {status:'integrating',  mod:'5/6', stack:'unique · meaningful',    prog:83,  dot:'active'},
+    {status:'online',       mod:'6/6', stack:'built end-to-end',       prog:100, dot:'active'},
+  ];
+  function getCenter(el){const sr=stage.getBoundingClientRect(),er=el.getBoundingClientRect();return{x:er.left+er.width/2-sr.left,y:er.top+er.height/2-sr.top}}
+  function updateTerminal(lv){const L=LEVELS[lv];tvStatus.textContent=L.status;tvMod.textContent=L.mod;tvStack.textContent=L.stack;tvProg.style.width=L.prog+'%';tvStatus.className='term-val'+(lv>=6?' green':lv>=4?' blue':'');tdDot.className='term-dot '+L.dot}
+const mwTimers=[];
+  function showMw(idx){
+    const el=mws[idx];if(!el||el.dataset.shown)return;
+    el.dataset.shown='1';
+    el.style.transition='opacity .5s cubic-bezier(.2,.8,.4,1),transform .5s cubic-bezier(.2,.8,.4,1)';
+    el.classList.add('show');
+    if(mwTimers[idx])clearTimeout(mwTimers[idx]);
+    mwTimers[idx]=setTimeout(()=>{
+      el.style.transition='opacity 1.2s ease,transform 1.2s ease';
+      el.style.opacity='0';el.style.transform='translateY(-6px) scale(.97)';
+      setTimeout(()=>{el.classList.remove('show');el.style.opacity='';el.style.transform='';delete el.dataset.shown},1200);
+    },3000);
+  }
+  function applyLevel(){
+    frags.forEach(f=>f.classList.remove('active','lit'));leds.forEach(l=>l.classList.remove('active'));
+    if(ftLevel>=1){frags.slice(0,5).forEach(f=>f.classList.add('active'));showMw(0);hint.classList.add('hidden')}
+    if(ftLevel>=2){frags.slice(0,9).forEach(f=>f.classList.add('active'));frags.slice(0,4).forEach(f=>f.classList.add('lit'));leds.slice(0,3).forEach(l=>l.classList.add('active'));showMw(1)}
+    if(ftLevel>=3){frags.forEach(f=>f.classList.add('active'));leds.forEach(l=>l.classList.add('active'));lines.forEach(l=>l.classList.add('show'));svgNodes.forEach(n=>n.setAttribute('fill','rgba(40,63,214,.4)'));showMw(2);inputWrap.classList.add('show')}
+    if(ftLevel>=4){frags.forEach(f=>f.classList.add('lit'));showMw(3)}
+    if(ftLevel>=5){showMw(4)}
+    if(ftLevel>=6){showMw(5)}
+    updateTerminal(ftLevel);
+  }
+  function emitPulse(cx,cy){
+    const p=document.createElement('div');p.className='ft-pulse';p.style.left=cx+'px';p.style.top=cy+'px';stage.appendChild(p);
+    const SPEED=280;
+    frags.forEach(f=>{const fc=getCenter(f),d=Math.hypot(fc.x-cx,fc.y-cy);setTimeout(()=>{f.classList.add('lit');setTimeout(()=>{f.classList.remove('lit');applyLevel()},450)},(d/SPEED)*1000)});
+    leds.forEach(l=>{const lc=getCenter(l),d=Math.hypot(lc.x-cx,lc.y-cy);setTimeout(()=>{l.classList.add('active');if(ftLevel<3)setTimeout(()=>l.classList.remove('active'),700)},(d/SPEED)*1000)});
+    p.addEventListener('animationend',()=>p.remove());
+  }
+  const CMD={'hello':'> hello, world','hi':'> hello, faye here','help':'> cmds: skills, process, work, ship, hello','skills':'> product · design · dev · research','process':'> research → frame → design → test → ship','work':'> intuit · figma · libby · ktp','ship':'> shipped: ktp · intuit HITL · libbyU onboarding','design':'> design-led · systems-first · detail-obsessed','dev':'> react · html/css · figma → code','research':'> 4-round research programs built from scratch','0→1':'> 0→1 owner · brief to shipped','0-1':'> 0→1 owner · brief to shipped','figma':'> founding campus leader · 1 of 56','intuit':'> HITL annotation system · FY26','about':'> systems designer · umich · 2026','contact':'> hello@fayejstover.com'};
+  function spawnUserWindow(cx,cy,text){
+    const win=document.createElement('div');win.className='ft-cmdwin';win.style.left=Math.min(cx+16,stage.offsetWidth-200)+'px';win.style.top=Math.max(cy-60,8)+'px';win.innerHTML=text;stage.appendChild(win);
+    const node=document.createElement('div');node.className='ft-node';node.style.left=cx+'px';node.style.top=cy+'px';stage.appendChild(node);
+    setTimeout(()=>{win.style.transition='opacity .8s ease,transform .8s ease';win.style.opacity='0';win.style.transform='translateY(-6px)';node.style.transition='opacity .8s ease,transform .8s ease';node.style.opacity='0';node.style.transform='translate(-50%,-50%) scale(0.5)';setTimeout(()=>{win.remove();node.remove()},800)},2500);
+  }
+  function handleCommand(raw){const cmd=raw.trim().toLowerCase();if(!cmd)return;const cx=120+Math.random()*(stage.offsetWidth-280),cy=40+Math.random()*(stage.offsetHeight-140);const reply=CMD[cmd]||`> "${raw.trim()}" — <span class="dim">unknown. try: help</span>`;spawnUserWindow(cx,cy,`<span class="dim">$ ${raw.trim()}</span><br>${reply}`);emitPulse(cx,cy)}
+  ftInput.addEventListener('focus',()=>setCur('ft-type'));
+  ftInput.addEventListener('blur',()=>inStage?setCur('ft-scan'):setCur(''));
+  ftInput.addEventListener('keydown',e=>{if(e.key==='Enter'){handleCommand(ftInput.value);ftInput.value=''}});
+  ftSubmit.addEventListener('click',()=>{handleCommand(ftInput.value);ftInput.value='';ftInput.focus()});
+  ftSubmit.addEventListener('mouseenter',()=>setCur('hand'));
+  ftSubmit.addEventListener('mouseleave',()=>inStage?setCur('ft-scan'):setCur(''));
+  stage.addEventListener('mousemove',e=>{const sr=stage.getBoundingClientRect(),cx=e.clientX-sr.left,cy=e.clientY-sr.top;frags.forEach(f=>{const fc=getCenter(f),d=Math.hypot(fc.x-cx,fc.y-cy);f.classList.remove('near','active');if(d<90)f.classList.add(ftLevel>0?'active':'near');if(d<40)f.classList.add('active')});leds.forEach(l=>{const lc=getCenter(l),d=Math.hypot(lc.x-cx,lc.y-cy);if(!l.classList.contains('active'))l.classList.toggle('near',d<100)})});
+  stage.addEventListener('mouseenter',()=>{inStage=true;setCur('ft-scan')});
+  stage.addEventListener('mouseleave',()=>{inStage=false;setCur('');frags.forEach(f=>f.classList.remove('near'));leds.forEach(l=>l.classList.remove('near'));applyLevel()});
+  stage.addEventListener('click',e=>{if(e.target===ftInput||e.target===ftSubmit)return;const sr=stage.getBoundingClientRect();emitPulse(e.clientX-sr.left,e.clientY-sr.top);if(ftLevel<6){ftLevel++;applyLevel()}});
+  document.querySelectorAll('.ft-link, .ft-link-email').forEach(el=>{el.addEventListener('mouseenter',()=>setCur('hand'));el.addEventListener('mouseleave',()=>setCur(''))});
+  updateTerminal(0);
+})();
 </script>
 </body>
 </html>

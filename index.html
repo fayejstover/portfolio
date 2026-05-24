@@ -13,9 +13,10 @@
 :root{
   --brand:#283FD6;
   --bg:#E9E8E5;
-  --glass-bg:rgba(255,255,255,0.48);
-  --glass-bd:rgba(255,255,255,0.72);
-  --glass-sh:0 8px 32px rgba(0,0,0,0.10),0 1.5px 6px rgba(0,0,0,0.07);
+  --glass-bg:rgba(255,255,255,0.38);
+  --glass-bd:rgba(255,255,255,0.42);
+  --glass-hl:rgba(255,255,255,0.38);
+  --glass-sh:0 8px 28px rgba(0,0,0,0.08),0 1px 4px rgba(0,0,0,0.05);
   --win-sh:0 20px 60px rgba(0,0,0,0.22),0 6px 18px rgba(0,0,0,0.13),0 1px 3px rgba(0,0,0,0.10);
   --modal-sh:0 44px 110px rgba(0,0,0,0.24),0 12px 36px rgba(0,0,0,0.14);
   --text:#181818;--text-mid:#5a5a5a;--text-muted:#9a9a9a;
@@ -31,40 +32,36 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
 
 /* ── CURSOR ─────────────────────────────────── */
 #cur{position:fixed;width:28px;height:28px;border-radius:50%;
-  background:rgba(200,200,200,0.28);border:1px solid rgba(255,255,255,0.65);
+  background:rgba(200,200,200,0.24);border:1px solid var(--glass-bd);
   pointer-events:none;z-index:9999;transform:translate(-50%,-50%);
   display:flex;align-items:center;justify-content:center;overflow:hidden;
   mix-blend-mode:multiply;
   transition:width .28s cubic-bezier(.34,1.56,.64,1),height .28s cubic-bezier(.34,1.56,.64,1),
     background .2s ease,border-color .2s ease,border-radius .2s ease}
 #cur.hand{width:24px;height:24px;background:rgba(40,63,214,.22);border-color:rgba(40,63,214,.5)}
-/* glassy white pill for case study cards */
 #cur.open{
   width:90px;height:36px;border-radius:100px;
-  background:rgba(255,255,255,0.55);
-  border:1px solid rgba(255,255,255,0.90);
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  background:rgba(255,255,255,0.42);
+  border:1px solid var(--glass-bd);
+  backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);
   mix-blend-mode:normal;
-  box-shadow:0 4px 16px rgba(0,0,0,0.10),0 1px 0 rgba(255,255,255,0.8) inset;
+  box-shadow:0 6px 18px rgba(0,0,0,0.09),0 .5px 0 var(--glass-hl) inset;
 }
-/* dark retro pill for window navigation CTAs */
 #cur.go{
   width:96px;height:36px;border-radius:100px;
-  background:rgba(18,18,18,0.88);
-  border:1px solid rgba(255,255,255,0.18);
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  background:rgba(18,18,18,0.33);
+  border:1px solid rgba(255,255,255,0.14);
+  backdrop-filter:blur(16px) saturate(150%);-webkit-backdrop-filter:blur(16px) saturate(150%);
   mix-blend-mode:normal;
-  box-shadow:0 4px 16px rgba(0,0,0,0.22);
+  box-shadow:0 6px 18px rgba(0,0,0,0.14),0 .5px 0 rgba(255,255,255,0.16) inset;
 }
-/* friendly lock error */
 #cur.locked{
   width:140px;height:36px;border-radius:100px;
-  background:rgba(240,232,232,0.94);
-  border:1px solid rgba(200,100,100,0.38);
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  background:rgba(240,232,232,0.82);
+  border:1px solid rgba(200,100,100,0.26);
+  backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%);
   mix-blend-mode:normal;
 }
-/* old-tech crosshair for draggable windows */
 #cur.win{
   width:18px;height:18px;border-radius:0;
   background:transparent;
@@ -90,15 +87,14 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
   background:rgba(232,231,228,0.62);
   backdrop-filter:blur(28px) saturate(180%) brightness(1.04);
   -webkit-backdrop-filter:blur(28px) saturate(180%) brightness(1.04);
-  border:1px solid rgba(255,255,255,0.78);
-  border-bottom-color:rgba(255,255,255,0.48);
+  border:1px solid var(--glass-bd);
+  border-bottom-color:rgba(255,255,255,0.24);
   border-radius:var(--rnav);
   padding:6px 6px;
   box-shadow:
-    0 1px 0 rgba(255,255,255,0.90) inset,
+    0 .5px 0 var(--glass-hl) inset,
     0 -1px 0 rgba(0,0,0,0.04) inset,
-    0 8px 28px rgba(0,0,0,0.09),
-    0 2px 6px rgba(0,0,0,0.06);
+    var(--glass-sh);
   white-space:nowrap;
   display:inline-flex;
 }
@@ -120,10 +116,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
 #vp{position:fixed;inset:0;will-change:transform}
 .page{position:absolute;left:0;right:0;top:0;height:100vh;background:var(--bg)}
 #p-home{display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
-#p-work,#p-visual,#p-about{
-  overflow-y:auto;overflow-x:hidden;
-  padding:80px 0 60px;
-}
+#p-work,#p-visual,#p-about{overflow-y:auto;overflow-x:hidden;padding:80px 0 60px;}
 #p-work::-webkit-scrollbar,#p-visual::-webkit-scrollbar,#p-about::-webkit-scrollbar{display:none}
 .page-inner{width:100%;max-width:1340px;margin:0 auto;padding:0 52px}
 
@@ -138,7 +131,6 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
 .bw.is-resizing{transition:none!important}
 .bw.drag-active{box-shadow:var(--modal-sh);z-index:200!important}
 
-/* chrome — light warm gray, real traffic lights */
 .wc{
   background:linear-gradient(180deg,#F0EEE8 0%,#E2DFD8 40%,#D4D1CA 100%);
   padding:8px 12px 6px;
@@ -146,111 +138,54 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
   border-radius:var(--r) var(--r) 0 0;
   display:flex;flex-direction:column;gap:5px;
   flex-shrink:0;
-  box-shadow:0 1px 0 rgba(255,255,255,0.8) inset;
+  box-shadow:0 .5px 0 rgba(255,255,255,0.42) inset;
   position:relative;
 }
 .tls{display:flex;gap:5px;align-items:center}
 .tl{width:11px;height:11px;border-radius:50%;flex-shrink:0;position:relative;}
 .tl::after{content:'';position:absolute;inset:0;border-radius:50%;
-  box-shadow:0 1px 0 rgba(255,255,255,0.5) inset,0 -1px 0 rgba(0,0,0,0.2) inset;}
+  box-shadow:0 .5px 0 rgba(255,255,255,0.32) inset,0 -1px 0 rgba(0,0,0,0.16) inset;}
 .tl:nth-child(1){background:radial-gradient(circle at 38% 35%,#FF7B72,#E0443C)}
 .tl:nth-child(2){background:radial-gradient(circle at 38% 35%,#FFD060,#D9A616)}
 .tl:nth-child(3){background:radial-gradient(circle at 38% 35%,#7EDB7E,#24A642)}
-.wtitle{
-  font-family:var(--mono);font-size:9px;color:#8C8A84;
-  text-align:center;letter-spacing:.09em;text-transform:uppercase;
-  position:absolute;left:40px;right:40px;top:50%;transform:translateY(-50%);
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  pointer-events:none;
-  text-shadow:0 1px 0 rgba(255,255,255,0.6);
-}
 .wurl{
   background:rgba(0,0,0,0.07);
   border:1px solid rgba(0,0,0,0.13);border-radius:4px;
   padding:3px 8px;font-family:var(--mono);font-size:9px;color:#888;
   display:flex;align-items:center;gap:4px;
-  box-shadow:0 1px 0 rgba(255,255,255,0.7) inset;
+  box-shadow:0 .5px 0 rgba(255,255,255,0.34) inset;
 }
 .wurl::before{content:'🔒';font-size:7px;opacity:.45}
 
-/* tagline styles live in .wname / .wrole / .wtagline block below */
-
-/* responsive window group scaling */
 @media (max-width:1280px){#ws{transform:scale(0.85);transform-origin:center center;}}
 @media (max-width:1024px){#ws{transform:scale(0.70);transform-origin:center center;}}
 @media (max-width:768px) {#ws{transform:scale(0.52);transform-origin:top center;}}
 @media (max-width:480px) {#ws{transform:scale(0.36);transform-origin:top center;}}
 
-/* body — fills remaining height, content inside scales via flex/100% */
-.wb{
-  position:relative;overflow:hidden;flex:1;
-  border-radius:0 0 var(--r) var(--r);
-}
+.wb{position:relative;overflow:hidden;flex:1;border-radius:0 0 var(--r) var(--r);}
 .wb::before{
   content:'';position:absolute;inset:0;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.84' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.36'/%3E%3C/svg%3E");
   background-size:160px;mix-blend-mode:overlay;pointer-events:none;z-index:1;
 }
-
-/* each content variant fills 100% of .wb */
 .wbig{
-  background:transparent;
-  width:100%;height:100%;padding:18px 20px;
+  background:transparent;width:100%;height:100%;padding:18px 20px;
   display:flex;flex-direction:column;justify-content:flex-start;
   background-image:linear-gradient(to bottom, rgba(0,0,0,0.50) 0%, rgba(0,0,0,0.15) 60%, transparent 100%);
 }
-.wname{
-  font-family:var(--serif);font-size:48px;color:#fff;line-height:0.96;
-  position:relative;z-index:2;
-  text-shadow:0 2px 24px rgba(0,0,0,0.38),0 1px 4px rgba(0,0,0,0.28);
-  letter-spacing:-.01em;
-}
-.wtagline{
-  font-family:var(--sans);font-size:14px;color:rgba(255,255,255,.72);
-  white-space:wrap;overflow:hidden;text-overflow:ellipsis;
-  position:relative;z-index:2;margin-top:9px;
-  font-weight:400;
-}
-.wprev{
-  font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.58);
-  letter-spacing:.04em;position:relative;z-index:2;margin-top:6px;
-  white-space:nowrap;
-}
-.wprev-co{
-  color:rgba(255,255,255,.96);font-weight:500;
-}
-
-.wme{
-  background:linear-gradient(155deg,#FF5AB5 0%,#E6347A 50%,#C81F6C 100%);
-  width:100%;height:100%;
-  display:flex;align-items:center;justify-content:center;
-}
-.photo{width:68px;height:68px;border-radius:50%;border:1.5px solid rgba(255,255,255,.48);
-  background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;
-  font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.68);text-align:center;line-height:1.5;position:relative;z-index:2}
-
-.wtex{
-  background:#C8C6BC;width:100%;height:100%;
-  display:flex;align-items:center;justify-content:center;position:relative;
-}
-.tlines{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.04) 3px,rgba(0,0,0,0.04) 4px),repeating-linear-gradient(90deg,transparent,transparent 4px,rgba(0,0,0,0.02) 4px,rgba(0,0,0,0.02) 5px)}
-.texlbl{font-family:var(--mono);font-size:10px;color:rgba(0,0,0,.35);letter-spacing:.07em;text-align:center;position:relative;z-index:2;line-height:1.8}
-
-.wtag{
-  background:linear-gradient(135deg,#FF3CA0 0%,#B81C67 100%);
-  width:100%;height:100%;
-  display:flex;align-items:center;justify-content:center;
-}
+.wname{font-family:var(--serif);font-size:48px;color:#fff;line-height:0.96;position:relative;z-index:2;text-shadow:0 2px 24px rgba(0,0,0,0.38),0 1px 4px rgba(0,0,0,0.28);letter-spacing:-.01em;}
+.wtagline{font-family:var(--sans);font-size:14px;color:rgba(255,255,255,.72);white-space:wrap;overflow:hidden;text-overflow:ellipsis;position:relative;z-index:2;margin-top:14px;font-weight:400;}
+.wprev{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.58);letter-spacing:.04em;position:relative;z-index:2;margin-top:6px;white-space:nowrap;}
+.wprev-co{color:rgba(255,255,255,.96);font-weight:500;}
+.wtag{background:linear-gradient(135deg,#FF3CA0 0%,#B81C67 100%);width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
 .tagtxt{font-family:var(--serif);font-size:19px;font-style:italic;color:#fff;position:relative;z-index:2}
 
-/* ── RESIZE HANDLES (8 directions) ───────────── */
+/* ── RESIZE HANDLES ───────────── */
 .rh-edge,.rh-corner{position:absolute;z-index:10}
-/* edges */
 .rh-n{top:-4px;left:12px;right:12px;height:8px;cursor:n-resize}
 .rh-s{bottom:-4px;left:12px;right:12px;height:8px;cursor:s-resize}
 .rh-e{right:-4px;top:12px;bottom:12px;width:8px;cursor:e-resize}
 .rh-w{left:-4px;top:12px;bottom:12px;width:8px;cursor:w-resize}
-/* corners */
 .rh-nw{top:-4px;left:-4px;width:16px;height:16px;cursor:nw-resize}
 .rh-ne{top:-4px;right:-4px;width:16px;height:16px;cursor:ne-resize}
 .rh-sw{bottom:-4px;left:-4px;width:16px;height:16px;cursor:sw-resize}
@@ -260,204 +195,65 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
 .wk-hd{display:flex;align-items:baseline;gap:16px;margin-bottom:32px}
 .wk-lbl{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
 .wk-line{flex:1;height:1px;background:rgba(0,0,0,0.10)}
-
-/* grid: two cols, 24px gap, each card = 643/1440 ≈ 44.65% of viewport width
-   but we're inside a max-width:960px wrapper so we just do 1fr 1fr with 24px gap */
-.cgrid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:24px 24px;
-  width:100%;
-}
-
-/* card wrapper — groups image + below-card text */
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:24px 24px;width:100%;}
 .cw{display:flex;flex-direction:column;gap:14px;cursor:none}
-
-/* the image card itself — pure gradient, no white box */
 .cc{
   border-radius:14px;overflow:hidden;cursor:none;position:relative;
-  /* aspect ratio 643:344 ≈ 1.868:1 */
   aspect-ratio:643/344;
   transition:transform .32s cubic-bezier(.34,1.28,.64,1),box-shadow .32s ease;
   box-shadow:0 4px 20px rgba(0,0,0,0.12),0 1px 4px rgba(0,0,0,0.07);
 }
-.cc:hover{
-  transform:translateY(-3px);
-  box-shadow:0 14px 44px rgba(0,0,0,0.18),0 4px 14px rgba(0,0,0,0.09);
-}
-/* subtle light-sweep on hover */
-.cc::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(255,255,255,.07) 0%,transparent 60%);
-  opacity:0;transition:opacity .28s ease;pointer-events:none;
-}
+.cc:hover{transform:translateY(-3px);box-shadow:0 14px 44px rgba(0,0,0,0.18),0 4px 14px rgba(0,0,0,0.09);}
+.cc::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.07) 0%,transparent 60%);opacity:0;transition:opacity .28s ease;pointer-events:none;}
 .cc:hover::after{opacity:1}
-
-/* badge sits at bottom-left of the image */
-.ci{
-  position:absolute;inset:0;
-  display:flex;align-items:flex-end;padding:14px 16px;
-}
-.badge{
-  display:inline-flex;align-items:center;gap:6px;
-  background:rgba(255,255,255,0.15);
-  border:1px solid rgba(255,255,255,.28);
-  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  border-radius:100px;padding:5px 12px 5px 9px;
-}
+.ci{position:absolute;inset:0;display:flex;align-items:flex-end;padding:14px 16px;}
+.badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.13);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(16px) saturate(150%);-webkit-backdrop-filter:blur(16px) saturate(150%);border-radius:100px;padding:5px 12px 5px 9px;box-shadow:0 .5px 0 rgba(255,255,255,.18) inset;}
 .bdot{width:2.5px;height:2.5px;border-radius:50%;background:rgba(255,255,255,.65);flex-shrink:0}
 .bco{font-family:var(--mono);font-size:14px;color:rgba(255,255,255,.96);font-weight:500;letter-spacing:.02em}
 .byr{font-family:var(--mono);font-size:14px;color:rgba(255,255,255,.38);margin-left:1px}
-
-/* below-card description */
 .cb{display:flex;flex-direction:column;gap:5px;padding:0 2px}
-.ctitle{
-  font-size:14px;
-  font-weight:500;
-  letter-spacing:-0.04em;
-  color:var(--text);
-  line-height:1.2;
-}
-
-.cdesc{
-  font-size:14px;
-  font-weight:500;
-  letter-spacing:-0.04em;
-  color:var(--text-muted);
-  line-height:1.2;
-}
-.bg-a{background:linear-gradient(155deg,#141420 0%,#1a2240 52%,#0e2048 100%)}
-.bg-r{background:linear-gradient(155deg,#170738 0%,#291860 52%,#283fd6 100%)}
-.bg-l{background:linear-gradient(155deg,#091d0f 0%,#183828 52%,#1e5535 100%)}
-.bg-4{background:linear-gradient(155deg,#1f0707 0%,#481313 52%,#682020 100%)}
+.ctitle{font-size:14px;font-weight:500;letter-spacing:-0.04em;color:var(--text);line-height:1.2;}
+.cdesc{font-size:14px;font-weight:500;letter-spacing:-0.04em;color:var(--text-muted);line-height:1.2;}
 .bg-intuit{background:linear-gradient(155deg,#0d1a2e 0%,#1a3a6e 52%,#1f5fa8 100%)}
 .bg-figma{background:linear-gradient(155deg,#1a0a24 0%,#3a1060 52%,#7928ca 100%)}
+.bg-libby{background:linear-gradient(155deg,#091d0f 0%,#183828 52%,#1e5535 100%)}
 .bg-ktp{background:linear-gradient(155deg,#0a1a14 0%,#0e3322 52%,#1a5c3a 100%)}
-
-/* lock badge on locked cards */
-.lock-badge{
-  position:absolute;top:14px;right:14px;
-  width:28px;height:28px;border-radius:50%;
-  background:rgba(255,255,255,0.14);
-  border:1px solid rgba(255,255,255,.28);
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  display:flex;align-items:center;justify-content:center;
-}
-
-/* ── VISUAL FILTERS ──────────────────────────── */
-.vf-row{display:flex;gap:8px;margin-bottom:32px;flex-wrap:wrap}
-.vf-btn{
-  font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;
-  color:var(--text-muted);padding:7px 16px;border-radius:100px;
-  border:1px solid rgba(0,0,0,0.12);background:transparent;
-  cursor:none;transition:all .22s ease;
-}
-.vf-btn.active{background:var(--text);color:#fff;border-color:var(--text)}
-.vf-btn:hover:not(.active){background:rgba(0,0,0,0.05)}
-
-.vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.vi-item{border-radius:12px;aspect-ratio:4/3;background:#d4d3d0;overflow:hidden;
-  position:relative;cursor:none;
-  transition:transform .28s ease,box-shadow .28s ease;
-}
-.vi-item:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,0.14)}
-.vi-item[data-cat="sketching"]{background:linear-gradient(135deg,#e8e5df 0%,#d4cfc8 100%)}
-.vi-item[data-cat="motion"]{background:linear-gradient(135deg,#0f0f1a 0%,#1a1a3e 100%)}
-.vi-item[data-cat="vibe"]{background:linear-gradient(135deg,#1a0828 0%,#3d1060 100%)}
-.vi-lbl{position:absolute;bottom:12px;left:14px;font-family:var(--mono);font-size:10px;
-  letter-spacing:.06em;color:rgba(255,255,255,.6);text-transform:uppercase}
-.vi-item[data-cat="sketching"] .vi-lbl{color:rgba(0,0,0,.35)}
-
-/* placeholder pages */
-.ph-txt{font-family:var(--mono);font-size:12px;color:var(--text-muted);letter-spacing:.05em}
-
-/* ── ABOUT ───────────────────────────────────── */
-.about-name{font-family:var(--serif);font-size:48px;color:var(--text);line-height:1;margin-bottom:6px}
-.about-role{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:28px}
-.about-body{font-size:15px;color:var(--text-mid);line-height:1.75;margin-bottom:16px}
-.about-links{display:flex;gap:20px;margin-top:32px}
-.alink{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--brand);text-decoration:none;text-transform:uppercase;
-  border-bottom:1px solid rgba(40,63,214,.3);padding-bottom:2px;transition:border-color .2s,opacity .2s}
-.alink:hover{opacity:.7}
-.about-section-lbl{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:16px}
-.about-item{display:flex;flex-direction:column;gap:3px;margin-bottom:18px}
-.ai-co{font-size:15px;color:var(--text);font-weight:500}
-.ai-role{font-size:13px;color:var(--text-muted)}
-.about-divider{height:1px;background:rgba(0,0,0,0.09);margin:28px 0}
+.lock-badge{position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(12px) saturate(140%);-webkit-backdrop-filter:blur(12px) saturate(140%);display:flex;align-items:center;justify-content:center;box-shadow:0 .5px 0 rgba(255,255,255,.18) inset;}
 
 /* ── PASSWORD GATE ───────────────────────────── */
-.pw-gate{
-  background:#f2f1ef;border-radius:16px;padding:40px 44px;
-  display:flex;flex-direction:column;gap:0;
-  max-width:480px;
-}
-.pw-lock-wrap{
-  width:52px;height:52px;border-radius:50%;background:#fff;
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 2px 10px rgba(0,0,0,0.09);margin-bottom:24px;
-}
+.pw-gate{background:#f2f1ef;border-radius:16px;padding:40px 44px;display:flex;flex-direction:column;gap:0;max-width:480px;}
+.pw-lock-wrap{width:52px;height:52px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,0.09);margin-bottom:24px;}
 .pw-title{font-size:18px;color:var(--text);font-weight:500;margin-bottom:6px}
 .pw-sub{font-size:14px;color:var(--text-muted);line-height:1.5;margin-bottom:24px}
 .pw-sub b{color:var(--text-mid);font-weight:500}
 .pw-row{display:flex;gap:0;align-items:center}
-.pw-input{
-  flex:1;background:#fff;border:1px solid rgba(0,0,0,0.10);border-radius:100px;
-  padding:11px 20px;font-family:var(--sans);font-size:14px;color:var(--text);
-  outline:none;border-right:none;border-radius:100px 0 0 100px;
-}
+.pw-input{flex:1;background:#fff;border:1px solid rgba(0,0,0,0.10);padding:11px 20px;font-family:var(--sans);font-size:14px;color:var(--text);outline:none;border-right:none;border-radius:100px 0 0 100px;}
 .pw-input::placeholder{color:var(--text-muted)}
-.pw-submit{
-  width:40px;height:40px;border-radius:0 100px 100px 0;
-  background:#fff;border:1px solid rgba(0,0,0,0.10);border-left:none;
-  display:flex;align-items:center;justify-content:center;cursor:none;
-  font-size:16px;color:var(--text-mid);transition:background .2s;
-  flex-shrink:0;margin-right:2px;
-}
+.pw-submit{width:40px;height:40px;border-radius:0 100px 100px 0;background:#fff;border:1px solid rgba(0,0,0,0.10);border-left:none;display:flex;align-items:center;justify-content:center;cursor:none;font-size:16px;color:var(--text-mid);transition:background .2s;flex-shrink:0;margin-right:2px;}
 .pw-submit:hover{background:#f5f5f3}
 .pw-err{font-family:var(--mono);font-size:10px;color:#c0392b;letter-spacing:.04em;margin-top:10px;opacity:0;transition:opacity .2s}
 .pw-err.show{opacity:1}
 
 /* ── MODAL ───────────────────────────────────── */
-#mov{position:fixed;inset:0;background:rgba(16,16,16,0.56);
-  backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);
-  z-index:800;display:flex;align-items:center;justify-content:center;
-  opacity:0;pointer-events:none}
+#mov{position:fixed;inset:0;background:rgba(16,16,16,0.56);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);z-index:800;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none}
 #mov.open{pointer-events:all}
-#mo{width:88%;max-width:960px;height:86vh;background:#fff;border-radius:14px;
-  overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--modal-sh);position:relative}
-
-.mtb{position:absolute;top:0;left:0;right:0;height:42px;
-  background:rgba(246,245,243,0.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  border-bottom:1px solid rgba(0,0,0,0.07);display:flex;align-items:center;gap:7px;padding:0 15px;z-index:5}
+#mo{width:88%;max-width:960px;height:86vh;background:#fff;border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--modal-sh);position:relative}
+.mtb{position:absolute;top:0;left:0;right:0;height:42px;background:rgba(246,245,243,0.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(0,0,0,0.07);display:flex;align-items:center;gap:7px;padding:0 15px;z-index:5}
 .mtl{width:11px;height:11px;border-radius:50%;cursor:none;transition:filter .18s;position:relative;flex-shrink:0}
-.mtl::after{content:'';position:absolute;inset:0;border-radius:50%;
-  box-shadow:0 1px 0 rgba(255,255,255,0.5) inset,0 -1px 0 rgba(0,0,0,0.2) inset;}
+.mtl::after{content:'';position:absolute;inset:0;border-radius:50%;box-shadow:0 1px 0 rgba(255,255,255,0.5) inset,0 -1px 0 rgba(0,0,0,0.2) inset;}
 .mtl:hover{filter:brightness(.80)}
 .mtl.r{background:radial-gradient(circle at 38% 35%,#FF7B72,#E0443C)}
 .mtl.y{background:radial-gradient(circle at 38% 35%,#FFD060,#D9A616)}
 .mtl.g{background:radial-gradient(circle at 38% 35%,#7EDB7E,#24A642)}
-
 .mi{display:flex;width:100%;flex:1;min-height:0;padding-top:42px}
-
-/* sidebar */
-.msb{width:168px;flex-shrink:0;background:rgba(246,245,243,0.88);
-  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  border-right:1px solid rgba(0,0,0,0.07);padding:22px 14px;
-  display:flex;flex-direction:column;gap:3px;box-shadow:2px 0 8px rgba(0,0,0,0.04)}
-.sb-back{font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--text-muted);
-  display:flex;align-items:center;gap:5px;cursor:none;margin-bottom:16px;
-  padding:6px 8px;border-radius:6px;transition:background .2s,color .2s}
+.msb{width:168px;flex-shrink:0;background:rgba(246,245,243,0.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-right:1px solid rgba(0,0,0,0.07);padding:22px 14px;display:flex;flex-direction:column;gap:3px;box-shadow:2px 0 8px rgba(0,0,0,0.04)}
+.sb-back{font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--text-muted);display:flex;align-items:center;gap:5px;cursor:none;margin-bottom:16px;padding:6px 8px;border-radius:6px;transition:background .2s,color .2s}
 .sb-back:hover{background:rgba(0,0,0,0.04);color:var(--text)}
-.sbi{font-family:var(--mono);font-size:10px;letter-spacing:.04em;color:var(--text-muted);
-  text-transform:uppercase;padding:7px 9px;border-radius:6px;cursor:none;
-  transition:background .2s,color .2s}
+.sbi{font-family:var(--mono);font-size:10px;letter-spacing:.04em;color:var(--text-muted);text-transform:uppercase;padding:7px 9px;border-radius:6px;cursor:none;transition:background .2s,color .2s}
 .sbi:hover{background:rgba(40,63,214,0.07);color:var(--brand)}
 .sbi.active{color:var(--brand)}
-.sbf{margin-top:auto;font-family:var(--mono);font-size:9.5px;color:var(--text-muted);
-  letter-spacing:.06em;cursor:none;opacity:.5;transition:opacity .2s}
+.sbf{margin-top:auto;font-family:var(--mono);font-size:9.5px;color:var(--text-muted);letter-spacing:.06em;cursor:none;opacity:.5;transition:opacity .2s}
 .sbf:hover{opacity:1}
-
-/* content scroll area */
 .msc{flex:1;min-height:0;overflow-y:auto;padding:0 52px 80px;scroll-behavior:smooth}
 .msc::-webkit-scrollbar{width:8px}
 .msc::-webkit-scrollbar-track{background:rgba(0,0,0,0.03);border-radius:4px}
@@ -466,34 +262,32 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
 .ms-section{padding-top:4px;margin-bottom:8px}
 .ms-section+.ms-section{margin-top:44px}
 
-/* hero banner — full bleed image, supports bg img or gradient */
-.mhero-banner{
-  width:calc(100% + 104px);margin:0 -52px;
-  height:220px;position:relative;overflow:hidden;flex-shrink:0;
-  display:flex;flex-direction:column;justify-content:flex-end;
-  padding:28px 52px;margin-bottom:36px;
-}
-.mhero-banner::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(to bottom,transparent 20%,rgba(0,0,0,0.55) 100%);
-  pointer-events:none;z-index:0;
-}
+/* hero banner */
+.mhero-banner{width:calc(100% + 104px);margin:0 -52px;height:220px;position:relative;overflow:hidden;flex-shrink:0;display:flex;flex-direction:column;justify-content:flex-end;padding:28px 52px;margin-bottom:36px;}
+.mhero-banner::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 20%,rgba(0,0,0,0.55) 100%);pointer-events:none;z-index:0;}
 .mhero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
 .mhero-co{font-family:var(--serif);font-size:36px;color:#fff;position:relative;z-index:1;line-height:1;text-shadow:0 2px 16px rgba(0,0,0,0.4)}
 .mhero-sub{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.65);position:relative;z-index:1;margin-top:7px}
 
 /* meta row */
-.mmeta{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:48px;padding-bottom:28px;border-bottom:1px solid rgba(0,0,0,0.08)}
-.ml{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:5px}
-.mv{font-size:13px;color:var(--text);line-height:1.45}
+.mmeta{display:flex;flex-wrap:nowrap;gap:0;margin-bottom:48px;padding-bottom:28px;border-bottom:1px solid rgba(0,0,0,0.08);align-items:flex-start}
+.mmeta-col{display:flex;flex-direction:column;flex:1;min-width:0;gap:5px}
+.ml{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px}
+.mv{font-size:13px;color:var(--text);line-height:1.55;display:flex;flex-direction:row;flex-wrap:wrap;align-items:baseline;gap:0}
+.m-breadcrumb{font-size:13px;color:var(--text);line-height:1.55}
+.m-breadcrumb-sep{font-size:11px;color:var(--text-muted);margin:0 4px;opacity:.4}
+.m-role-sep{color:var(--text-muted);margin:0 5px;opacity:.4}
+.m-meta-btn{display:inline-flex;align-items:center;gap:5px;margin-top:0;font-family:var(--mono);font-size:10px;letter-spacing:.05em;color:var(--text);text-decoration:none;cursor:none;background:#fff;border:1px solid rgba(0,0,0,0.12);border-radius:100px;padding:6px 14px;width:fit-content;transition:background .18s,border-color .18s,transform .18s;box-shadow:0 1px 4px rgba(0,0,0,0.06);}
+.m-meta-btn:hover{background:#f5f4f2;border-color:rgba(0,0,0,0.2);transform:translateY(-1px)}
+.m-meta-btn .arr{opacity:.5;font-size:9px}
 
-/* section headings hierarchy */
+/* section headings */
 .mh{font-family:var(--serif);font-size:22px;color:var(--text);margin-bottom:14px;margin-top:4px;line-height:1.1}
 .mh-sub{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px;margin-top:32px}
 .mp{font-size:14px;color:var(--text-mid);line-height:1.85;margin-bottom:14px}
 .mp-large{font-family:var(--serif);font-size:20px;color:var(--text);line-height:1.4;margin-bottom:16px}
 
-/* stats strip */
+/* stats */
 .mstats{display:flex;gap:0;margin:24px 0 36px;border:1px solid rgba(0,0,0,0.08);border-radius:12px;overflow:hidden}
 .mstat{flex:1;padding:20px 24px;border-right:1px solid rgba(0,0,0,0.07)}
 .mstat:last-child{border-right:none}
@@ -502,9 +296,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
 
 /* image placeholders */
 .mimg-ph{width:100%;border-radius:12px;background:#f0efed;display:flex;align-items:center;justify-content:center;margin:28px 0;border:1px dashed rgba(0,0,0,0.10)}
-.mimg-ph-tall{height:320px}
-.mimg-ph-med{height:220px}
-.mimg-ph-short{height:140px}
+.mimg-ph-tall{height:320px}.mimg-ph-med{height:220px}.mimg-ph-short{height:140px}
 .mimlbl{font-family:var(--mono);font-size:10px;color:rgba(0,0,0,.22);letter-spacing:.1em;text-transform:uppercase}
 .mimg{width:100%;height:280px;border-radius:12px;margin:28px 0;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#f0efed}
 
@@ -513,6 +305,8 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
 .mfig-img{width:100%;height:auto;display:block}
 .mfig-full{width:100%}
 .mfig-cap{font-family:var(--mono);font-size:9px;color:var(--text-muted);letter-spacing:.05em;margin-top:8px;padding:0 2px;text-transform:uppercase}
+.m-video-link{display:inline-flex;align-items:center;gap:5px;margin:10px 0 24px;font-family:var(--mono);font-size:10px;letter-spacing:.05em;color:var(--text-mid);text-decoration:none;border-bottom:1px solid rgba(0,0,0,.18);cursor:none}
+.m-video-link:hover{color:var(--text);border-bottom-color:rgba(0,0,0,.45)}
 
 /* image pair */
 .m-img-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:28px 0;align-items:stretch}
@@ -524,13 +318,31 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
 .mphone-row .mfig{margin:0}
 .mphone-row .mfig-img{border-radius:10px}
 
-/* final designs gallery */
+/* standard gallery */
 .m-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:28px 0}
+.m-gallery-square .m-gallery-item{aspect-ratio:1/1}
 .m-gallery-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:28px 0}
 .m-gallery-item{border-radius:10px;overflow:hidden;background:#f0efed;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center}
 .m-gallery-item img{width:100%;height:100%;object-fit:cover;display:block}
-.m-gallery-item-tall{aspect-ratio:3/4}
 .m-gallery-ph{font-family:var(--mono);font-size:9px;color:rgba(0,0,0,.2);letter-spacing:.08em;text-transform:uppercase}
+
+/* intuit custom gallery */
+.m-gallery-intuit{display:flex;flex-direction:column;gap:12px;margin:28px 0}
+.m-gallery-intuit .row1{display:grid;grid-template-columns:2fr 3fr;gap:12px}
+.m-gallery-intuit .row2{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.m-gallery-intuit .row3{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.m-gallery-intuit .m-gallery-item{aspect-ratio:unset;min-height:160px}
+.m-gallery-intuit .m-gallery-item img{width:100%;height:100%;object-fit:cover;display:block}
+.m-gallery-ktp{display:flex;flex-direction:column;gap:14px;margin:28px 0}
+.m-gallery-ktp .row-top{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;align-items:start}
+.m-gallery-ktp .row-mid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:start}
+.m-gallery-ktp .row-bottom{display:grid;grid-template-columns:minmax(0,2.18fr) minmax(0,1fr);gap:14px;align-items:start}
+.m-gallery-ktp .m-gallery-item{display:block;border-radius:0;background:transparent;overflow:visible;aspect-ratio:auto}
+.m-gallery-ktp .m-gallery-item img{width:100%;height:auto;object-fit:contain;display:block}
+@media (max-width:760px){
+  .m-gallery-ktp{gap:10px}
+  .m-gallery-ktp .row-top,.m-gallery-ktp .row-mid,.m-gallery-ktp .row-bottom{gap:10px}
+}
 
 /* dark callout */
 .m-darkbox{background:#111;border-radius:12px;padding:28px 32px;margin:28px 0}
@@ -556,26 +368,95 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
 .m-takeaway{border-left:2px solid rgba(0,0,0,0.09);padding:10px 0 10px 20px;margin-bottom:14px}
 .m-takeaway-title{font-size:14px;color:var(--text);font-weight:500;margin-bottom:4px}
 .m-takeaway-desc{font-size:13px;color:var(--text-muted);line-height:1.65}
+.figma-achievement-row{display:grid;grid-template-columns:minmax(0,35fr) minmax(0,65fr);gap:24px;align-items:center;background:#fafaf8;border:1px solid rgba(0,0,0,0.06);border-radius:14px;padding:22px;margin:18px 0 34px}
+.figma-achievement-copy{min-width:0}
+.figma-achievement-copy .m-takeaways{margin:0}
+.figma-achievement-copy .m-takeaway{margin-bottom:12px;padding-left:16px}
+.figma-achievement-copy .m-takeaway:last-child{margin-bottom:0}
+.figma-achievement-media{min-width:0}
+.figma-achievement-media .mfig{margin:0;border-radius:10px;background:#fff}
+.figma-achievement-media .mfig-img{width:100%;height:auto;display:block}
+.figma-media-row{display:grid;grid-template-columns:minmax(0,33fr) minmax(0,67fr);gap:24px;align-items:center;background:#fafaf8;border:1px solid rgba(0,0,0,0.06);border-radius:14px;padding:22px;margin:18px 0 34px}
+.figma-media-visual,.figma-media-copy{min-width:0}
+.figma-media-visual .mfig{margin:0;border-radius:10px;background:#fff}
+.figma-media-visual .mfig-img{width:100%;height:auto;display:block}
+.figma-media-copy .m-takeaways{margin:0}
+.figma-media-copy .m-takeaway{margin-bottom:12px;padding-left:16px}
+.figma-media-copy .m-takeaway:last-child{margin-bottom:0}
+.figma-social-link{color:inherit;text-decoration:none;border-bottom:1px solid rgba(121,40,202,.28);cursor:none}
+.figma-social-link:hover{color:#7928ca;border-bottom-color:rgba(121,40,202,.6)}
+@media (max-width:760px){
+  .figma-achievement-row{grid-template-columns:1fr;gap:18px;padding:18px}
+  .figma-media-row{grid-template-columns:1fr;gap:18px;padding:18px}
+}
 
 /* prev/next nav */
-.m-prevnext{display:flex;gap:12px;margin-top:64px;padding-top:32px;border-top:1px solid rgba(0,0,0,0.08)}
-.m-nav-btn{
-  flex:1;border-radius:14px;padding:24px 28px;cursor:none;
-  transition:transform .28s cubic-bezier(.34,1.28,.64,1),box-shadow .28s ease;
-  display:flex;flex-direction:column;justify-content:flex-end;gap:6px;
-  min-height:140px;overflow:hidden;position:relative;
-  border:none;
+.m-prevnext{display:flex;gap:12px;margin-top:64px;padding-top:32px;border-top:1px solid rgba(0,0,0,0.08);padding-bottom:4px;}
+.m-nav-card{flex:1;display:flex;flex-direction:column;gap:8px;cursor:none}
+.m-nav-dir{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted)}
+.m-nav-img{
+  display:block;width:100%;height:120px;flex-shrink:0;
+  border-radius:12px;
+  background-size:cover !important;
+  background-position:center !important;
+  transform:translateY(0);
+  transition:transform .28s cubic-bezier(.34,1.28,.64,1),filter .28s ease;
+  position:relative;z-index:0;
+  overflow:hidden;
 }
-.m-nav-btn::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(to bottom,transparent 30%,rgba(0,0,0,0.48) 100%);
-  pointer-events:none;
-}
-.m-nav-btn:hover{transform:translateY(-3px);box-shadow:0 14px 44px rgba(0,0,0,0.22)}
-.m-nav-btn.next{align-items:flex-end}
-.m-nav-dir{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.55);position:relative;z-index:1}
-.m-nav-co{font-family:var(--serif);font-size:22px;color:rgba(255,255,255,.96);position:relative;z-index:1;line-height:1;margin-top:auto}
-.m-nav-title{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.55);letter-spacing:.04em;position:relative;z-index:1;margin-top:4px;line-height:1.45}
+.m-nav-img::after{content:'';position:absolute;inset:0;border-radius:12px;box-shadow:0 10px 28px rgba(0,0,0,0.22);opacity:0;transition:opacity .28s ease;}
+.m-nav-img::before{content:'';position:absolute;left:0;right:0;bottom:0;height:58%;background:linear-gradient(to top,rgba(0,0,0,.46),rgba(0,0,0,0));opacity:.9;pointer-events:none}
+.m-nav-card:hover .m-nav-img{transform:translateY(-2px);filter:brightness(1.05);}
+.m-nav-card:hover .m-nav-img::after{opacity:1;}
+.m-nav-co{position:absolute;left:18px;bottom:16px;z-index:1;font-family:var(--serif);font-size:20px;color:#fff;line-height:1.05;text-shadow:0 2px 14px rgba(0,0,0,.34)}
+.m-nav-card.next .m-nav-co{left:auto;right:18px;text-align:right}
+.m-nav-sub{font-family:var(--mono);font-size:10px;color:var(--text-muted);letter-spacing:.03em;opacity:0;transform:translateY(3px);transition:opacity .2s ease,transform .2s ease}
+.m-nav-card:hover .m-nav-sub{opacity:1;transform:translateY(0)}
+.m-nav-card.next{align-items:flex-end;text-align:right}
+
+/* ── FOOTER ──────────────────────────────────── */
+footer#ft{width:100%;display:flex;flex-direction:column;position:relative}
+.ft-top{border-top:1px solid rgba(0,0,0,0.09);padding:44px 52px 0px;display:grid;grid-template-columns:1fr auto;gap:80px;align-items:start}
+.ft-quote{font-family:var(--serif);font-size:26px;line-height:1.18;color:var(--text);letter-spacing:-.01em;max-width:520px}
+.ft-quote em{font-style:italic;color:#2126CC}
+.ft-nav{display:flex;gap:52px;flex-shrink:0}
+.ft-col-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted);margin-bottom:14px}
+.ft-link{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;color:var(--text-mid);letter-spacing:.03em;text-decoration:none;padding:4px 0;cursor:none;transition:color .18s ease}
+.ft-link:hover{color:var(--brand)}
+.ft-link .arr{opacity:.4;font-size:9px;transition:opacity .18s,transform .18s}
+.ft-link:hover .arr{opacity:1;transform:translate(1px,-1px)}
+.ft-link-email{display:block;font-family:var(--mono);font-size:11px;color:var(--text-muted);letter-spacing:.03em;text-decoration:none;padding:4px 0;cursor:none;margin-top:4px;transition:color .18s}
+.ft-link-email:hover{color:var(--text)}
+.ft-stage{position:relative;height:320px;overflow:hidden;background:var(--bg)}
+.ft-stage canvas{position:absolute;inset:0;width:100%;height:100%}
+.ft-terminal{position:absolute;bottom:0;left:0;right:0;background:rgba(240,239,236,0.58);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);border-top:1px solid var(--glass-bd);box-shadow:0 -1px 0 rgba(0,0,0,0.04) inset;font-family:var(--mono);font-size:9px;color:var(--text-muted);padding:6px 20px;display:flex;align-items:center;gap:18px;letter-spacing:.05em;z-index:10}
+.ft-term-seg{display:flex;align-items:center;gap:6px}
+.ft-term-dot{width:6px;height:6px;border-radius:50%;background:rgba(0,0,0,0.12);flex-shrink:0;transition:background .4s,box-shadow .4s}
+.ft-term-dot.active{background:#27ae60;box-shadow:0 0 5px rgba(39,174,96,.5)}
+.ft-term-dot.warn{background:#e8a838}
+.ft-term-val{color:var(--text-mid);font-weight:500}
+.ft-term-val.blue{color:var(--brand)}
+.ft-term-val.green{color:#27ae60}
+.ft-term-sep{opacity:.15}
+.ft-term-cursor{display:inline-block;width:5px;height:10px;background:rgba(40,63,214,.55);animation:ft-blink .9s step-end infinite;vertical-align:middle;margin-left:2px}
+@keyframes ft-blink{0%,100%{opacity:1}50%{opacity:0}}
+.ft-term-progress{flex:1;height:1.5px;background:rgba(0,0,0,.07);border-radius:1px;overflow:hidden;margin-left:4px}
+.ft-term-fill{height:100%;background:rgba(40,63,214,.5);border-radius:1px;width:0%;transition:width .6s cubic-bezier(.4,0,.2,1)}
+.ft-input-wrap{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;align-items:center;z-index:20}
+.ft-input-prompt{font-family:var(--mono);font-size:10px;color:rgba(40,63,214,.65);background:rgba(240,239,236,0.50);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);border:1px solid var(--glass-bd);border-right:none;border-radius:7px 0 0 7px;padding:7px 10px;white-space:nowrap}
+.ft-input{font-family:var(--mono);font-size:10px;color:var(--text);background:rgba(240,239,236,0.50);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);border:1px solid var(--glass-bd);border-left:1px solid rgba(40,63,214,.12);border-right:none;outline:none;padding:7px 10px;width:180px;cursor:text;letter-spacing:.04em}
+.ft-input::placeholder{color:rgba(0,0,0,.18)}
+.ft-input:focus{border-color:rgba(40,63,214,.3)}
+.ft-submit{font-family:var(--mono);font-size:10px;color:rgba(40,63,214,.65);background:rgba(240,239,236,0.50);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);border:1px solid var(--glass-bd);border-left:none;border-radius:0 7px 7px 0;padding:7px 10px;cursor:none;transition:background .18s,color .18s}
+.ft-submit:hover{background:rgba(40,63,214,.06);color:rgba(40,63,214,.9)}
+.ft-cmd-pop{position:absolute;background:rgba(240,239,236,0.70);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);border:1px solid var(--glass-bd);border-radius:8px;font-family:var(--mono);font-size:9.5px;color:rgba(40,63,214,.65);padding:9px 13px;line-height:1.7;pointer-events:none;z-index:15;animation:ft-pop-in .28s cubic-bezier(.2,.8,.4,1) forwards}
+@keyframes ft-pop-in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.ft-cmd-pop .dim{color:rgba(40,63,214,.32)}
+.ft-pulse-el{position:absolute;border-radius:50%;border:0.5px solid rgba(40,63,214,0.6);pointer-events:none;transform:translate(-50%,-50%);animation:ft-pulse-out .9s cubic-bezier(.1,.8,.3,1) forwards}
+@keyframes ft-pulse-out{0%{width:8px;height:8px;opacity:.7}100%{width:200px;height:200px;opacity:0}}
+#cur.ft-scan{width:20px;height:20px;border-radius:50%;background:rgba(40,63,214,0.06);border:1.5px solid rgba(40,63,214,0.60);mix-blend-mode:normal;animation:ft-scan-pulse 1.4s ease-in-out infinite}
+#cur.ft-type{width:14px;height:14px;border-radius:2px;background:rgba(40,63,214,0.15);border:1.5px solid rgba(40,63,214,0.5);mix-blend-mode:normal}
+@keyframes ft-scan-pulse{0%,100%{box-shadow:0 0 0 3px rgba(40,63,214,0.07)}50%{box-shadow:0 0 0 8px rgba(40,63,214,0.03)}}
 </style>
 </head>
 <body>
@@ -597,7 +478,6 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
   <div class="page" id="p-home">
     <div class="ws" id="ws">
 
-      <!-- W1: hero — 544×398, left:306px top:142px, rotate -1.2deg -->
       <div class="bw" id="w1" style="left:306px;top:142px;width:544.77px;height:397.81px;z-index:12;transform:rotate(0deg)">
         <div class="wc">
           <div class="tls"><div class="tl"></div><div class="tl"></div><div class="tl"></div></div>
@@ -616,8 +496,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
         <div class="rh-corner rh-sw" data-dir="sw"></div><div class="rh-corner rh-se" data-dir="se"></div>
       </div>
 
-      <!-- W2: photo — 274×547, left:890px top:91px, rotate 0.8deg -->
-      <div class="bw" id="w2" style="left:890px;top:91px;width:273.74px;height:547.49px;z-index:10;transform:rotate(deg)">
+      <div class="bw" id="w2" style="left:890px;top:91px;width:273.74px;height:547.49px;z-index:10;transform:rotate(0deg)">
         <div class="wc">
           <div class="tls"><div class="tl"></div><div class="tl"></div><div class="tl"></div></div>
           <div class="wurl">https://fayejstover.com/more/me</div>
@@ -631,7 +510,6 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
         <div class="rh-corner rh-sw" data-dir="sw"></div><div class="rh-corner rh-se" data-dir="se"></div>
       </div>
 
-      <!-- W3: gif — 500×262 (≈1900:1000 ratio), left:715px top:360px, rotate -0.6deg -->
       <div class="bw" id="w3" style="left:715px;top:360px;width:499.88px;height:262.24px;z-index:11;transform:rotate(0deg)">
         <div class="wc">
           <div class="tls"><div class="tl"></div><div class="tl"></div><div class="tl"></div></div>
@@ -646,7 +524,6 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
         <div class="rh-corner rh-sw" data-dir="sw"></div><div class="rh-corner rh-se" data-dir="se"></div>
       </div>
 
-      <!-- W4: small accent — 251×150, left:225px top:488px, rotate 1.6deg -->
       <div class="bw" id="w4" style="left:225px;top:488px;width:250.67px;height:150px;z-index:13;transform:rotate(0deg)">
         <div class="wc" style="padding:7px 10px 5px">
           <div class="tls"><div class="tl"></div><div class="tl"></div><div class="tl"></div></div>
@@ -678,7 +555,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
       <div class="cgrid">
 
         <div class="cw" data-case="intuit">
-          <div class="cc bg-intuit">
+          <div class="cc bg-intuit" style="background-image:url('assets/intuit_cover.png');background-size:cover;background-position:center">
             <div class="ci">
               <div class="badge"><div class="bdot"></div><span class="bco">Intuit</span><span class="byr">· 2026</span></div>
             </div>
@@ -691,7 +568,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
         </div>
 
         <div class="cw" data-case="figma">
-          <div class="cc bg-figma">
+          <div class="cc bg-figma" style="background-image:url('assets/figma_cover.png');background-size:cover;background-position:center">
             <div class="ci">
               <div class="badge"><div class="bdot"></div><span class="bco">Figma</span><span class="byr">· 2024–25</span></div>
             </div>
@@ -703,7 +580,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
         </div>
 
         <div class="cw" data-case="libby">
-          <div class="cc bg-l">
+          <div class="cc bg-libby" style="background-image:url('assets/libby_cover.png');background-size:cover;background-position:center">
             <div class="ci">
               <div class="badge"><div class="bdot"></div><span class="bco">LibbyU / OverDrive</span><span class="byr">· 2026</span></div>
             </div>
@@ -716,7 +593,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
         </div>
 
         <div class="cw" data-case="ktp">
-          <div class="cc bg-ktp">
+          <div class="cc bg-ktp" style="background-image:url('assets/ktp_cover.png');background-size:cover;background-position:center">
             <div class="ci">
               <div class="badge"><div class="bdot"></div><span class="bco">Kappa Theta Pi</span><span class="byr">· 2024</span></div>
             </div>
@@ -727,10 +604,74 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
           </div>
         </div>
 
-      </div><!-- cgrid -->
-    </div><!-- page-inner -->
-  </div>
+      </div>
+    </div>
 
+<footer id="ft">
+  <div class="ft-top">
+    <div>
+      <div class="ft-quote">
+        Thoughtful design is <em>tended to,</em><br>
+        detail by detail, until something<br>
+        meaningful emerges.
+      </div>
+    </div>
+    <div class="ft-nav">
+      <div>
+        <div class="ft-col-lbl">Connect</div>
+        <a href="https://www.linkedin.com/in/fayejstover" target="_blank" class="ft-link">LinkedIn <span class="arr">↗</span></a>
+        <a href="https://drive.google.com/file/d/1NQFnbqJz2KkjVvQpp4jeBfD62jfv5fdN/view?usp=sharing" target="_blank" class="ft-link">Resume <span class="arr">↗</span></a>
+        <a href="mailto:hello@fayejstover.com" class="ft-link-email">hello@fayejstover.com</a>
+      </div>
+      <div>
+        <div class="ft-col-lbl">Navigate</div>
+        <a href="index.html" class="ft-link ft-nav-link">Work</a>
+        <a href="visual.html" class="ft-link ft-nav-link">Playground</a>
+        <a href="about.html" class="ft-link ft-nav-link">About</a>
+      </div>
+    </div>
+  </div>
+  <div class="ft-stage" id="ft-stage">
+    <canvas id="ft-canvas"></canvas>
+    <div class="ft-input-wrap">
+      <div class="ft-input-prompt">&gt; _</div>
+      <input class="ft-input" id="ft-input" type="text" placeholder="type a command…" autocomplete="off" spellcheck="false">
+      <button class="ft-submit" id="ft-submit">↵</button>
+    </div>
+    <div class="ft-terminal">
+      <div class="ft-term-seg">
+        <div class="ft-term-dot" id="ft-td"></div>
+        <span style="opacity:.45">sys</span>
+      </div>
+      <div class="ft-term-seg">
+        <span class="ft-term-sep">│</span>
+        <span style="opacity:.4">reveal:</span>
+        <span class="ft-term-val blue" id="ft-tv-fill">0%</span>
+      </div>
+      <div class="ft-term-seg">
+        <span class="ft-term-sep">│</span>
+        <span style="opacity:.4">nodes:</span>
+        <span class="ft-term-val" id="ft-tv-nodes">–</span>
+      </div>
+      <div class="ft-term-seg">
+        <span class="ft-term-sep">│</span>
+        <span style="opacity:.4">grid:</span>
+        <span class="ft-term-val">8pt</span>
+      </div>
+      <div class="ft-term-seg" style="flex:1">
+        <span class="ft-term-sep">│</span>
+        <div class="ft-term-progress">
+          <div class="ft-term-fill" id="ft-tf"></div>
+        </div>
+      </div>
+      <div class="ft-term-seg" style="margin-left:auto">
+        <span style="opacity:.28;letter-spacing:.06em">Faye J. Stover © 2026</span>
+        <span class="ft-term-cursor"></span>
+      </div>
+    </div>
+  </div>
+</footer>
+  </div>
 
 </div>
 
@@ -745,7 +686,6 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
     <div class="mi">
       <div class="msb" id="msb">
         <div class="sb-back" id="sbb">← HOME</div>
-        <!-- sidebar items injected dynamically -->
         <div class="sbf" id="sbf">↑ BACK TO TOP</div>
       </div>
       <div class="msc" id="mscroll"></div>
@@ -758,34 +698,77 @@ gsap.registerPlugin(Draggable);
 
 // ── IMAGE ASSETS ─────────────────────────────────────────────
 const IMGS = {
-  // Intuit
-  intuit_context:    'assets/intuit_context.png',
+  // Intuit — hero/cover stay in assets/
   intuit_hero:       'assets/intuit_hero.png',
-  intuit_research:   'assets/intuit_research.png',
-  intuit_dec1:       'assets/intuit_dec1.png',
-  intuit_dec2:       'assets/intuit_dec2.png',
-  intuit_dec3_spec:  'assets/intuit_dec3_spec.png',
-  // Figma
+  // Intuit case study images
+  intuit_context:    'assets/intuit/intuit_context.png',
+  intuit_research:   'assets/intuit/intuit_research.png',
+  intuit_dec1:       'assets/intuit/intuit_dec1.png',
+  intuit_dec2:       'assets/intuit/intuit_dec2.png',
+  intuit_dec3_spec:  'assets/intuit/intuit_dec3_spec.png',
+  // Intuit final designs
+  intuit_fd1:        'assets/intuit/fd1.png',
+  intuit_fd2:        'assets/intuit/fd2.png',
+  intuit_fd3:        'assets/intuit/fd3.png',
+  intuit_fd4:        'assets/intuit/fd4.png',
+  intuit_fd5:        'assets/intuit/fd5.png',
+  intuit_fd6:        'assets/intuit/fd6.png',
+  intuit_fd7:        'assets/intuit/fd7.png',
+  // Figma — hero/cover stay in assets/
   figma_hero:        'assets/figma_hero.png',
+  // Figma case study images
+  figma_infra:        'assets/figma/figma_infra.png',
+  figma_growth:       'assets/figma/figma_growth.png',
+  figma_livedemo:     'assets/figma/figma_livedemo.png',
+  figma_achievements: 'assets/figma/figma_achievement.gif',
+  figma_youtube:      'assets/figma/figma_youtube.gif',
+  figma_insta:        'assets/figma/figma_insta.jpg',
+  figma_media:        'assets/figma/figma_media.png',
+  figma_fd1:          'assets/figma/fd1.png',
+  figma_fd2:          'assets/figma/fd2.png',
+  figma_fd3:          'assets/figma/fd3.png',
+  figma_fd4:          'assets/figma/fd4.png',
+  figma_fd5:          'assets/figma/fd5.png',
+  figma_fd6:          'assets/figma/fd6.png',
+  figma_fd7:          'assets/figma/fd7.png',
+  figma_fd8:          'assets/figma/fd8.png',
+  figma_fd9:          'assets/figma/fd9.png',
+  // Libby — hero/cover stay in assets/
   libby_hero:        'assets/libby_hero.png',
-  // KTP
+  // Libby case study images
+  libby_context:          'assets/libby/libby_context.png',
+  libby_research_process: 'assets/libby/libby_research_process.png',
+  libby_affinity:         'assets/libby/libby_affinity.png',
+  libby_ia_before:        'assets/libby/libby_ia_before.png',
+  libby_ia_after:         'assets/libby/libby_ia_after.png',
+  libby_icons:            'assets/libby/libby_icons.png',
+  libby_solution:         'assets/libby/libby_solution.png',
+  libby_modal_detail:     'assets/libby/libby_modal_detail.png',
+  // Libby final designs
+  libby_fd1: 'assets/libby/fd1.png',
+  libby_fd2: 'assets/libby/fd2.png',
+  libby_fd3: 'assets/libby/fd3.png',
+  libby_fd4: 'assets/libby/fd4.png',
+  libby_fd5: 'assets/libby/fd5.png',
+  libby_fd6: 'assets/libby/fd6.png',
+  // KTP — hero/cover stay in assets/
   ktp_hero:          'assets/ktp_hero.png',
-  ktp_context:       'assets/ktp_context.png',
-  ktp_solution:      'assets/ktp_solution.png',
-  ktp_dec1:          'assets/ktp_dec1.png',
-  ktp_dec2:          'assets/ktp_dec2.png',
-  ktp_dec3:          'assets/ktp_dec3.png',
-  ktp_phone1:        'assets/ktp_phone1.png',
-  ktp_phone2:        'assets/ktp_phone2.png',
-  ktp_phone3:        'assets/ktp_phone3.png',
-  ktp_phone4:        'assets/ktp_phone4.png',
-  ktp_phone5:        'assets/ktp_phone5.png',
-  ktp_phone6:        'assets/ktp_phone6.png',
-  ktp_phone7:        'assets/ktp_phone7.png',
-  ktp_launch:        'assets/ktp_launch.png',
-  ktp_icons:         'assets/ktp_icons.png',
+  // KTP case study images
+  ktp_context:       'assets/ktp/ktp_context.png',
+  ktp_solution:      'assets/ktp/ktp_solution.png',
+  ktp_dec1:          'assets/ktp/ktp_dec1.png',
+  ktp_dec2:          'assets/ktp/ktp_dec2.png',
+  ktp_dec3:          'assets/ktp/ktp_dec3.png',
+  ktp_phone3:        'assets/ktp/ktp_phone3.png',
+  ktp_phone4:        'assets/ktp/ktp_phone4.png',
+  ktp_phone5:        'assets/ktp/ktp_phone5.png',
+  ktp_phone6:        'assets/ktp/ktp_phone6.png',
+  ktp_phone7:        'assets/ktp/ktp_phone7.png',
+  ktp_phone8:        'assets/ktp/ktp_phone8.png',
+  ktp_phone9:        'assets/ktp/ktp_phone9.png',
+  ktp_launch:        'assets/ktp/ktp_launch.png',
+  ktp_icons:         'assets/ktp/ktp_icons.png',
 };
-
 
 // ── CURSOR ───────────────────────────────────────────────────
 const cur = document.getElementById('cur');
@@ -813,26 +796,16 @@ function pillTo(el, anim=true) {
   const inner = document.getElementById('nav-inner');
   const ir_container = inner.getBoundingClientRect();
   const ir = el.getBoundingClientRect();
-  const props = {
-    x: ir.left - ir_container.left,
-    y: ir.top - ir_container.top,
-    width: ir.width,
-    height: ir.height
-  };
+  const props = { x: ir.left - ir_container.left, y: ir.top - ir_container.top, width: ir.width, height: ir.height };
   if (anim) gsap.to(pill, {...props, duration:0.55, ease:'expo.out'});
   else gsap.set(pill, props);
 }
 
-// Handle #work hash when arriving from another page
 const initTarget = location.hash === '#work' ? 'work' : 'home';
 if (initTarget !== 'home') goTo(initTarget, true);
-// Position pill immediately (opacity hidden → fade in to avoid jump)
 setTimeout(() => {
   const activeNi = document.querySelector('.ni.active');
-  if (activeNi) {
-    pillTo(activeNi, false);
-    gsap.to(pill, {opacity:1, duration:.22, delay:.06});
-  }
+  if (activeNi) { pillTo(activeNi, false); gsap.to(pill, {opacity:1, duration:.22, delay:.06}); }
 }, 80);
 
 function goTo(pageId, instant=false) {
@@ -840,59 +813,37 @@ function goTo(pageId, instant=false) {
   if (idx === pidx || animating) return;
   animating = true;
   pidx = idx;
-  // 'home' and 'work' both map to the single 'work' nav item
   const navId = pageId === 'home' ? 'work' : pageId;
   nis.forEach(n => {
     n.classList.toggle('active', n.dataset.page === navId);
     if (n.dataset.page === navId) pillTo(n, !instant);
   });
-  if (instant) {
-    gsap.set(vp, {y: -idx*100+'vh'});
-    animating = false;
-    return;
-  }
-  gsap.to(vp, {
-    y: -idx*100+'vh',
-    duration: 1.55,
-    ease: 'power3.inOut',
-    onComplete: () => { animating = false; }
-  });
+  if (instant) { gsap.set(vp, {y: -idx*100+'vh'}); animating = false; return; }
+  gsap.to(vp, { y: -idx*100+'vh', duration: 1.55, ease: 'power3.inOut', onComplete: () => { animating = false; } });
 }
 
 nis.forEach(n => {
-  if (n.dataset.href) {
-    n.addEventListener('click', () => { window.location.href = n.dataset.href; });
-  } else {
-    n.addEventListener('click', () => goTo(n.dataset.page));
-  }
+  if (n.dataset.href) { n.addEventListener('click', () => { window.location.href = n.dataset.href; }); }
+  else { n.addEventListener('click', () => goTo(n.dataset.page)); }
   n.addEventListener('mouseenter', () => setCur('hand'));
   n.addEventListener('mouseleave', () => setCur(''));
 });
 
 // ── SCROLL SNAP ──────────────────────────────────────────────
 let cooldown = false;
-
-function getActiveScrollEl() {
-  const ids = ['p-home','p-work'];
-  return document.getElementById(ids[pidx]);
-}
+function getActiveScrollEl() { return document.getElementById(['p-home','p-work'][pidx]); }
 
 window.addEventListener('wheel', e => {
   if (modalOpen || cooldown) return;
   if (Math.abs(e.deltaY) < 3) return;
-
   const el = getActiveScrollEl();
   const scrollable = el && el.scrollHeight > el.clientHeight;
-
   if (scrollable) {
     const atTop = el.scrollTop <= 0;
     const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 2;
-    // if scrolling down and not at bottom, let the page scroll naturally
     if (e.deltaY > 0 && !atBottom) return;
-    // if scrolling up and not at top, let the page scroll naturally
     if (e.deltaY < 0 && !atTop) return;
   }
-
   cooldown = true;
   setTimeout(() => { cooldown = false; }, 1700);
   if (e.deltaY > 0 && pidx < pages.length-1) goTo(pages[pidx+1]);
@@ -910,23 +861,13 @@ window.addEventListener('touchend', e => {
 });
 
 // ── WINDOW FLOAT ─────────────────────────────────────────────
-// Floats use absolute y values and only start after entrance is done.
-// This prevents the "glitch drop" caused by relative tweens fighting entrance y.
 const floatTweens = {};
 function startFloat(id) {
   const amounts  = {w1:10, w2:7,  w3:8,  w4:9};
   const durations= {w1:5.9,w2:6.6,w3:5.3,w4:7.1};
   const delays   = {w1:0,  w2:.9, w3:1.5,w4:.4};
-  // Ensure GSAP's internal y is zeroed before we begin so the float is relative to 0
   gsap.set('#'+id, {y:0});
-  floatTweens[id] = gsap.to('#'+id, {
-    y: amounts[id],
-    duration: durations[id],
-    repeat: -1,
-    yoyo: true,
-    ease: 'sine.inOut',
-    delay: delays[id]
-  });
+  floatTweens[id] = gsap.to('#'+id, { y: amounts[id], duration: durations[id], repeat: -1, yoyo: true, ease: 'sine.inOut', delay: delays[id] });
 }
 function pauseFloat(id) { floatTweens[id]?.pause(); }
 function resumeFloat(id){ floatTweens[id]?.resume(); }
@@ -940,75 +881,47 @@ winIds.forEach(id => {
   const chrome = el.querySelector('.wc');
   const bounds = document.getElementById('p-home');
   const MIN_W = 140, MIN_H = 100;
-
-  // bring to front on any interaction
   const bringToFront = () => { el.style.zIndex = ++topZ; };
-
-  // ── DRAG via chrome bar ──────────────────────────
   let dragging = false, dx=0, dy=0, startLeft=0, startTop=0;
 
   chrome.addEventListener('mousedown', e => {
     if (e.button !== 0) return;
     e.preventDefault();
-    bringToFront();
-    pauseFloat(id);
-    dragging = true;
-    // resolve current GSAP transform into left/top, then zero the transform
+    bringToFront(); pauseFloat(id); dragging = true;
     const rect = el.getBoundingClientRect();
     const boundsRect = bounds.getBoundingClientRect();
     startLeft = rect.left - boundsRect.left;
     startTop  = rect.top  - boundsRect.top;
     gsap.set(el, {x:0, y:0, left:startLeft, top:startTop});
-    dx = e.clientX - startLeft;
-    dy = e.clientY - startTop;
-    el.classList.add('drag-active');
-    setCur('win');
+    dx = e.clientX - startLeft; dy = e.clientY - startTop;
+    el.classList.add('drag-active'); setCur('win');
   });
 
-  // ── RESIZE via edge/corner handles ──────────────
-  let resizing = false, resDir='', resStartX=0, resStartY=0;
-  let resW=0, resH=0, resL=0, resT=0;
-
+  let resizing = false, resDir='', resStartX=0, resStartY=0, resW=0, resH=0, resL=0, resT=0;
   el.querySelectorAll('[data-dir]').forEach(handle => {
     handle.addEventListener('mousedown', e => {
       if (e.button !== 0) return;
-      e.preventDefault();
-      e.stopPropagation();
-      bringToFront();
-      pauseFloat(id);
-      resizing = true;
-      resDir = handle.dataset.dir;
-      resStartX = e.clientX;
-      resStartY = e.clientY;
-      // resolve GSAP transform
+      e.preventDefault(); e.stopPropagation();
+      bringToFront(); pauseFloat(id); resizing = true; resDir = handle.dataset.dir;
+      resStartX = e.clientX; resStartY = e.clientY;
       const rect = el.getBoundingClientRect();
       const boundsRect = bounds.getBoundingClientRect();
-      resL = rect.left - boundsRect.left;
-      resT = rect.top  - boundsRect.top;
-      resW = rect.width;
-      resH = rect.height;
+      resL = rect.left - boundsRect.left; resT = rect.top - boundsRect.top;
+      resW = rect.width; resH = rect.height;
       gsap.set(el, {x:0, y:0, left:resL, top:resT, width:resW, height:resH});
-      el.classList.add('is-resizing');
-      setCur('');
+      el.classList.add('is-resizing'); setCur('');
     });
   });
 
   el.addEventListener('mouseenter', () => { if (!dragging && !resizing) setCur('win'); });
   el.addEventListener('mouseleave', () => { if (!dragging && !resizing) setCur(''); });
 
-  // global mouse move / up
   window._winMouseMove = window._winMouseMove || [];
   window._winMouseUp   = window._winMouseUp   || [];
-
   window._winMouseMove.push((e) => {
-    if (dragging) {
-      const nx = e.clientX - dx;
-      const ny = e.clientY - dy;
-      gsap.set(el, {left: nx, top: ny});
-    }
+    if (dragging) { gsap.set(el, {left: e.clientX - dx, top: e.clientY - dy}); }
     if (resizing) {
-      const ddx = e.clientX - resStartX;
-      const ddy = e.clientY - resStartY;
+      const ddx = e.clientX - resStartX, ddy = e.clientY - resStartY;
       let nw = resW, nh = resH, nl = resL, nt = resT;
       if (resDir.includes('e')) nw = Math.max(MIN_W, resW + ddx);
       if (resDir.includes('s')) nh = Math.max(MIN_H, resH + ddy);
@@ -1017,34 +930,22 @@ winIds.forEach(id => {
       gsap.set(el, {width:nw, height:nh, left:nl, top:nt});
     }
   });
-
-  window._winMouseUp.push((e) => {
-    if (dragging) {
-      dragging = false;
-      el.classList.remove('drag-active');
-      resumeFloat(id);
-      setCur('');
-    }
-    if (resizing) {
-      resizing = false;
-      el.classList.remove('is-resizing');
-      resumeFloat(id);
-    }
+  window._winMouseUp.push(() => {
+    if (dragging) { dragging = false; el.classList.remove('drag-active'); resumeFloat(id); setCur(''); }
+    if (resizing) { resizing = false; el.classList.remove('is-resizing'); resumeFloat(id); }
   });
 });
 
-// single global listeners
 window.addEventListener('mousemove', e => { (window._winMouseMove||[]).forEach(fn=>fn(e)); });
 window.addEventListener('mouseup',   e => { (window._winMouseUp  ||[]).forEach(fn=>fn(e)); });
 
 // ── WINDOW CTA CLICKS ────────────────────────────────────────
-// Track if a drag happened so we don't fire a nav click after dragging
 let _anyDrag = false;
 document.addEventListener('mousedown', () => { _anyDrag = false; });
 document.addEventListener('mousemove', () => { _anyDrag = true; }, {capture:true, passive:true});
 
 [
-  { id:'w1', action:()=>goTo('work'),                   label:'↓ work' },
+  { id:'w1', action:()=>goTo('work'),                    label:'↓ work' },
   { id:'w2', action:()=>{ location.href='about.html'; }, label:'→ about' },
   { id:'w3', action:()=>{ location.href='visual.html'; }, label:'→ play' },
 ].forEach(({id, action, label}) => {
@@ -1066,15 +967,20 @@ document.querySelectorAll('.cw').forEach(c => {
 // ── MODAL DATA ────────────────────────────────────────────────
 const data = {
   intuit:{
-    co:'Intuit', navTitle:'Human-in-the-Loop AI System', tl:'FY2026', role:'Product Designer',
+    co:'Intuit',
+    navTitle:'Human-in-the-Loop AI System',
+    tl:'May – Aug 2025',
+    role:'Product Design',
+    team:'Virtual Expert Platform (VEP) > Innovation Team',
+    type:'V1 Shipped',
     bg:'linear-gradient(155deg,#0d1a2e 0%,#1a3a6e 52%,#1f5fa8 100%)',
-    locked: true, password:'intuit2026',
+    locked: true,
+    password:'intuit2026',
     sections: ['Overview','Context','Solution','Research & Telemetry','Challenges','Outcomes','Final Designs'],
     desc:'I led the design of Intuit\'s Human-Driven Data Labeling (HITL) system within the Expert Network platform — embedding AI evaluation tasks directly into expert workflows.',
     stats:[['85.7%','Reduction in task time'],['50%','Increase in annotators'],['V1','Shipped']],
     context_lead:'Intuit is a financial software company whose Experts help customers with taxes via TurboTax.',
     context_body:'Experts rely on the Intuit Engagement Portal (IEP) to manage their status and track progress across clients. As part of the FY26 "Expert in the Loop" (HITL) initiative, I designed Expert-Driven Data Labeling to embed AI evaluation tasks directly into IEP and Salesforce.',
-    context_problem:'How might we embed high-quality AI data labeling into expert workflows without disrupting their primary engagement tasks — and at scale?',
     solution_lead:'Introducing the Expert Annotation System — a platform for experts to provide high-quality labeling and model feedback across offline, online, and live workflows.',
     solution_body:'This framework makes products better aligned with the company\'s AI innovation strategy and growth.',
     solution_callouts:[
@@ -1085,11 +991,6 @@ const data = {
     ],
     research_lead:'I combined existing AIMV research and concept / usability testing methods.',
     research_body:'My goal was to validate workflow design, uncover usability issues, and identify ways to optimize the in-platform annotation experience.',
-    research_problem:'Annotations were happening in an entirely separate tool — requiring experts to context-switch constantly, leading to fatigue, errors, and low completion rates.',
-    challenge1_lead:'(1) Visual load — How might we make wordy definitions easier to reference?',
-    challenge1_body:'Long annotation rubrics caused cognitive overload mid-task. Experts were abandoning tasks partway through because the definitions were too far away from the input fields.',
-    challenge2_lead:'(2) Progressive disclosure — How might we let experts navigate tasks non-linearly?',
-    challenge2_body:'The previous linear progress bar forced sequential completion, blocking experts who needed to skip or revisit tasks based on their domain expertise.',
     outcomes_lead:'Handoff, ship, and metrics.',
     outcomes_body:'Every engineered product ran through me for final decisions. I worked with developers weekly for feasibility reviews and did some development myself. The work received approval in multiple director-level reviews and a presentation to the VP of Health Software.',
     outcomes_takeaways:[
@@ -1098,37 +999,110 @@ const data = {
     ],
     outcomes_results:[['85.7%','Reduction in\nannotation task time'],['50%','Increase in\nactive annotators'],['V1','Shipped to\nproduction'],['2','Director-level\nreviews passed']],
   },
-  figma:{
-    co:'Figma', navTitle:'Education Design & Growth Program', tl:'Aug 2024 – Aug 2025', role:'Founding Campus Leader · Core Media Designer',
-    team:'Campus Ambassador Program', type:'Marketing Design · Community Building',
-    bg:'linear-gradient(155deg,#1a0a24 0%,#3a1060 52%,#7928ca 100%)',
-    locked: false,
-    sections: ['Overview','Context','Infrastructure','Growth','Media Team','Outcomes','Final Designs'],
-    desc:'As one of 56 founding Figma Campus Leaders — and 1 of 6 on the Core Media Team — I built infrastructure and community for design education at scale.',
-    stats:[['260','Live Config attendees'],['45k+','YouTube views'],['1 of 56','Founding cohort']],
-    context:'Figma is a collaborative design platform that has transformed how designers, developers, and teams build digital products.\n\nWe wanted to connect campuses with top-tier design resources and create a community that inspires students to create, collaborate, and innovate. Right now, less than 15% of students using Figma verify their Education accounts.',
-    process:'Three goals: Prove the Campus Leader model works (measurable impact on sign-ups, active users, education verification rates). Create scalable infrastructure for future cohorts. Establish Figma\'s brand presence on social media and in educational content.',
-    solution:'Infrastructure: Designed a reusable template library within Figma\'s design system. Created best-practices documentation for outreach and community building — systems built to be adopted across all regions.\n\nGrowth & Community: Hosted and organized Design Jams, Portfolio Reviews, Workshops, and Config events for designers, CS, and business students at University of Michigan.',
-    outcomes:'Live Demo at Config: Selected to demo how students use Figma to organize their lives — sharing a stage with Dylan Field, Ivan Zhao, and Josh Miller to 260 live attendees. The recording reached 45k+ YouTube views.\n\nMedia Team: As Midwest regional lead for @figmacampusleaders, I ideated and posted foundational Instagram content, developed cross-regional templates, and represented Midwest campus communities nationally.',
-  },
+figma:{
+  co:'Figma',
+  navTitle:'Education Design & Growth Program',
+  tl:'Aug 2024 – Aug 2025',
+  role:'Founding Campus Leader, Core Media Designer',
+  team:'Figma for Education > Campus Ambassador Program',
+  type:'',
+  bg:'linear-gradient(155deg,#1a0a24 0%,#3a1060 52%,#7928ca 100%)',
+  locked: false,
+  sections: ['Overview','Context','Infrastructure','Growth & Community','Media Team','Gallery'],
+  desc:'As one of 56 founding Figma Campus Leaders — and 1 of 6 on the Core Media Team — I built infrastructure and community for design education at scale across the Midwest.',
+  stats:[['260','Live Config attendees'],['45k+','YouTube views'],['1 of 56','Founding cohort']],
+  context_lead:'Figma\'s Campus Ambassador cohort bridges the gap between students discovering design and the larger creative ecosystem they\'re in.',
+  context_body:'Figma is a collaborative design platform that has transformed how designers, developers, and teams build digital products. We wanted to connect campuses with top-tier design resources and create a community that inspires students to create, collaborate, and innovate.',
+  context_goals:[
+    ['Prove the Campus Leader model works','Measurable impact on sign-ups, active users, education verification rates.'],
+    ['Create scalable infrastructure','For future cohorts: templates, documentation, playbooks.'],
+    ['Establish Figma\'s brand presence','Social media, regional representation, educational facing media and content.'],
+  ],
+  context_stat:'Right now, less than 15% of students using Figma verify their Education accounts.',
+  infra_lead:'Designing scalable/reusable templates for future cohorts.',
+  infra_bullets:[
+    'Designed template library within Figma\'s design system',
+    'Best practices documentation for outreach and community building',
+  ],
+  growth_lead:'Hosted and organized a range of events for different audiences: designers, CS, business majors.',
+  growth_sub:'Design Jams. Portfolio Reviews. Workshops. Config.',
+  live_demo_lead:'Selected to demo how students actually use Figma to organize their lives and tame the chaos.',
+  live_demo_body:'The event featured a CEO panel (Dylan Field, Ivan Zhao, Josh Miller) followed by student demos.',
+  live_demo_stats:[['260','Live attendees'],['45k+','YouTube views']],
+  live_demo_location:'At the University of Michigan campus',
+  achievements:[
+    'Created promotional content using Figma\'s design system and component library.',
+    'Consolidated event details into animated video — maintaining brand identity and adding creative twist.',
+    'Designed and edited all animations E2E within Figma, translating static components into motion graphics.',
+  ],
+  media_lead:'Midwest regional lead for <a class="figma-social-link" href="https://www.instagram.com/figmacampusleaders/" target="_blank" rel="noopener">@figmacampusleaders</a>.',
+  media_sub:'Design Jams. Portfolio Reviews. Workshops. Config.',
+  media_bullets:[
+    'Ideated, designed, posted foundational designs for Instagram content',
+    'Worked to develop templates/systems to be adopted across all regions',
+    'Weekly syncs with growth and marketing directors',
+    'Represented Midwest campus communities nationally',
+  ],
+},
   libby:{
-    co:'LibbyU / OverDrive', navTitle:'Onboarding Redesign', tl:'2026', role:'Lead Designer',
-    team:'Design · Research · PM · Doc Lead', type:'UX Research · Mobile · 0→1',
+    co:'LibbyU / OverDrive',
+    navTitle:'Onboarding Redesign',
+    tl:'Aug 2025 – Present',
+    role:'Product Design',
+    team:'2 Designers · 1 Researcher · 1 PM · 1 Document Lead',
+    type:'Prepping for Handoff',
     bg:'linear-gradient(155deg,#091d0f 0%,#183828 52%,#1e5535 100%)',
-    locked: true, password:'libby2026',
-    sections: ['Overview','Context','Research','Solution','Outcomes','Final Designs'],
-    desc:'Built a four-round research program — 25 interviews, zero inherited files — to uncover a broken IA beneath what looked like an onboarding problem.',
-    stats:[['25','User interviews'],['4','Research rounds'],['0','Inherited files']],
-    context:'The beta app arrived with no design files, no prior research, no component library. The brief said "fix onboarding." The ICP was Maya — a non-technical infrequent user accessing the app a few times per semester, desktop-first.\n\nResearch revealed the real problem was broken information architecture and confusing iconography — users weren\'t failing onboarding, they couldn\'t find things after onboarding.',
-    process:'Four research rounds: Diverge (contextual inquiry, 8 interviews), Cluster (affinity diagramming), Validate (usability testing, 10 sessions), Refine (card sorting, 7 sessions).\n\nKey reframe: the confusing iconography in the main nav was the real breakpoint — not the onboarding flow itself.',
-    solution:'A modular collapsible modal anchored to existing nav elements — not a new nav tab. This reduced cognitive load without adding to the navigation surface.\n\nAI workflow: Figma Make prototype → exported to VS Code → ran on localhost for real user testing. Fed structured markdown brief + screenshots into v0, MagicPath, Stitch/Gemini, and Figma Make for wide layout exploration. AI went wide; I went deep.',
-    outcomes:'Delivered research program, findings, and final designs to the team. The modular solution reduced the number of onboarding-related support touchpoints and tested well with the Maya user archetype across all four validation sessions.',
+    locked: true,
+    password:'libby2026',
+    sections: ['Overview','Context','Research','Challenges','Solution','Outcomes','Final Designs'],
+    desc:'Research-first onboarding redesign for LibbyU — OverDrive\'s student ebook platform. Built a four-round research program from scratch, reframed the core problem, and designed a modular solution that works within existing constraints.',
+    stats:[['25','User interviews'],['4','Research rounds'],['11/11','Users navigated successfully']],
+    context_lead:'LibbyU is OverDrive\'s upcoming student app — the largest digital library distributor in the US, serving 90,000+ libraries and schools.',
+    context_body:'We were brought in to design the onboarding experience for their beta launch. The project arrived with no design files, no prior research, no component library — just a URL and a vague directive. That constraint forced a different kind of process. Honestly, a better one.',
+    context_problem:'Students are having difficulty using LibbyU\'s key eBook features.',
+    context_constraints:['No inherited design files, research, or component library','Beta app already built — dismantling the nav would break the existing experience','Student users: non-technical, infrequent, desktop/web primary'],
+    research_lead:'How to approach research when you have nothing to start with.',
+    research_approach:'Workflow: given a URL → Figma Make → working prototype → real user testing. We formulated our own research process, built the entire design direction from the ground up, and found creative ways to compensate for what we couldn\'t get from the client.',
+    research_rounds:[
+      ['Round 1 — Diverge','Contextual inquiry · Usability sessions','Formulated initial research questions. Mapped user mental models around the app.'],
+      ['Round 2 — Cluster','Affinity diagramming · Synthesis','Identified dominant themes. IA emerged as the real problem — not onboarding.'],
+      ['Round 3 — Validate','Clickable prototype · 25 interviews','Tested with real students. Confirmed navigation confusion over missing features.'],
+      ['Round 4 — Refine','Card sorting · Iteration','Validated restructured IA and modular modal design. Locked final solution.'],
+    ],
+    research_reframe:'The original brief was: fix onboarding. The real problem: students could navigate through the guided flow — then immediately lost where the features lived in the app\'s architecture.',
+    challenge1_lead:'Core Challenge 1 — Information Architecture',
+    challenge1_body:'Every AI-generated exploration (V0, MagicPath, Stitch/Gemini, Figma Make, Claude Code) converged on the same wrong answer: add new top-level nav tabs for each feature. This sounds logical until you think about what these features actually are — they\'re not pages, they\'re small specific actions that live within the reading experience.',
+    challenge1_insight:'Promoting them to top-level nav misrepresents the entire mental model of the app. The beta app was already built — dismantling the nav would break the horizontal experience. So we built vertically instead.',
+    challenge2_lead:'Core Challenge 2 — Interface Design',
+    challenge2_body:'Research revealed shelf, clip, and page-view icons consistently required recall rather than recognition — users couldn\'t find features after onboarding even when they\'d just seen them.',
+    challenge2_fixes:[
+      ['Icon redesign','10s and 0s clip icons got explicit number labels. Single vs. double page view became a segmented control.'],
+      ['Modal visual design','Directional tail anchors the card to the nav element it describes. Stroke weights and saturation tuned so the modal reads as overlay, not UI.'],
+    ],
+    solution_lead:'A modular collapsible modal — a guide into the structure that already exists, not a new layer on top of it.',
+    solution_body:'Translated the reworked IA directly into a collapsible modal anchored to real nav elements. Each card is self-contained. New features slot in without rebuilding the flow.',
+    solution_callouts:[
+      ['1','Anchored to nav','Directional tail ties each card to the element it describes — no ambiguity about what the tooltip refers to.'],
+      ['2','Modular by design','Cards are independent. The system scales as LibbyU adds features — no rebuilding required.'],
+      ['3','Builds vertically','Works within the existing beta architecture. Zero nav restructuring needed.'],
+      ['4','Recognition over recall','Explicit labels and segmented controls replace icon-only patterns that failed in testing.'],
+    ],
+    outcomes_lead:'66% decrease in task completion time. 11/11 users navigated the platform successfully.',
+    outcomes_body:'Every user in final testing said onboarding helped them navigate the platform and learn unique features. The modular modal design is currently prepping for handoff to the OverDrive engineering team.',
+    outcomes_results:[['66%','Decrease in task\ncompletion time'],['11/11','Users navigated\nsuccessfully'],['4','Research rounds\nbuilt from scratch'],['0','Inherited files,\nresearch or briefs']],
+    outcomes_takeaways:[
+      ['Reframe before you redesign','The brief said "fix onboarding." Research said the IA was broken. Solving the wrong problem would have shipped something that looked like onboarding but felt just as lost.'],
+      ['Build vertically, not horizontally','Constraints aren\'t blockers — they\'re design inputs. Working within the existing nav structure led to a more coherent solution than any AI-generated teardown.'],
+      ['AI goes wide, research goes deep','Used AI tools to explore layouts fast. Used research to know which ones were wrong. The two workflows aren\'t interchangeable.'],
+    ],
   },
   ktp:{
-    co:'Kappa Theta Pi', navTitle:'Mobile Point Goal Tracking App', tl:'Jun – Aug 2024', role:'Principal Designer',
-    team:'KTP LIFE App', type:'0-to-1 · Mobile App Development',
-    bg:'linear-gradient(155deg,#0a1a14 0%,#0e3322 52%,#1a5c3a 100%)',
-    locked: false,
+    co:'Kappa Theta Pi',
+    navTitle:'Mobile Product Experience',
+    tl:'June – Aug 2024',
+    role:'Principal Product Design',
+    type:'Shipped',
+    bg:'linear-gradient(155deg,#1d1020 0%,#40204a 52%,#6e3a82 100%)',
     sections: ['Introduction','Context','Solution','Research','Decisions','Outcomes','Final Designs'],
     desc:'Led end-to-end design of Points Page — a 0-to-1 member engagement tracking tool for a professional technology fraternity.',
     stats:[['42%','Brothers achieving point goals'],['450+','Daily uses during rush'],['4.7★','App Store Rating']],
@@ -1153,7 +1127,6 @@ const data = {
       ['Problem-Solving within Constraints','Time and technical limitations spur creative thinking, allowing me to develop practical solutions that work within real-world constraints.'],
     ],
     outcomes_results: [['42%','Increase in brothers\nachieving point goals'],['450+','Uses daily\nduring rush cycle'],['120k','Peak operations\nin one day'],['4.7★','App Store\nRating']],
-    finalDesigns:'The app shipped on both iOS and Android. Final screens included the Point Log dashboard, All Quests discovery page, Leaderboard, and detailed event pages. Entirely designed and developed in-house by KTP brothers.',
   }
 };
 
@@ -1179,28 +1152,28 @@ function buildPrevNext(key) {
   const idx = caseOrder.indexOf(key);
   const prev = caseOrder[(idx - 1 + caseOrder.length) % caseOrder.length];
   const next = caseOrder[(idx + 1) % caseOrder.length];
-  const btn = (k, dir) => {
+  const card = (k, dir) => {
     const d2 = data[k];
     const heroSrc = { intuit: IMGS['intuit_hero'], figma: IMGS['figma_hero'], libby: IMGS['libby_hero'], ktp: IMGS['ktp_hero'] }[k];
     const bgStyle = heroSrc
       ? `background:${d2.bg};background-image:url(${heroSrc});background-size:cover;background-position:center`
       : `background:${d2.bg}`;
-    return `<div class="m-nav-btn${dir==='next'?' next':''}" data-nav="${k}" style="${bgStyle}">
+    return `<div class="m-nav-card${dir==='next'?' next':''}" data-nav="${k}">
       <div class="m-nav-dir">${dir==='prev'?'← Previous':'Next →'}</div>
-      <div class="m-nav-co">${d2.co}</div>
-      <div class="m-nav-title">${d2.navTitle}</div>
+      <div class="m-nav-img" style="${bgStyle}">
+        <div class="m-nav-co">${d2.co}</div>
+      </div>
+      <div class="m-nav-sub">${d2.navTitle}</div>
     </div>`;
   };
-  return `<div class="m-prevnext">${btn(prev,'prev')}${btn(next,'next')}</div>`;
+  return `<div class="m-prevnext">${card(prev,'prev')}${card(next,'next')}</div>`;
 }
 
 function buildModalContent(key) {
   const d = data[key];
   const isLocked = d.locked && !unlockedCases.has(key);
-
   const statsHtml = d.stats ? `<div class="mstats">${d.stats.map(([n,l])=>`<div class="mstat"><div class="mstat-n">${n}</div><div class="mstat-l">${l}</div></div>`).join('')}</div>` : '';
 
-  // Hero banner — supports image or pure gradient
   const heroBg = {
     intuit: 'linear-gradient(155deg,#0d1a2e 0%,#1a3a6e 52%,#1f5fa8 100%)',
     figma:  'linear-gradient(155deg,#1a0a24 0%,#3a1060 52%,#7928ca 100%)',
@@ -1219,10 +1192,10 @@ function buildModalContent(key) {
     <div class="mhero-sub">${d.tl}</div>
   </div>`;
 
-  // Rich per-section render for KTP
+  // ── KTP SECTION BUILDER ──────────────────────────────────────
   function buildKTPSection(label) {
     const lk = label.toLowerCase();
-    if (lk === 'final designs') return ''; // handled by shared buildFinalDesignsSection above
+    if (lk === 'final designs') return '';
     if (lk === 'introduction') {
       return `<div class="ms-section" id="${sectionId(label)}">
         <div class="mh">Introduction</div>
@@ -1251,10 +1224,7 @@ function buildModalContent(key) {
         <div class="m-callouts">
           ${d.solution_callouts.map(([n,t,desc])=>`<div class="m-callout">
             <div class="m-callout-num">${n}</div>
-            <div class="m-callout-body">
-              <div class="m-callout-title">${t}</div>
-              <div class="m-callout-desc">${desc}</div>
-            </div>
+            <div class="m-callout-body"><div class="m-callout-title">${t}</div><div class="m-callout-desc">${desc}</div></div>
           </div>`).join('')}
         </div>
       </div>`;
@@ -1307,39 +1277,13 @@ function buildModalContent(key) {
         </div>
       </div>`;
     }
-    if (lk === 'final designs') {
-      return `<div class="ms-section" id="${sectionId(label)}">
-        <div class="mh">Final Designs</div>
-        <div class="mphone-row">
-          ${img('ktp_phone1','Explore resources, updates, and stories')}
-          ${img('ktp_phone2','View upcoming events and details')}
-          ${img('ktp_phone3','Get to know rushees, brothers, EBoard, and alumni')}
-          ${img('ktp_phone4','Notifications')}
-        </div>
-        <div class="mphone-row" style="grid-template-columns:1fr 1fr 1fr;margin-top:10px">
-          ${img('ktp_phone6','View important announcements')}
-          ${img('ktp_phone5','Keep track of your points')}
-          ${img('ktp_phone7','Download today · Rush Kappa Theta Pi')}
-        </div>
-        <div class="m-img-pair">
-          <figure class="mfig" style="margin:0">
-            <img class="mfig-img m-pair-img" src="${IMGS['ktp_launch']}" alt="Kappa Theta Pi Life. Available tomorrow.">
-            <figcaption class="mfig-cap">Kappa Theta Pi Life. Available tomorrow.</figcaption>
-          </figure>
-          <figure class="mfig" style="margin:0">
-            <img class="mfig-img m-pair-img" src="${IMGS['ktp_icons']}" alt="App icon exploration">
-            <figcaption class="mfig-cap">App icon exploration — designed in-house by KTP brothers</figcaption>
-          </figure>
-        </div>
-      </div>`;
-    }
     return '';
   }
 
   // ── INTUIT SECTION BUILDER ───────────────────────────────────
   function buildIntuitSection(label) {
     const lk = label.toLowerCase();
-    if (lk === 'final designs') return ''; // handled by shared buildFinalDesignsSection
+    if (lk === 'final designs') return '';
     if (lk === 'overview') {
       return `<div class="ms-section" id="${sectionId(label)}">
         <div class="mh">Overview</div>
@@ -1392,10 +1336,7 @@ function buildModalContent(key) {
         <div class="m-callouts">
           ${d.solution_callouts.map(([n,t,desc])=>`<div class="m-callout">
             <div class="m-callout-num">${n}</div>
-            <div class="m-callout-body">
-              <div class="m-callout-title">${t}</div>
-              <div class="m-callout-desc">${desc}</div>
-            </div>
+            <div class="m-callout-body"><div class="m-callout-title">${t}</div><div class="m-callout-desc">${desc}</div></div>
           </div>`).join('')}
         </div>
       </div>`;
@@ -1433,18 +1374,9 @@ function buildModalContent(key) {
         ${img('intuit_dec3_spec','Component anatomy — Figma handoff with anatomy, hierarchy, and specifications across three frames')}
         <div class="mh-sub">Key Takeaways</div>
         <div class="m-takeaways">
-          <div class="m-takeaway">
-            <div class="m-takeaway-title">Applying existing patterns</div>
-            <div class="m-takeaway-desc">Require understanding their applicability and malleability for different contexts and edge cases.</div>
-          </div>
-          <div class="m-takeaway">
-            <div class="m-takeaway-title">Design system</div>
-            <div class="m-takeaway-desc">Learning new ones takes time; knowing how to adapt them is necessary for problem solving.</div>
-          </div>
-          <div class="m-takeaway">
-            <div class="m-takeaway-title">Balancing constraints</div>
-            <div class="m-takeaway-desc">Time, technical feasibility, and compromises — while pushing for designs that are worth the effort.</div>
-          </div>
+          <div class="m-takeaway"><div class="m-takeaway-title">Applying existing patterns</div><div class="m-takeaway-desc">Require understanding their applicability and malleability for different contexts and edge cases.</div></div>
+          <div class="m-takeaway"><div class="m-takeaway-title">Design system</div><div class="m-takeaway-desc">Learning new ones takes time; knowing how to adapt them is necessary for problem solving.</div></div>
+          <div class="m-takeaway"><div class="m-takeaway-title">Balancing constraints</div><div class="m-takeaway-desc">Time, technical feasibility, and compromises — while pushing for designs that are worth the effort.</div></div>
         </div>
         <div class="m-results">
           <div class="m-results-lbl">Key Results</div>
@@ -1460,26 +1392,266 @@ function buildModalContent(key) {
     return '';
   }
 
-  // ── SHARED FINAL DESIGNS GALLERY ────────────────────────────
-  function buildFinalDesignsSection(galleryKeys) {
+  // ── FIGMA SECTION BUILDER ────────────────────────────────────
+function buildFigmaSection(label) {
+  const lk = label.toLowerCase();
+  if (lk === 'gallery') return '';
+
+  if (lk === 'overview') {
+    return `<div class="ms-section" id="${sectionId(label)}">
+      <div class="mh">Overview</div>
+      <p class="mp">${d.desc}</p>
+      ${statsHtml}
+    </div>`;
+  }
+  if (lk === 'context') {
+    return `<div class="ms-section" id="${sectionId(label)}">
+      <div class="mh">Context</div>
+      <p class="mp-large">${d.context_lead}</p>
+      <p class="mp">${d.context_body}</p>
+      <div class="m-callouts">
+        ${d.context_goals.map(([t,desc])=>`<div class="m-callout">
+          <div class="m-callout-num" style="background:#ede9fe;border-color:#a78bfa;color:#5b21b6">→</div>
+          <div class="m-callout-body"><div class="m-callout-title">${t}</div><div class="m-callout-desc">${desc}</div></div>
+        </div>`).join('')}
+      </div>
+      <div class="m-darkbox">
+        <div class="m-darkbox-lbl">Opportunity</div>
+        <div class="m-darkbox-text">${d.context_stat}</div>
+      </div>
+    </div>`;
+  }
+  if (lk === 'infrastructure') {
+    return `<div class="ms-section" id="${sectionId(label)}">
+      <div class="mh">Infrastructure</div>
+      <p class="mp-large">${d.infra_lead}</p>
+      <div class="m-takeaways">
+        ${d.infra_bullets.map(b=>`<div class="m-takeaway"><div class="m-takeaway-desc">${b}</div></div>`).join('')}
+      </div>
+      ${img('figma_infra','')}
+    </div>`;
+  }
+  if (lk === 'growth & community') {
+    return `<div class="ms-section" id="${sectionId(label)}">
+      <div class="mh">Growth & Community</div>
+      <p class="mp-large">${d.growth_lead}</p>
+      <p class="mp">${d.growth_sub}</p>
+      ${img('figma_growth','')}
+      <div class="mh-sub">Live Demo</div>
+      <p class="mp-large">${d.live_demo_lead}</p>
+      <p class="mp">${d.live_demo_body}</p>
+      <div class="mstats">
+        ${d.live_demo_stats.map(([n,l])=>`<div class="mstat"><div class="mstat-n">${n}</div><div class="mstat-l">${l}</div></div>`).join('')}
+        <div class="mstat"><div class="mstat-n" style="font-size:14px;font-family:var(--sans)">${d.live_demo_location}</div><div class="mstat-l">Location</div></div>
+      </div>
+      ${img('figma_youtube','')}
+      <a class="m-video-link" href="https://www.youtube.com/watch?v=UuOI99qN9PU&t=12s" target="_blank" rel="noopener">Watch full video <span>↗</span></a>
+      <div class="mh-sub">Achievements</div>
+      <div class="figma-achievement-row">
+        <div class="figma-achievement-copy">
+          <div class="m-takeaways">
+            ${d.achievements.map(a=>`<div class="m-takeaway"><div class="m-takeaway-desc">${a}</div></div>`).join('')}
+          </div>
+        </div>
+        <div class="figma-achievement-media">
+          ${img('figma_achievements','')}
+        </div>
+      </div>
+    </div>`;
+  }
+  if (lk === 'media team') {
+    return `<div class="ms-section" id="${sectionId(label)}">
+      <div class="mh">Media Team</div>
+      <p class="mp-large">${d.media_lead}</p>
+      <p class="mp">${d.media_sub}</p>
+      <div class="figma-media-row">
+        <div class="figma-media-visual">
+          ${img('figma_insta','')}
+        </div>
+        <div class="figma-media-copy">
+          <div class="m-takeaways">
+            ${d.media_bullets.map(b=>`<div class="m-takeaway"><div class="m-takeaway-desc">${b}</div></div>`).join('')}
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+  return '';
+}
+
+  // ── LIBBY SECTION BUILDER ────────────────────────────────────
+  function buildLibbySection(label) {
+    const lk = label.toLowerCase();
+    if (lk === 'final designs') return '';
+
+    if (lk === 'overview') {
+      return `<div class="ms-section" id="${sectionId(label)}">
+        <div class="mh">Overview</div>
+        <p class="mp">${d.desc}</p>
+        ${statsHtml}
+      </div>`;
+    }
+
+    if (lk === 'context') {
+      return `<div class="ms-section" id="${sectionId(label)}">
+        <div class="mh">Context</div>
+        <p class="mp-large">${d.context_lead}</p>
+        <p class="mp">${d.context_body}</p>
+        <div class="mh-sub">The Problem</div>
+        <div class="m-darkbox">
+          <div class="m-darkbox-lbl">Brief</div>
+          <div class="m-darkbox-text">${d.context_problem}</div>
+        </div>
+        ${img('libby_context', 'Beta app as delivered — no design files, no research, just a URL')}
+        <div class="mh-sub">Constraints Worth Noting</div>
+        <div class="m-takeaways">
+          ${d.context_constraints.map(c => `<div class="m-takeaway"><div class="m-takeaway-desc">${c}</div></div>`).join('')}
+        </div>
+        <div class="mh-sub">Team</div>
+        <p class="mp">${d.team}</p>
+      </div>`;
+    }
+
+    if (lk === 'research') {
+      return `<div class="ms-section" id="${sectionId(label)}">
+        <div class="mh">Research</div>
+        <p class="mp-large">${d.research_lead}</p>
+        <p class="mp">${d.research_approach}</p>
+        ${img('libby_research_process', 'Workflow: URL → Figma Make → prototype → 4 rounds of iterative research')}
+        <div class="mh-sub">4 Rounds of Iterative Research</div>
+        <div class="m-callouts">
+          ${d.research_rounds.map(([title, methods, desc]) => `<div class="m-callout">
+            <div class="m-callout-body" style="flex:1">
+              <div class="m-callout-title">${title}</div>
+              <div class="m-callout-desc" style="font-family:var(--mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--brand);opacity:.7;margin-bottom:6px">${methods}</div>
+              <div class="m-callout-desc">${desc}</div>
+            </div>
+          </div>`).join('')}
+        </div>
+        ${img('libby_affinity', 'Affinity diagramming — clustering 25 interviews into dominant themes')}
+        <div class="m-darkbox">
+          <div class="m-darkbox-lbl">The Reframe</div>
+          <div class="m-darkbox-text">${d.research_reframe}</div>
+        </div>
+      </div>`;
+    }
+
+    if (lk === 'challenges') {
+      return `<div class="ms-section" id="${sectionId(label)}">
+        <div class="mh">Challenges</div>
+        <div class="mh-sub">${d.challenge1_lead}</div>
+        <p class="mp">${d.challenge1_body}</p>
+        ${img('libby_ia_before', 'Original IA — features buried up to 3 layers deep')}
+        <p class="mp">${d.challenge1_insight}</p>
+        ${img('libby_ia_after', 'Reworked IA — streamlined to essential features, built vertically within existing nav')}
+        <div class="mh-sub">${d.challenge2_lead}</div>
+        <p class="mp">${d.challenge2_body}</p>
+        <div class="m-callouts">
+          ${d.challenge2_fixes.map(([t, desc]) => `<div class="m-callout">
+            <div class="m-callout-body">
+              <div class="m-callout-title">${t}</div>
+              <div class="m-callout-desc">${desc}</div>
+            </div>
+          </div>`).join('')}
+        </div>
+        ${img('libby_icons', 'Icon redesign — explicit labels replace recall-dependent icon-only patterns')}
+      </div>`;
+    }
+
+    if (lk === 'solution') {
+      return `<div class="ms-section" id="${sectionId(label)}">
+        <div class="mh">Solution</div>
+        <p class="mp-large">${d.solution_lead}</p>
+        <p class="mp">${d.solution_body}</p>
+        ${img('libby_solution', 'Modular collapsible modal — anchored to nav, self-contained cards, scales with new features')}
+        <div class="m-callouts">
+          ${d.solution_callouts.map(([n, t, desc]) => `<div class="m-callout">
+            <div class="m-callout-num">${n}</div>
+            <div class="m-callout-body">
+              <div class="m-callout-title">${t}</div>
+              <div class="m-callout-desc">${desc}</div>
+            </div>
+          </div>`).join('')}
+        </div>
+        ${img('libby_modal_detail', 'Arrow direction exploration — directional tail anchors the card to its nav element')}
+      </div>`;
+    }
+
+    if (lk === 'outcomes') {
+      return `<div class="ms-section" id="${sectionId(label)}">
+        <div class="mh">Outcomes</div>
+        <p class="mp-large">${d.outcomes_lead}</p>
+        <p class="mp">${d.outcomes_body}</p>
+        <div class="m-results">
+          <div class="m-results-lbl">Key Results</div>
+          <div class="m-results-grid">
+            ${d.outcomes_results.map(([v, l]) => `<div>
+              <div class="m-result-val">${v}</div>
+              <div class="m-result-label">${l.replace(/\n/g,'<br>')}</div>
+            </div>`).join('')}
+          </div>
+        </div>
+        <div class="mh-sub">Key Takeaways</div>
+        <div class="m-takeaways">
+          ${d.outcomes_takeaways.map(([t, desc]) => `<div class="m-takeaway">
+            <div class="m-takeaway-title">${t}</div>
+            <div class="m-takeaway-desc">${desc}</div>
+          </div>`).join('')}
+        </div>
+      </div>`;
+    }
+
+    return '';
+  }
+
+  // ── FINAL DESIGNS GALLERY ────────────────────────────────────
+  function buildFinalDesignsSection(galleryKeys, label='Final Designs') {
+    if (key === 'intuit') {
+      const cells = galleryKeys.map(k => {
+        const src = IMGS[k];
+        return `<div class="m-gallery-item">
+          ${src ? `<img src="${src}" alt="">` : `<span class="m-gallery-ph">· ${k} ·</span>`}
+        </div>`;
+      });
+      return `<div class="ms-section" id="${sectionId(label)}">
+        <div class="mh">${label}</div>
+        <div class="m-gallery-intuit">
+          <div class="row1">${cells[0]||''}${cells[1]||''}</div>
+          <div class="row2">${cells[2]||''}${cells[3]||''}${cells[4]||''}</div>
+          <div class="row3">${cells[5]||''}${cells[6]||''}</div>
+        </div>
+      </div>`;
+    }
+    if (key === 'ktp') {
+      const cells = galleryKeys.map(k => {
+        const src = IMGS[k];
+        return `<div class="m-gallery-item">
+          ${src ? `<img src="${src}" alt="">` : `<span class="m-gallery-ph">· ${k} ·</span>`}
+        </div>`;
+      });
+      return `<div class="ms-section" id="${sectionId(label)}">
+        <div class="mh">${label}</div>
+        <div class="m-gallery-ktp">
+          <div class="row-top">${cells[0]||''}${cells[1]||''}${cells[2]||''}${cells[3]||''}</div>
+          <div class="row-mid">${cells[4]||''}${cells[5]||''}${cells[6]||''}</div>
+          <div class="row-bottom">${cells[7]||''}${cells[8]||''}</div>
+        </div>
+      </div>`;
+    }
     const items = galleryKeys.map(k => {
       const src = IMGS[k];
       return `<div class="m-gallery-item">
         ${src ? `<img src="${src}" alt="">` : `<span class="m-gallery-ph">· ${k} ·</span>`}
       </div>`;
     }).join('');
-    return `<div class="ms-section" id="${sectionId('Final Designs')}">
-      <div class="mh">Final Designs</div>
-      <div class="m-gallery">${items}</div>
+    const galleryClass = key === 'figma' ? 'm-gallery m-gallery-square' : 'm-gallery';
+    return `<div class="ms-section" id="${sectionId(label)}">
+      <div class="mh">${label}</div>
+      <div class="${galleryClass}">${items}</div>
     </div>`;
   }
+
   const genericSectionImgs = {
-    intuit: {
-      'context':  `<div class="mimg" style="background:${d.bg};opacity:.7"><span class="mimlbl">· IEP platform context ·</span></div>`,
-      'solution': `<div class="mimg" style="background:${d.bg};opacity:.8"><span class="mimlbl">· annotation system UI ·</span></div>`,
-      'research': `<div class="mimg" style="background:${d.bg};opacity:.6"><span class="mimlbl">· research & telemetry ·</span></div>`,
-      'outcomes': `<div class="mimg" style="background:${d.bg};opacity:.6"><span class="mimlbl">· handoff & metrics ·</span></div>`,
-    },
     figma: {
       'context':       `<div class="mimg" style="background:${d.bg};opacity:.6"><span class="mimlbl">· campus context ·</span></div>`,
       'infrastructure':`<div class="mimg" style="background:${d.bg};opacity:.7"><span class="mimlbl">· template library ·</span></div>`,
@@ -1499,33 +1671,32 @@ function buildModalContent(key) {
   for (const label of d.sections) {
     const lk = label.toLowerCase();
 
-    // Final Designs — shared gallery for all cases
-    if (lk === 'final designs') {
-      if (isLocked) break;
-      const galleryMap = {
-        intuit: ['intuit_fd1','intuit_fd2','intuit_fd3','intuit_fd4','intuit_fd5','intuit_fd6'],
-        figma:  ['figma_fd1','figma_fd2','figma_fd3','figma_fd4','figma_fd5','figma_fd6'],
-        libby:  ['libby_fd1','libby_fd2','libby_fd3','libby_fd4','libby_fd5','libby_fd6'],
-        ktp:    ['ktp_phone1','ktp_phone2','ktp_phone3','ktp_phone4','ktp_phone5','ktp_phone6'],
-      };
-      sectionsHtml += buildFinalDesignsSection(galleryMap[key] || []);
-      continue;
-    }
+if (lk === 'final designs' || lk === 'gallery') {
+  if (isLocked) break;
+  const galleryMap = {
+    intuit: ['intuit_fd1','intuit_fd2','intuit_fd3','intuit_fd4','intuit_fd5','intuit_fd6','intuit_fd7'],
+    figma:  ['figma_fd1','figma_fd2','figma_fd3','figma_fd4','figma_fd5','figma_fd6','figma_fd7','figma_fd8','figma_fd9'],
+    libby:  ['libby_fd1','libby_fd2','libby_fd3','libby_fd4','libby_fd5','libby_fd6'],
+    ktp:    ['ktp_phone3','ktp_phone4','ktp_phone5','ktp_phone6','ktp_phone7','ktp_phone8','ktp_phone9', 'ktp_launch', 'ktp_icons'],
+  };
+  sectionsHtml += buildFinalDesignsSection(galleryMap[key] || [], label);
+  continue;
+}
 
     if (key === 'ktp') {
-      if (sectionsHtml === '' && lk === 'introduction') {
-        sectionsHtml += buildKTPSection(label);
-        continue;
-      }
+      if (sectionsHtml === '' && lk === 'introduction') { sectionsHtml += buildKTPSection(label); continue; }
       if (isLocked) break;
       sectionsHtml += buildKTPSection(label);
     } else if (key === 'intuit') {
-      if (lk === 'overview') {
-        sectionsHtml += buildIntuitSection(label);
-        continue;
-      }
+      if (lk === 'overview') { sectionsHtml += buildIntuitSection(label); continue; }
       if (isLocked) break;
       sectionsHtml += buildIntuitSection(label);
+    } else if (key === 'figma') {
+      sectionsHtml += buildFigmaSection(label);
+    } else if (key === 'libby') {
+      if (lk === 'overview') { sectionsHtml += buildLibbySection(label); continue; }
+      if (isLocked) break;
+      sectionsHtml += buildLibbySection(label);
     } else {
       const contentMap = {
         'overview':d.desc,'introduction':d.desc,'context':d.context,
@@ -1556,17 +1727,30 @@ function buildModalContent(key) {
 
   if (isLocked) sectionsHtml += buildPwGate(key);
 
-  return `
-    ${heroHtml}
-    <div class="mmeta">
-      <div><div class="ml">Timeline</div><div class="mv">${d.tl}</div></div>
-      <div><div class="ml">Role</div><div class="mv">${d.role}</div></div>
-      <div><div class="ml">Team</div><div class="mv">${d.team}</div></div>
-      <div><div class="ml">Type</div><div class="mv">${d.type}</div></div>
-    </div>
-    ${sectionsHtml}
-    ${buildPrevNext(key)}
-    <div style="height:40px"></div>`;
+  const metaHtml = {
+    intuit: `<div class="mmeta">
+      <div class="mmeta-col"><div class="ml">Role</div><div class="mv">Product Design</div></div>
+      <div class="mmeta-col"><div class="ml">Team</div><div class="mv"><span class="m-breadcrumb">Virtual Expert Platform</span><span class="m-breadcrumb-sep">›</span><span class="m-breadcrumb">Innovation Team</span></div></div>
+      <div class="mmeta-col"><div class="ml">Status</div><div class="mv">V1 Shipped</div></div>
+    </div>`,
+    figma: `<div class="mmeta">
+      <div class="mmeta-col"><div class="ml">Role</div><div class="mv">Founding Campus Leader <span class="m-role-sep">·</span> Core Media Designer</div></div>
+      <div class="mmeta-col"><div class="ml">Team</div><div class="mv"><span class="m-breadcrumb">Figma for Education</span><span class="m-breadcrumb-sep">›</span><span class="m-breadcrumb">Campus Ambassador Program</span></div></div>
+    </div>`,
+    libby: `<div class="mmeta">
+      <div class="mmeta-col"><div class="ml">Role</div><div class="mv">Product Design</div></div>
+      <div class="mmeta-col"><div class="ml">Status</div><div class="mv"><a href="https://libbyapp.com" target="_blank" class="m-meta-btn">View Live <span class="arr">↗</span></a></div></div>
+    </div>`,
+    ktp: `<div class="mmeta">
+      <div class="mmeta-col"><div class="ml">Role</div><div class="mv">Principal Product Design</div></div>
+      <div class="mmeta-col"><div class="ml">Status</div><div class="mv"><a href="https://apps.apple.com/us/app/kappa-theta-pi-life/id1641588942" target="_blank" class="m-meta-btn">App Store <span class="arr">↗</span></a></div></div>
+    </div>`,
+  }[key] || `<div class="mmeta">
+    ${d.role ? `<div class="mmeta-col"><div class="ml">Role</div><div class="mv">${d.role}</div></div>` : ''}
+    ${d.type ? `<div class="mmeta-col"><div class="ml">Status</div><div class="mv">${d.type}</div></div>` : ''}
+  </div>`;
+
+  return `${heroHtml}${metaHtml}${sectionsHtml}${buildPrevNext(key)}<div style="height:40px"></div>`;
 }
 
 function buildSidebar(key) {
@@ -1584,10 +1768,8 @@ function buildSidebar(key) {
   msb.querySelectorAll('.sbi').forEach(btn => {
     btn.addEventListener('click', () => {
       const target = document.getElementById(btn.dataset.target);
-      if (target) {
-        target.scrollIntoView({behavior:'smooth', block:'start'});
-      } else {
-        // Section is locked — show friendly cursor error
+      if (target) { target.scrollIntoView({behavior:'smooth', block:'start'}); }
+      else {
         if (lockedTimer) clearTimeout(lockedTimer);
         setCurLocked();
         lockedTimer = setTimeout(() => { setCur(''); lockedTimer = null; }, 2200);
@@ -1597,10 +1779,7 @@ function buildSidebar(key) {
       const target = document.getElementById(btn.dataset.target);
       if (!target) { setCurLocked(); } else { setCur('hand'); }
     });
-    btn.addEventListener('mouseleave', () => {
-      if (lockedTimer) return; // keep error showing
-      setCur('');
-    });
+    btn.addEventListener('mouseleave', () => { if (lockedTimer) return; setCur(''); });
   });
 }
 
@@ -1627,11 +1806,21 @@ function attachPwListeners(key) {
   const attempt = () => {
     if (input.value === (data[key].password || '')) {
       unlockedCases.add(key);
-      document.getElementById('mscroll').innerHTML = buildModalContent(key);
-      document.getElementById('mscroll').scrollTop = 0;
+      const scroller = document.getElementById('mscroll');
+      scroller.innerHTML = buildModalContent(key);
+      scroller.scrollTop = 0;
       buildSidebar(key);
       setupScrollSpy(key);
       attachPwListeners(key);
+      scroller.querySelectorAll('.m-nav-card').forEach(b => {
+        b.addEventListener('click', () => openModal(b.dataset.nav));
+        b.addEventListener('mouseenter', () => setCur('hand'));
+        b.addEventListener('mouseleave', () => setCur(''));
+      });
+      scroller.querySelectorAll('.figma-social-link, .m-video-link').forEach(a => {
+        a.addEventListener('mouseenter', () => setCur('hand'));
+        a.addEventListener('mouseleave', () => setCur(''));
+      });
     } else {
       err.classList.add('show');
       input.value = '';
@@ -1653,9 +1842,7 @@ function setupScrollSpy(key) {
     const sections = d.sections.map(l => document.getElementById(sectionId(l))).filter(Boolean);
     const scrollTop = scroller.scrollTop + 80;
     let active = sections[0];
-    for (const sec of sections) {
-      if (sec.offsetTop <= scrollTop) active = sec;
-    }
+    for (const sec of sections) { if (sec.offsetTop <= scrollTop) active = sec; }
     document.querySelectorAll('.sbi').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.target === active?.id);
     });
@@ -1667,17 +1854,45 @@ function openModal(key) {
   currentKey = key;
   const d = data[key];
   const scroller = document.getElementById('mscroll');
+  const isAlreadyOpen = modalOpen;
+
+  if (isAlreadyOpen) {
+    gsap.to(scroller, {
+      opacity: 0, y: 10, duration: .18, ease: 'power2.in',
+      onComplete: () => {
+        scroller.innerHTML = buildModalContent(key);
+        scroller.scrollTop = 0;
+        buildSidebar(key);
+        setupScrollSpy(key);
+        if (d.locked && !unlockedCases.has(key)) attachPwListeners(key);
+        scroller.querySelectorAll('.m-nav-card').forEach(btn => {
+          btn.addEventListener('click', () => openModal(btn.dataset.nav));
+          btn.addEventListener('mouseenter', () => setCur('hand'));
+          btn.addEventListener('mouseleave', () => setCur(''));
+        });
+        scroller.querySelectorAll('.figma-social-link, .m-video-link').forEach(a => {
+          a.addEventListener('mouseenter', () => setCur('hand'));
+          a.addEventListener('mouseleave', () => setCur(''));
+        });
+        gsap.fromTo(scroller, {opacity:0, y:10}, {opacity:1, y:0, duration:.32, ease:'power2.out'});
+      }
+    });
+    return;
+  }
+
   scroller.innerHTML = buildModalContent(key);
   scroller.scrollTop = 0;
   buildSidebar(key);
   setupScrollSpy(key);
   if (d.locked && !unlockedCases.has(key)) attachPwListeners(key);
-
-  // prev/next buttons inside modal content
-  scroller.querySelectorAll('.m-nav-btn').forEach(btn => {
+  scroller.querySelectorAll('.m-nav-card').forEach(btn => {
     btn.addEventListener('click', () => openModal(btn.dataset.nav));
     btn.addEventListener('mouseenter', () => setCur('hand'));
     btn.addEventListener('mouseleave', () => setCur(''));
+  });
+  scroller.querySelectorAll('.figma-social-link, .m-video-link').forEach(a => {
+    a.addEventListener('mouseenter', () => setCur('hand'));
+    a.addEventListener('mouseleave', () => setCur(''));
   });
 
   modalOpen = true;
@@ -1705,54 +1920,344 @@ document.getElementById('mf').addEventListener('click', () => {
   gsap.to(mo,{width:isFS?'100%':'88%',maxWidth:isFS?'100%':'960px',height:isFS?'100vh':'86vh',borderRadius:isFS?0:14,duration:.42,ease:'expo.out'});
 });
 document.getElementById('mov').addEventListener('click', e => { if(e.target===e.currentTarget) closeModal(); });
-
-// cursor on modal controls
 ['mc','mm','mf','sbb','sbf'].forEach(id => {
   const el = document.getElementById(id);
   if (!el) return;
   el.addEventListener('mouseenter', () => setCur('hand'));
   el.addEventListener('mouseleave', () => setCur(''));
 });
-
 document.getElementById('sbf').addEventListener('click', () => {
   document.getElementById('mscroll').scrollTo({top:0, behavior:'smooth'});
 });
-
 document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
 
 // ── ENTRANCE ─────────────────────────────────────────────────
 gsap.from('#nav',{y:-22,opacity:0,duration:.9,ease:'expo.out',delay:.15});
-
-// Hide windows initially so they don't flash before animating in
 gsap.set(['#w1','#w2','#w3','#w4'], {opacity:0});
 
-// Each window enters from below and settles into its resting rotation.
-// Floats only start after the last entrance finishes to avoid y conflicts.
 const entranceTl = gsap.timeline({
   onComplete: () => {
-    // Zero out any residual GSAP y before handing off to float tweens
     gsap.set(['#w1','#w2','#w3','#w4'], {y:0});
     ['w1','w2','w3','w4'].forEach(startFloat);
   }
 });
-
 entranceTl
-  .fromTo('#w1',
-    {opacity:0, y:40},
-    {opacity:1, y:0, rotate:0, duration:1.1, ease:'expo.out'},
-    0.4)
-  .fromTo('#w2',
-    {opacity:0, y:36},
-    {opacity:1, y:0, rotate:0, duration:1.1, ease:'expo.out'},
-    0.58)
-  .fromTo('#w3',
-    {opacity:0, y:32},
-    {opacity:1, y:0, rotate:0, duration:1.1, ease:'expo.out'},
-    0.72)
-  .fromTo('#w4',
-    {opacity:0, y:28},
-    {opacity:1, y:0, rotate:0, duration:1.0, ease:'expo.out'},
-    0.84);
+  .fromTo('#w1',{opacity:0,y:40},{opacity:1,y:0,rotate:0,duration:1.1,ease:'expo.out'},0.4)
+  .fromTo('#w2',{opacity:0,y:36},{opacity:1,y:0,rotate:0,duration:1.1,ease:'expo.out'},0.58)
+  .fromTo('#w3',{opacity:0,y:32},{opacity:1,y:0,rotate:0,duration:1.1,ease:'expo.out'},0.72)
+  .fromTo('#w4',{opacity:0,y:28},{opacity:1,y:0,rotate:0,duration:1.0,ease:'expo.out'},0.84);
+
+// ── FOOTER ───────────────────────────────────────────────────
+(function() {
+  const stage = document.getElementById('ft-stage');
+  if (!stage) return;
+  const canvas = document.getElementById('ft-canvas');
+  const ctx = canvas.getContext('2d');
+  const inp = document.getElementById('ft-input');
+  const sub = document.getElementById('ft-submit');
+  const tdEl = document.getElementById('ft-td');
+  const tvFill = document.getElementById('ft-tv-fill');
+  const tvNodes = document.getElementById('ft-tv-nodes');
+  const tfEl = document.getElementById('ft-tf');
+
+  let W, H, dpr;
+  let typeSegs = [], anchors = [], pulses = [], floatingFrags = [];
+  let inStage = false, idleTimer = null, decaying = false;
+  let stageMouseX = 0, stageMouseY = 0;
+
+  function ftSetCur(state) { setCur(state); }
+
+  function resize() {
+    dpr = window.devicePixelRatio || 1;
+    const r = stage.getBoundingClientRect();
+    W = r.width; H = r.height;
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    buildType();
+  }
+  window.addEventListener('resize', resize);
+
+  function buildType() {
+    typeSegs = []; anchors = [];
+    const off = document.createElement('canvas');
+    off.width = W * dpr; off.height = H * dpr;
+    const oc = off.getContext('2d');
+    oc.scale(dpr, dpr);
+
+    const fs = Math.min(W * 0.36, H * 0.52);
+    oc.font = `300 ${fs}px "DM Serif Display", serif`;
+    oc.textBaseline = 'alphabetic';
+    oc.fillStyle = '#000';
+    oc.fillText('pixel', -W * 0.02, H * 0.52);
+    oc.fillText('perfect', W * 0.06, H * 0.90);
+
+    const STEP = 5;
+    const id = oc.getImageData(0, 0, W * dpr, H * dpr);
+    const ow = W * dpr, oh = H * dpr;
+    const filled = (x, y) => {
+      const xi = Math.round(x * dpr), yi = Math.round(y * dpr);
+      if (xi < 0 || yi < 0 || xi >= ow || yi >= oh) return false;
+      return id.data[(yi * ow + xi) * 4 + 3] > 80;
+    };
+
+    for (let y = 2; y < H - 2; y += STEP) {
+      for (let x = 2; x < W - 2; x += STEP) {
+        const here = filled(x, y);
+        if (here !== filled(x + STEP, y)) typeSegs.push({x1:x + (here ? STEP : 0), y1:y - STEP/2, x2:x + (here ? STEP : 0), y2:y + STEP/2, reveal:0, hover:0});
+        if (here !== filled(x, y + STEP)) typeSegs.push({x1:x - STEP/2, y1:y + (here ? STEP : 0), x2:x + STEP/2, y2:y + (here ? STEP : 0), reveal:0, hover:0});
+      }
+    }
+
+    const stride = Math.max(1, Math.floor(typeSegs.length / 22));
+    typeSegs.forEach((s, i) => {
+      if (i % stride === 0) {
+        const ax = (s.x1 + s.x2) / 2, ay = (s.y1 + s.y2) / 2;
+        anchors.push({x:ax, y:ay, ox:ax, oy:ay, vx:(Math.random() - 0.5) * 0.1, vy:(Math.random() - 0.5) * 0.1, reveal:0, pulse:0, type:i % 3 === 0 ? 'sq' : 'circ'});
+      }
+    });
+
+    floatingFrags = [
+      {text:'01001', x:W * 0.62, y:H * 0.08}, {text:'v.01', x:W * 0.82, y:H * 0.22},
+      {text:'[ ]', x:W * 0.74, y:H * 0.42}, {text:':::', x:W * 0.55, y:H * 0.55},
+      {text:'▸ _', x:W * 0.88, y:H * 0.60}, {text:'EOF', x:W * 0.67, y:H * 0.72},
+      {text:'0x2F', x:W * 0.79, y:H * 0.18}, {text:'◌', x:W * 0.50, y:H * 0.30},
+      {text:'––', x:W * 0.92, y:H * 0.38},
+    ].map(f => ({...f, op:0.07, base:0.06 + Math.random() * 0.04}));
+  }
+
+  function resetIdle() {
+    decaying = false;
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => { decaying = true; }, 3500);
+  }
+
+  function distToType(px, py) {
+    let minD = Infinity;
+    typeSegs.forEach(s => {
+      const d = Math.hypot((s.x1 + s.x2) / 2 - px, (s.y1 + s.y2) / 2 - py);
+      if (d < minD) minD = d;
+    });
+    return minD;
+  }
+
+  stage.addEventListener('mousemove', e => {
+    const sr = stage.getBoundingClientRect();
+    stageMouseX = e.clientX - sr.left;
+    stageMouseY = e.clientY - sr.top;
+    if (!inStage) return;
+    resetIdle();
+
+    const d = distToType(stageMouseX, stageMouseY);
+    ftSetCur(d < 30 ? '' : 'hand');
+    typeSegs.forEach(s => {
+      const sd = Math.hypot((s.x1 + s.x2) / 2 - stageMouseX, (s.y1 + s.y2) / 2 - stageMouseY);
+      if (sd < 40 && s.reveal > 0.3) s.hover = Math.min(1, s.hover + 0.14);
+      else s.hover = Math.max(0, s.hover - 0.07);
+    });
+  });
+
+  stage.addEventListener('mouseenter', () => { inStage = true; resetIdle(); });
+  stage.addEventListener('mouseleave', () => {
+    inStage = false;
+    ftSetCur('');
+    typeSegs.forEach(s => { s.hover = 0; });
+  });
+
+  stage.addEventListener('click', e => {
+    if (e.target === inp || e.target === sub) return;
+    const sr = stage.getBoundingClientRect();
+    const px = e.clientX - sr.left, py = e.clientY - sr.top;
+    resetIdle();
+
+    const d = distToType(px, py);
+    const R = d < 40 ? 72 : Math.min(290, 72 + d * 1.65);
+    const echoCount = d < 40 ? 0 : Math.min(4, Math.floor(d / 52));
+
+    typeSegs.forEach(s => {
+      const sd = Math.hypot((s.x1 + s.x2) / 2 - px, (s.y1 + s.y2) / 2 - py);
+      if (sd < R) s.reveal = Math.min(1, s.reveal + (1 - sd / R) * 0.82);
+    });
+    anchors.forEach(a => {
+      const ad = Math.hypot(a.x - px, a.y - py);
+      if (ad < R) { a.reveal = Math.min(1, a.reveal + (1 - ad / R) * 0.75); a.pulse = 1; }
+    });
+
+    pulses.push({x:px, y:py, r:0, life:1, echo:false, speed:3.5});
+    for (let i = 0; i < echoCount; i++) {
+      setTimeout(() => pulses.push({x:px, y:py, r:R * (0.2 + i * 0.14), life:0.42, echo:true, speed:2.4}), i * 95 + 95);
+    }
+  });
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    const GRID = 24;
+
+    ctx.strokeStyle = 'rgba(40,63,214,0.036)';
+    ctx.lineWidth = 0.5; ctx.setLineDash([]);
+    for (let x = 0; x < W; x += GRID) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+    for (let y = 0; y < H; y += GRID) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+
+    if (inStage && stageMouseX > 0 && stageMouseX < W) {
+      const gx = Math.round(stageMouseX / GRID) * GRID;
+      const gy = Math.round(stageMouseY / GRID) * GRID;
+      ctx.strokeStyle = 'rgba(40,63,214,.11)'; ctx.lineWidth = 0.5; ctx.setLineDash([2, 4]);
+      ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, H); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(W, gy); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = 'rgba(40,63,214,.38)';
+      ctx.fillRect(gx - 1.5, gy - 1.5, 3, 3);
+    }
+
+    ctx.textBaseline = 'top';
+    ctx.font = '10px "DM Mono", monospace';
+    floatingFrags.forEach(f => {
+      if (decaying) f.op = Math.max(0, f.op - 0.0007);
+      else f.op = Math.min(f.base, f.op + 0.001);
+      ctx.fillStyle = `rgba(40,63,214,${f.op})`;
+      ctx.fillText(f.text, f.x, f.y);
+    });
+
+    if (decaying) {
+      typeSegs.forEach(s => { s.reveal = Math.max(0, s.reveal - 0.003); s.hover = Math.max(0, s.hover - 0.06); });
+      anchors.forEach(a => { a.reveal = Math.max(0, a.reveal - 0.004); a.pulse = Math.max(0, a.pulse - 0.015); });
+    }
+
+    typeSegs.forEach(s => {
+      if (s.reveal > 0.08) return;
+      ctx.strokeStyle = 'rgba(0,0,0,0.026)'; ctx.lineWidth = 0.4; ctx.setLineDash([]);
+      ctx.beginPath(); ctx.moveTo(s.x1, s.y1); ctx.lineTo(s.x2, s.y2); ctx.stroke();
+    });
+
+    typeSegs.forEach(s => {
+      if (s.reveal < 0.01) return;
+      const alpha = Math.min(1, s.reveal * 0.4 + s.hover * 0.62);
+      ctx.strokeStyle = `rgba(40,63,214,${alpha})`;
+      ctx.lineWidth = 0.8; ctx.setLineDash([]);
+      ctx.beginPath(); ctx.moveTo(s.x1, s.y1); ctx.lineTo(s.x2, s.y2); ctx.stroke();
+    });
+
+    const active = anchors.filter(a => a.reveal > 0.08);
+    for (let i = 0; i < active.length; i++) {
+      const a = active[i];
+      for (let j = i + 1; j < active.length; j++) {
+        const b = active[j];
+        const d = Math.hypot(a.x - b.x, a.y - b.y);
+        if (d > 50 && d < 110 && a.reveal > 0.3 && b.reveal > 0.3) {
+          const al = Math.min(a.reveal, b.reveal) * 0.14;
+          ctx.strokeStyle = `rgba(40,63,214,${al})`; ctx.lineWidth = 0.4; ctx.setLineDash([2, 5]);
+          const cpx = (a.x + b.x) / 2, cpy = Math.min(a.y, b.y) - 14;
+          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.quadraticCurveTo(cpx, cpy, b.x, b.y); ctx.stroke();
+          ctx.setLineDash([]);
+        }
+      }
+      const al = a.reveal * 0.48;
+      if (a.type === 'sq') {
+        ctx.fillStyle = `rgba(40,63,214,${al})`; ctx.fillRect(a.x - 2, a.y - 2, 4, 4);
+        if (a.reveal > 0.5) {
+          ctx.strokeStyle = `rgba(40,63,214,${al * 0.4})`; ctx.lineWidth = 0.35;
+          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(a.x + 10, a.y - 5); ctx.stroke();
+          ctx.fillStyle = `rgba(40,63,214,${al * 0.5})`;
+          ctx.beginPath(); ctx.arc(a.x + 10, a.y - 5, 1, 0, Math.PI * 2); ctx.fill();
+        }
+      } else {
+        ctx.strokeStyle = `rgba(40,63,214,${al})`; ctx.lineWidth = 0.6;
+        ctx.beginPath(); ctx.arc(a.x, a.y, 2, 0, Math.PI * 2); ctx.stroke();
+      }
+      if (a.pulse > 0.01) {
+        ctx.strokeStyle = `rgba(40,63,214,${a.pulse * 0.18})`; ctx.lineWidth = 0.4;
+        ctx.beginPath(); ctx.arc(a.x, a.y, 5 + a.pulse * 9, 0, Math.PI * 2); ctx.stroke();
+        a.pulse = Math.max(0, a.pulse - 0.035);
+      }
+      a.x += a.vx; a.y += a.vy;
+      if (Math.hypot(a.x - a.ox, a.y - a.oy) > 7) { a.vx *= -0.7; a.vy *= -0.7; }
+    }
+
+    pulses = pulses.filter(p => p.life > 0);
+    pulses.forEach(p => {
+      p.r += p.speed || 3.5; p.life -= p.echo ? 0.046 : 0.038;
+      ctx.strokeStyle = `rgba(40,63,214,${p.life * (p.echo ? 0.13 : 0.21)})`;
+      ctx.lineWidth = p.echo ? 0.35 : 0.5;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.stroke();
+    });
+
+    const total = typeSegs.length || 1;
+    const rev = typeSegs.reduce((s, t) => s + t.reveal, 0);
+    const pct = Math.min(100, Math.round(rev / total * 100));
+    tvFill.textContent = pct + '%';
+    tvNodes.textContent = anchors.filter(a => a.reveal > 0.1).length;
+    tfEl.style.width = pct + '%';
+    if (pct >= 75) { tdEl.className = 'ft-term-dot active'; tvFill.className = 'ft-term-val green'; }
+    else if (pct >= 25) { tdEl.className = 'ft-term-dot warn'; tvFill.className = 'ft-term-val blue'; }
+    else { tdEl.className = 'ft-term-dot'; tvFill.className = 'ft-term-val blue'; }
+
+    requestAnimationFrame(draw);
+  }
+
+  const CMD = {
+    'hello':'> hello, world', 'hi':'> hello, faye',
+    'help':'> cmds: skills process work ship contact',
+    'skills':'> product · design · dev · research',
+    'process':'> research → frame → design → ship',
+    'work':'> intuit · figma · libby · ktp',
+    'ship':'> ktp · intuit HITL · libbyU onboarding',
+    'design':'> design-led · detail-obsessed · pixel-perfect',
+    'figma':'> founding campus leader · 1 of 56',
+    'intuit':'> HITL annotation system · FY26',
+    'about':'> systems designer · umich · 2026',
+    'contact':'> hello@fayejstover.com',
+  };
+
+  function spawnCmd(text) {
+    const pop = document.createElement('div');
+    pop.className = 'ft-cmd-pop';
+    pop.innerHTML = text;
+    pop.style.left = (W / 2 - 95) + 'px';
+    pop.style.bottom = '54px';
+    stage.appendChild(pop);
+
+    const px = W * 0.35 + Math.random() * W * 0.3;
+    const py = H * 0.3 + Math.random() * H * 0.25;
+    typeSegs.forEach(s => {
+      const d = Math.hypot((s.x1 + s.x2) / 2 - px, (s.y1 + s.y2) / 2 - py);
+      if (d < 120) s.reveal = Math.min(1, s.reveal + (1 - d / 120) * 0.6);
+    });
+    anchors.forEach(a => {
+      const d = Math.hypot(a.x - px, a.y - py);
+      if (d < 140) { a.reveal = Math.min(1, a.reveal + 0.45); a.pulse = 0.7; }
+    });
+    pulses.push({x:px, y:py, r:0, life:1, speed:3.5});
+    resetIdle();
+
+    setTimeout(() => {
+      pop.style.transition = 'opacity .6s,transform .6s';
+      pop.style.opacity = '0';
+      pop.style.transform = 'translateY(-4px)';
+      setTimeout(() => pop.remove(), 600);
+    }, 2400);
+  }
+
+  function handleCmd(raw) {
+    const cmd = raw.trim().toLowerCase();
+    if (!cmd) return;
+    spawnCmd(`<span class="dim">$ ${raw.trim()}</span><br>${CMD[cmd] || `> "${raw.trim()}" — try: help`}`);
+  }
+
+  inp.addEventListener('focus', () => ftSetCur(''));
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter') { handleCmd(inp.value); inp.value = ''; } });
+  sub.addEventListener('click', () => { handleCmd(inp.value); inp.value = ''; inp.focus(); });
+
+  document.querySelectorAll('.ft-link, .ft-link-email, .ft-submit').forEach(el => {
+    el.addEventListener('mouseenter', () => ftSetCur('hand'));
+    el.addEventListener('mouseleave', () => ftSetCur(''));
+  });
+
+  resize();
+  resetIdle();
+  draw();
+})();
 </script>
 </body>
 </html>
