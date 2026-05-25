@@ -100,8 +100,16 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
 }
 #nav-inner{position:relative;display:inline-flex;align-items:center;gap:0}
 #nav-pill{
-  position:absolute;top:0;left:0;
-  border-radius:var(--rnav);background:var(--brand);
+  position:absolute;top:0;left:0;border-radius:var(--rnav);
+  background:rgba(28,50,210,0.86);
+  backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  border:0.5px solid rgba(100,130,255,0.32);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.26) inset,
+    0 -0.5px 0 rgba(0,0,40,0.14) inset,
+    0 4px 20px rgba(28,50,210,0.32),
+    0 1px 6px rgba(28,50,210,0.18);
   z-index:0;pointer-events:none;opacity:0;
 }
 .ni{
@@ -174,8 +182,9 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
   background-image:linear-gradient(to bottom, rgba(0,0,0,0.50) 0%, rgba(0,0,0,0.15) 60%, transparent 100%);
 }
 .wname{font-family:var(--serif);font-size:48px;color:#fff;line-height:0.96;position:relative;z-index:2;text-shadow:0 2px 24px rgba(0,0,0,0.38),0 1px 4px rgba(0,0,0,0.28);letter-spacing:-.01em;}
-.wtagline{font-family:var(--sans);font-size:14px;color:rgba(255,255,255,.85);white-space:wrap;overflow:hidden;text-overflow:ellipsis;position:relative;z-index:2;margin-top:14px;font-weight:400;}
+.wtagline{font-family:var(--sans);font-size:14px;color:rgba(255,255,255,.72);white-space:wrap;overflow:hidden;text-overflow:ellipsis;position:relative;z-index:2;margin-top:14px;font-weight:400;}
 .wprev{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.58);letter-spacing:.04em;position:relative;z-index:2;margin-top:6px;white-space:nowrap;}
+.wprev-co{color:rgba(255,255,255,.96);font-weight:500;}
 .wtag{background:linear-gradient(135deg,#FF3CA0 0%,#B81C67 100%);width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
 .tagtxt{font-family:var(--serif);font-size:19px;font-style:italic;color:#fff;position:relative;z-index:2}
 
@@ -494,8 +503,7 @@ footer#ft{width:100%;display:flex;flex-direction:column;position:relative}
           <img src="assets/landing1.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;display:block;">
           <div class="wbig" style="background:transparent;position:absolute;inset:0;z-index:2">
             <div class="wname">Faye J.Stover</div>
-            <div class="wtagline">Designing tools that break down technical nuances into efficient and delightful work. Previously at 
-            <a >Intuit</a> · <a >Figma</a> · <a >Viget</a></div>
+            <div class="wtagline">Designing tools that break down technical nuances into efficient and delightful work. Previously at <a href="https://www.intuit.com" target="_blank" class="wprev-co" style="color:inherit;text-decoration:none;cursor:none">Intuit</a> · <a href="https://www.figma.com" target="_blank" class="wprev-co" style="color:inherit;text-decoration:none;cursor:none">Figma</a> · <a href="https://www.viget.com" target="_blank" class="wprev-co" style="color:inherit;text-decoration:none;cursor:none">Viget</a></div>
           </div>
         </div>
         <div class="rh-edge rh-n" data-dir="n"></div><div class="rh-edge rh-s" data-dir="s"></div>
@@ -540,7 +548,7 @@ footer#ft{width:100%;display:flex;flex-direction:column;position:relative}
         <div class="wb">
           <img src="assets/landing3.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;display:block;">
           <div class="wtag" style="background:transparent;position:absolute;inset:0;z-index:2">
-            <div class="tagtxt">design && build</div>
+            <div class="tagtxt">clarity.</div>
           </div>
         </div>
         <div class="rh-edge rh-n" data-dir="n"></div><div class="rh-edge rh-s" data-dir="s"></div>
@@ -802,10 +810,10 @@ const pill = document.getElementById('nav-pill');
 
 function pillTo(el, anim=true) {
   const inner = document.getElementById('nav-inner');
-  const ir_container = inner.getBoundingClientRect();
+  const ic = inner.getBoundingClientRect();
   const ir = el.getBoundingClientRect();
-  const props = { x: ir.left - ir_container.left, y: ir.top - ir_container.top, width: ir.width, height: ir.height };
-  if (anim) gsap.to(pill, {...props, duration:0.55, ease:'expo.out'});
+  const props = { x: ir.left-ic.left, y: ir.top-ic.top, width: ir.width, height: ir.height };
+  if (anim) gsap.to(pill, {...props, duration:0.52, ease:'expo.out'});
   else gsap.set(pill, props);
 }
 
@@ -831,11 +839,18 @@ function goTo(pageId, instant=false) {
 }
 
 nis.forEach(n => {
-  if (n.dataset.href) { n.addEventListener('click', () => { window.location.href = n.dataset.href; }); }
+  if (n.dataset.href) {
+    n.addEventListener('click', () => {
+      pillTo(n, true);
+      window.location.href = n.dataset.href;
+    });
+  }
   else { n.addEventListener('click', () => goTo(n.dataset.page)); }
   n.addEventListener('mouseenter', () => setCur('hand'));
   n.addEventListener('mouseleave', () => setCur(''));
 });
+
+
 
 // ── SCROLL SNAP ──────────────────────────────────────────────
 let cooldown = false;
@@ -1942,16 +1957,17 @@ document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); }
 // ── ENTRANCE (skip intro — already played this session) ──────
 function skipIntro(){
   document.getElementById('intro').style.display='none';
+  // Nav stays put - never animate it on skip
   gsap.set('#nav',{y:0,opacity:1});
   gsap.set(['#w1','#w2','#w3','#w4'],{opacity:0});
   const tl=gsap.timeline({onComplete:()=>{
     gsap.set(['#w1','#w2','#w3','#w4'],{y:0});
     ['w1','w2','w3','w4'].forEach(startFloat);
   }});
-  tl.fromTo('#w1',{opacity:0,y:40},{opacity:1,y:0,duration:1.1,ease:'expo.out'},0.4)
-    .fromTo('#w2',{opacity:0,y:36},{opacity:1,y:0,duration:1.1,ease:'expo.out'},0.58)
-    .fromTo('#w3',{opacity:0,y:32},{opacity:1,y:0,duration:1.1,ease:'expo.out'},0.72)
-    .fromTo('#w4',{opacity:0,y:28},{opacity:1,y:0,duration:1.0,ease:'expo.out'},0.84);
+  tl.fromTo('#w1',{opacity:0,y:24},{opacity:1,y:0,duration:.7,ease:'expo.out'},0)
+    .fromTo('#w2',{opacity:0,y:20},{opacity:1,y:0,duration:.7,ease:'expo.out'},0.1)
+    .fromTo('#w3',{opacity:0,y:18},{opacity:1,y:0,duration:.7,ease:'expo.out'},0.18)
+    .fromTo('#w4',{opacity:0,y:14},{opacity:1,y:0,duration:.65,ease:'expo.out'},0.25);
 }
 
 // ── INTRO SEQUENCE ──────────────────────────────────────────
@@ -2224,7 +2240,7 @@ function fallbackIntro(){
       intro.to(st,{labelFade:0,duration:0.60,ease:'power2.in',onUpdate:render},A_START);
 
       const BOTH_DONE=Math.max(F_START+F_DUR,A_START+A_DUR);
-      intro.set({},{},BOTH_DONE+0.15);
+      intro.set({},{},BOTH_DONE-0.5);
 
       const BLUE_T=BOTH_DONE+0.30;
       intro.call(()=>{ st.phase=1; st.aOp=1; render(); },[],BLUE_T);
@@ -2273,6 +2289,7 @@ function fallbackIntro(){
   document.fonts.ready.then(test);
 })();
 } // end sessionStorage gate
+
 
 
 // ── FOOTER ───────────────────────────────────────────────────
