@@ -125,6 +125,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
 .page{position:absolute;left:0;right:0;top:0;height:100vh;background:var(--bg)}
 #p-home{display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
 #p-work,#p-visual,#p-about{overflow-y:auto;overflow-x:hidden;padding:80px 0 60px;}
+#p-work{padding-bottom:0}
 #p-work::-webkit-scrollbar,#p-visual::-webkit-scrollbar,#p-about::-webkit-scrollbar{display:none}
 .page-inner{width:100%;max-width:1340px;margin:0 auto;padding:0 52px}
 
@@ -184,9 +185,14 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
 .wname{font-family:var(--serif);font-size:48px;color:#fff;line-height:0.96;position:relative;z-index:2;text-shadow:0 2px 24px rgba(0,0,0,0.38),0 1px 4px rgba(0,0,0,0.28);letter-spacing:-.01em;}
 .wtagline{font-family:var(--sans);font-size:14px;color:rgba(255,255,255,.72);white-space:wrap;overflow:hidden;text-overflow:ellipsis;position:relative;z-index:2;margin-top:14px;font-weight:400;}
 .wprev{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.58);letter-spacing:.04em;position:relative;z-index:2;margin-top:6px;white-space:nowrap;}
-.wprev-co{color:rgba(255,255,255,.96);font-weight:500;}
+.wprev-co{color:#fff!important;font-weight:500;text-shadow:0 1px 8px rgba(0,0,0,0.36);}
 .wtag{background:linear-gradient(135deg,#FF3CA0 0%,#B81C67 100%);width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
-.tagtxt{font-family:var(--serif);font-size:19px;font-style:italic;color:#fff;position:relative;z-index:2}
+.tagtxt{
+  font-family:"Courier New",Courier,monospace;
+  font-size:18px;font-weight:700;color:#fff;position:relative;z-index:2;
+  letter-spacing:.01em;text-shadow:0 2px 10px rgba(0,0,0,0.7),0 1px 2px rgba(0,0,0,0.55);
+  background:rgba(0,0,0,0.18);border-radius:4px;padding:2px 6px;
+}
 
 /* ── RESIZE HANDLES ───────────── */
 .rh-edge,.rh-corner{position:absolute;z-index:10}
@@ -203,7 +209,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
 .wk-hd{display:flex;align-items:baseline;gap:16px;margin-bottom:32px}
 .wk-lbl{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
 .wk-line{flex:1;height:1px;background:rgba(0,0,0,0.10)}
-.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:24px 24px;width:100%;}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:24px 24px;width:100%;padding-bottom:72px;}
 .cw{display:flex;flex-direction:column;gap:14px;cursor:none}
 .cc{
   border-radius:14px;overflow:hidden;cursor:none;position:relative;
@@ -548,9 +554,9 @@ footer#ft{width:100%;display:flex;flex-direction:column;position:relative}
         <div class="wb">
           <img src="assets/landing3.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;display:block;">
           <div class="wtag" style="background:transparent;position:absolute;inset:0;z-index:2">
-            <div class="tagtxt">clarity.</div>
+            <div class="tagtxt">design && build</div>
           </div>
-        </div>
+        </div>    
         <div class="rh-edge rh-n" data-dir="n"></div><div class="rh-edge rh-s" data-dir="s"></div>
         <div class="rh-edge rh-e" data-dir="e"></div><div class="rh-edge rh-w" data-dir="w"></div>
         <div class="rh-corner rh-nw" data-dir="nw"></div><div class="rh-corner rh-ne" data-dir="ne"></div>
