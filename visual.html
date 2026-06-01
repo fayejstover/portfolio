@@ -553,12 +553,43 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
 .pm-body{
   font-family:var(--sans);font-size:12px;line-height:1.7;color:var(--text);
 }
+.note-essay{
+  max-width:620px;margin:0 auto;
+  font-size:13px;line-height:1.78;
+}
+.note-essay h1{
+  font-family:var(--serif);font-size:34px;font-weight:400;
+  line-height:1.05;letter-spacing:0;text-align:center;
+  color:var(--text);margin:4px 0 24px;
+}
+.note-essay .note-section{
+  display:block;font-weight:500;color:var(--text);
+  margin:18px 0 8px;
+}
+.note-essay .note-rule{
+  border:0;border-top:1px solid rgba(0,0,0,0.10);
+  margin:24px 0 20px;
+}
+.note-figure{
+  margin:18px 0 22px;
+}
+.note-figure img{
+  display:block;width:100%;height:auto;border-radius:8px;
+  border:1px solid rgba(0,0,0,0.08);
+}
+.note-caption{
+  font-size:11px;line-height:1.55;color:var(--text-muted);
+  font-style:italic;margin-top:7px;
+}
+.note-essay p{margin-bottom:13px;color:var(--text-mid);}
 .pm-body h3{
   font-size:14px;font-weight:500;margin:6px 0 10px;
   letter-spacing:-.01em;color:var(--text);
 }
 .pm-body p{margin-bottom:12px;color:var(--text-mid);}
 .pm-body p:last-child{margin-bottom:0}
+.pm-body a{color:var(--brand);text-decoration:none;border-bottom:1px solid rgba(40,63,214,.26);}
+.pm-body a:hover{border-bottom-color:rgba(40,63,214,.62);}
 .pm-body em{font-style:italic;color:var(--text-mid)}
 .pm-body strong{font-weight:500;color:var(--text)}
 .pm-body blockquote{
@@ -826,10 +857,12 @@ const TOOLS = {
   r3f:             { label:'React Three Fiber', group:'3D' },
   // AI + Code
   claude:          { label:'Claude',   group:'AI + Tools' },
+  codex:           { label:'Codex',             group:'AI + Tools' },
   cursor:          { label:'Cursor',            group:'AI + Tools' },
   windsurf:        { label:'Windsurf',          group:'AI + Tools' },
   v0:              { label:'v0',                group:'AI + Tools' },
   vscode:          { label:'VS Code',           group:'AI + Tools' },
+  notes:           { label:'Notes',             group:'Writing' },
 };
 
 // LAYER 3 — Dock apps (curated subset of TOOLS with icons)
@@ -842,7 +875,8 @@ const APPS = [
   { id:'vscode',  path:'assets/apps/vscode.png',  filterable:true  },
   { id:'v0',      path:'assets/apps/v0.png',      filterable:true  },
   { id:'jitter',  path:'assets/apps/jitter.png',  filterable:true  },
-  { id:'Codex',    path:'assets/apps/codex.png',    filterable:true  },
+  { id:'codex',   path:'assets/apps/codex.png',   filterable:true  },
+  { id:'notes',   path:'assets/apps/notes.svg',   filterable:true  },
   
   // Decorative — vibe only, no filter
     { id:'Whisper', path:'assets/apps/whispr.png', filterable:false },
@@ -876,7 +910,6 @@ const WORKS = [
   mediaType:'live',
   link:'https://fayejstover.github.io/snow/', linkLabel:'Try it Live ↗',
   cover:'assets/play/snow-galaxy_cover.png',
-  preview:'assets/play/snow-galaxy_preview.png',
     preview:[
     'assets/play/snow-galaxy1.gif',
     'assets/play/snow-galaxy2.png', 
@@ -886,9 +919,59 @@ const WORKS = [
 },
 
 {
+  id:'note-01', title:'The Monet Problem',
+  desc:'A think piece on AI labels, aesthetic judgment, and what happens when the story around the work does the looking for us.',
+  cats:['notes'],
+  tools:['notes'],
+  stack:{
+    Format:['Think piece'],
+    Topic:['AI','Aesthetic judgment'],
+    Focus:['Perception','Provenance'],
+  },
+  mediaType:'writing',
+  cover:'assets/play/note-01_cover.png',
+  body:`
+    <article class="note-essay">
+      <h3>The Monet Problem</h3>
+      <p>A few weeks ago I watched a thousand people on X explain, in confident and sometimes technical detail, why a painting was bad. They knew <em>exactly</em> what was wrong with it. The brushwork was aimless. The reflections were procedurally generated. The composition had that flat, soulless quality people have gotten very good at naming. One person drew eye-tracking lines over the image to prove the composition failed. Another just said: "Because it's crap. That simple. No talent to it."</p>
+      <p>The painting was a Monet. A real one. <em>Water Lilies</em>, oil on canvas, around 1915.</p>
+      <figure class="note-figure">
+      </figure>
+      <p>An anonymous conceptual artist who goes by <a href="https://x.com/SHL0MS" target="_blank" rel="noopener">@SHL0MS</a> had posted a cropped image of it, labeled it as AI-generated, and asked people to describe what made it inferior to a real Monet. The post reached nearly <a href="https://x.com/SHL0MS/status/2054280631807316329" target="_blank" rel="noopener">seven million people</a>. Over a thousand replied. And once the truth came out, critics started quietly deleting their responses. SHL0MS and other users had already taken screenshots.</p>
+
+      <hr class="note-rule">
+      <p><strong class="note-section">The label did the looking.</strong></p>
+      <p>I keep thinking about those deleted replies. Not because the people were wrong about art in some general sense. Most of them clearly knew something about composition and color and technique. That's what makes it stick. They had the vocabulary. They had opinions they could defend. And every bit of it collapsed the moment the label changed, because the label was <em>load-bearing</em>. It was doing the work that their actual eyes were supposed to do.</p>
+      <p>There's a name for this. The <a href="https://en.wikipedia.org/wiki/Effort_heuristic" target="_blank" rel="noopener">effort heuristic</a>. We assign more value to outcomes we believe required more effort. Show someone two identical poems, tell them one took a year and the other took an afternoon, and they'll prefer the year-long poem. They'll find depth in it. They'll feel things in the line breaks that they wouldn't feel if they believed the breaks were arbitrary. This isn't a quirk. It's closer to an entire perceptual orientation. It doesn't just shape how we judge things after the fact. It shapes what we <em>experience</em> in the first place.</p>
+
+      <hr class="note-rule">
+      <p><strong class="note-section">We judge the story, not the work.</strong></p>
+      <p>Which means the Monet experiment wasn't a gotcha about internet stupidity. It was a live demonstration of something much harder to sit with: that a huge amount of aesthetic judgment has always been about the story surrounding the work, not the work itself. Provenance and effort and identity and intention. The whole scaffolding that tells us what a piece <em>deserves</em> from us before we've given it anything. People were evaluating that scaffolding. The painting was almost beside the point.</p>
+      <p class="note-caption">Screenshots of since-deleted replies confidently diagnosing "AI tells" in a 110-year-old painting.</p>
+
+      <hr class="note-rule">
+      <p><strong class="note-section">This panic has a long history.</strong></p>
+      <p>Photography went through an identical crisis starting in the 1830s. <a href="https://www.csus.edu/indiv/o/obriene/art109/readings/11%20baudelaire%20photography.htm" target="_blank" rel="noopener">Baudelaire called it art's mortal enemy</a>. The argument was structural: because a camera captured light mechanically, the resulting image couldn't carry genuine artistic intent. The operator was a technician, not a creator. And what I find remarkable in hindsight is how precisely the art establishment could describe what photography lacked while failing to notice that their criticisms said more about their sorting criteria than about the medium itself. The intent was there. Critics just had no framework for recognizing it inside an unfamiliar container.</p>
+      <p>The resolution is worth paying attention to. Photography absorbed painting's documentary function, which freed painting to do something it hadn't fully committed to before. To chase <em>perception</em> itself. Impressionism, the movement Monet helped define, was partly a response to mechanical reproduction. If a camera could show you what the haystack looked like, then the point of painting was showing you what <em>seeing</em> the haystack felt like. The panic didn't end because people got smarter about cameras. It ended because the value migrated from the layer the tool could handle to the layer it couldn't.</p>
+
+      <hr class="note-rule">
+      <p><strong class="note-section">Writers are faking being human.</strong></p>
+      <p>I think we're at that same inflection with generative AI, and the script is playing out with uncomfortable precision. Writers I know are inserting deliberate typos. Breaking their sentence rhythms to avoid patterns readers now associate with language models. One essayist I follow mentioned removing certain punctuation from her work, not because her writing had changed, but because the punctuation now carried a connotation she hadn't chosen. The thinking is the same. The arguments are the same. But a new layer of labor has appeared on top of the actual labor: performing humanness as a credibility signal. You have to prove you're a person now before anyone will engage with what you've said as though it has weight.</p>
+
+      <hr class="note-rule">
+      <p><strong class="note-section">What if we just looked first?</strong></p>
+      <p><a href="https://en.wikipedia.org/wiki/Negative_capability" target="_blank" rel="noopener">Keats</a> had a term for the thing I think people are losing: <em>negative capability</em>. He defined it as the capacity to remain in uncertainty and doubt without irritably reaching after fact and reason. He was describing the best poets, people who could sit inside a question long enough for the question to become more interesting than any available answer. That quality feels less like a poetic luxury now and more like a practical skill. Because the ask, for anyone encountering creative work today, is pretty simple. Can you look at the thing before you check the label? Can you let the work be the work for thirty seconds before the sorting kicks in?</p>
+      <p>The people who replied to that <em>Water Lilies</em> post weren't dumb. Their perceptual experience was real. They genuinely saw flaws once the label told them to look. What they revealed, without meaning to, is that the label was always arriving before the looking. The sorting was always doing the work that taste was supposed to do. Nobody had a reason to notice until the sorting was wrong in public, at scale, with screenshots.</p>
+      <p>I think most aesthetic evaluation has always worked this way. The Monet experiment just made it visible to seven million people at once.</p>
+    </article>
+  `,
+  grad:'linear-gradient(155deg,#FFF8EA 0%,#EADBC2 52%,#C8B89B 100%)',
+},
+
+{
   id:'browserbase', title:'Browserbase Motion Design',
   desc:'Hired by Browserbase to create motion storytelling and visual content for their socials — focused on animation, product storytelling with high visual design.',
-  cats:['motion','visuals','storytelling'],
+  cats:['motion','visual'],
   tools:['figma'],
   stack:{
     Design:['Figma'],
@@ -900,6 +983,64 @@ const WORKS = [
   preview:['assets/play/bb.gif', 
   ],
   grad:'linear-gradient(155deg,#0F172A 0%,#1E293B 52%,#334155 100%)',
+},
+
+{
+  id:'note-02', title:'The Kylie Doctrine',
+  desc:'A think piece on Kylie Jenner, the Instagram face, and what happens when a beauty standard becomes a customer acquisition channel.',
+  cats:['notes'],
+  tools:['notes'],
+  stack:{
+    Format:['Think piece'],
+    Topic:['Beauty','Attention markets'],
+    Focus:['Distribution','Aesthetic value'],
+  },
+  mediaType:'writing',
+  cover:'assets/play/note-02_cover.svg',
+  body:`
+    <article class="note-essay">
+      <h3>The Kylie Doctrine</h3>
+      <p>In 2015, Kylie Jenner admitted to getting lip filler. She was seventeen. Within a year, she'd launched a lip kit. Within three years, she'd built <a href="https://en.wikipedia.org/wiki/Kylie_Cosmetics" target="_blank" rel="noopener">Kylie Cosmetics</a> into a company valued at over a billion dollars. The timeline is so clean it almost looks like a business plan. Because it was one.</p>
+      <p>I think about this sequence a lot, not because of the money but because of what it reveals about what was actually being sold at each stage. The filler changed her face. The face generated attention. The attention became a customer base. The customer base bought the lip kit. The lip kit funded the cosmetics line. And the cosmetics line got acquired. At no point in that chain was the <em>face</em> the product. The face was a prototype. A proof of concept for a distribution channel that hadn't been built yet.</p>
+      <figure class="note-figure">
+        <img src="assets/play/kylie-lipkit_figure.png" alt="Illustrated lip kit launch abstraction">
+        <figcaption class="note-caption">Kylie Jenner's lip kit launch, 2016. Early launches <a href="https://www.nylon.com/articles/kylie-jenner-lip-kit" target="_blank" rel="noopener">sold out in under a minute</a>.</figcaption>
+      </figure>
+
+      <hr class="note-rule">
+      <p><strong class="note-section">The face was a funnel.</strong></p>
+      <p>Most people who followed Kylie's trajectory saw a young woman who got famous, got filler, and parlayed her look into a brand. That reading isn't wrong, but it misses something important about the <em>direction</em> of the value chain. The conventional celebrity beauty arc goes: be beautiful, get famous, slap your name on a product. Kylie did something structurally different. She treated her own appearance as a variable to be optimized, tested the result against the largest attention market in history, and then sold the tools to replicate it. The face wasn't the destination. It was the top of the funnel.</p>
+      <p>There's a <a href="https://en.wikipedia.org/wiki/Will_to_power" target="_blank" rel="noopener">Nietzsche</a> concept that keeps coming to mind here, and I don't mean the pop-culture version. Nietzsche wrote about the will to impose your own values on raw material, to look at an indifferent world and <em>decide</em> what it means rather than waiting for it to tell you. Most people who copied Kylie's look were reacting. They saw something that worked and they replicated it. Kylie was doing something categorically different. She looked at her own face and saw inventory.</p>
+
+      <hr class="note-rule">
+      <p><strong class="note-section">Then the look went mass market.</strong></p>
+      <p>Here's where it gets interesting. By 2017 or so, the aesthetic Kylie helped popularize had become its own thing. People started calling it the <a href="https://www.newyorker.com/culture/decade-in-review/the-age-of-instagram-face/" target="_blank" rel="noopener">Instagram face</a>. You know it when you see it. Full lips, contoured cheekbones, a kind of ethnically ambiguous smoothness that photographs well at every angle and stops your thumb mid-scroll. It scaled globally because it was <em>designed</em> to scale globally, even if nobody sat down and designed it on purpose. The algorithm selected for it. Faces that held attention got boosted. Faces that got boosted got copied. The loop tightened until a meaningful percentage of the women on your Explore page looked like variations of the same person.</p>
+      <figure class="note-figure">
+      <p>The Instagram face at scale. Scroll through any beauty hashtag from 2017 to 2020 and the convergence is hard to miss.</p>
+      </figure>
+      <p>That's what happens when an aesthetic becomes abundant. The look stops being a signal of anything individual. When one person has it, the face communicates something. When ten million people have it, the face is noise. The information value collapses. And once that happens, the value has to live somewhere else.</p>
+
+      <hr class="note-rule">
+      <p><strong class="note-section">Most people bought the look. She sold the supply chain.</strong></p>
+      <p>This is the part that sticks with me. Millions of people invested real money and real pain into achieving an aesthetic that was, from the supply side, a customer acquisition strategy. Lip filler. Contouring tutorials. Specific foundations and highlighters purchased to reproduce a specific look. All of that effort pointed toward <em>becoming the image</em>. Kylie's effort pointed toward owning the pipeline that manufactured it.</p>
+      <p>The <a href="https://en.wikipedia.org/wiki/Map%E2%80%93territory_relation" target="_blank" rel="noopener">map-is-not-the-territory</a> problem shows up everywhere, but rarely this cleanly. The face was the map. The territory was the distribution. Everyone who got the lip filler was navigating by the map. Kylie was drawing it.</p>
+
+      <hr class="note-rule">
+      <p><strong class="note-section">Abundance revealed the real product.</strong></p>
+      <p>When the Instagram face was rare, it felt aspirational. When it was everywhere, it felt like a filter preset. That transition is the tell. The scarcity of the look was doing a huge amount of work that people attributed to the look itself. Once the scarcity disappeared, you could finally see what was underneath: an attention-routing mechanism. A way to convert a specific visual identity into a specific commercial outcome. The beauty was real. But the beauty was never the point.</p>
+      <p>And I think that's the thing most people missed while they were getting filler and learning to contour. They looked at Kylie Jenner and saw someone who was beautiful and successful. The more honest read is that she saw an underpriced asset, her own face, in a market that hadn't yet figured out how to value attention correctly. She priced it before anyone else did. By the time the rest of the market caught up and the look became commoditized, she'd already exited.</p>
+      <figure class="note-figure">
+        <img src="assets/play/kylie-coty_figure.jpg" alt="Illustrated acquisition headline card">
+        <figcaption class="note-caption">Kylie Cosmetics, <a href="https://www.vogue.com/article/coty-kylie-cosmetics-acquisition-kylie-jenner-beauty" target="_blank" rel="noopener">acquired by Coty Inc.</a> in 2020. The face launched a billion-dollar brand. The brand didn't need the face anymore.</figcaption>
+      </figure>
+
+      <hr class="note-rule">
+      <p><strong class="note-section">The standard was a business model.</strong></p>
+      <p>There's something clarifying about watching a beauty standard get so thoroughly commoditized that it stops working. It forces you to ask what the standard was <em>for</em>. And the honest answer, at least in this case, is that the standard was for distribution. It was a customer acquisition channel shaped like a pair of lips.</p>
+      <p>Everyone who participated in the Instagram face thought they were buying beauty. Kylie was selling supply. That distinction is the whole game, and almost nobody saw it while it was happening. By the time the look felt generic, the billion dollars had already moved.</p>
+    </article>
+  `,
+  grad:'linear-gradient(155deg,#E6F0E8 0%,#C9DCCD 52%,#95B5A0 100%)',
 },
 
   {
@@ -922,6 +1063,59 @@ const WORKS = [
     'assets/play/portfolio3.gif'
     ],
     grad:'linear-gradient(155deg,#111 0%,#1c1c1c 52%,#283040 100%)',
+  },
+  {
+    id:'note-03', title:'The Staircase Question',
+    desc:'A think piece on comfort, defaults, and the practical wisdom of choosing friction when ease is always available.',
+    cats:['notes'],
+    tools:['notes'],
+    stack:{
+      Format:['Think piece'],
+      Topic:['Comfort','Behavior'],
+      Focus:['Defaults','Practical wisdom'],
+    },
+    mediaType:'writing',
+    cover:'assets/play/note-03_cover.svg',
+    body:`
+      <article class="note-essay">
+        <h3>The Staircase Question</h3>
+        <p>There's a statistic I think about more than I should. Only <a href="https://pubmed.ncbi.nlm.nih.gov/22777931/" target="_blank" rel="noopener">2% of people take the stairs</a> when an elevator is available. Two percent. In a building with both options, ninety-eight out of a hundred people will stand still and wait for a machine to move them one or two floors. Not because the stairs are dangerous or inaccessible or particularly hard. Just because the elevator is <em>there</em>.</p>
+        <p>I don't bring this up to shame anyone for riding an elevator. I bring it up because I think that ratio tells you something about how defaults work on us. The question was never "are you fit enough to climb stairs?" The question is why almost nobody chooses the option that requires more effort when a frictionless alternative exists. And the answer, I think, has very little to do with stairs.</p>
+        <figure class="note-figure">
+          <p>The choice that 98% of people make without thinking about it.</p>
+        </figure>
+
+        <hr class="note-rule">
+        <p><strong class="note-section">We were built for a harder world.</strong></p>
+        <p><a href="https://www.eastermichael.com/" target="_blank" rel="noopener">Michael Easter</a> wrote a book called <em><a href="https://www.amazon.com/Comfort-Crisis-Embrace-Discomfort-Reclaim/dp/0593138767" target="_blank" rel="noopener">The Comfort Crisis</a></em> that I keep coming back to. His central argument is that human bodies and minds evolved under conditions of constant low-grade hardship. Irregular food. Temperature variation. Long stretches of physical effort followed by rest that was actually earned. Our stress response systems, our metabolic processes, our emotional regulation, all of it was calibrated for an environment where comfort was intermittent and hard-won. A reward at the end of effort, not a baseline state.</p>
+        <p>We now live in the opposite environment. Climate control. Caloric surplus. Chairs engineered to make sitting feel like floating. Same-day delivery so you never have to want something for longer than a few hours. Every friction point that our ancestors would have encountered in a normal day has been systematically identified and removed by someone trying to sell us the removal. The result is an organism built for resistance living in a world that offers almost none.</p>
+
+        <hr class="note-rule">
+        <p><strong class="note-section">Ease stopped feeling like rest.</strong></p>
+        <p>Here's what I find genuinely hard to think through clearly. The feeling of comfort and the feeling of well-being are supposed to be related. Rest is supposed to feel good <em>because</em> it follows effort. Warmth is supposed to feel good because you've been cold. A meal is supposed to feel good because you were hungry. The reward signal is tied to the contrast. Remove the contrast, keep only the reward, and something strange starts to happen. The ease is still there. The satisfaction quietly leaves.</p>
+        <p>I see this everywhere, and I don't think it's a coincidence that we're also in the middle of an anxiety epidemic. Not anxiety about specific threats, which would at least make evolutionary sense. Ambient, low-grade, hard-to-name anxiety that doesn't attach to anything in particular. The kind that sends you to a therapist who gives you coping strategies for symptoms that might just be your nervous system asking for load it was designed to carry.</p>
+        <figure class="note-figure">
+          <img src="assets/play/comfort-crisis_figure.webp" alt="Illustrated book cover for The Comfort Crisis">
+          <figcaption class="note-caption">Michael Easter's <em><a href="https://www.amazon.com/Comfort-Crisis-Embrace-Discomfort-Reclaim/dp/0593138767" target="_blank" rel="noopener">The Comfort Crisis</a></em>. The core argument: we removed the friction our bodies were built to handle, and now we're paying for it in ways we barely recognize.</figcaption>
+        </figure>
+
+        <hr class="note-rule">
+        <p><strong class="note-section">The ritual replaced the thing it served.</strong></p>
+        <p>This is where the pattern gets interesting to me. We've built an enormous infrastructure of wellness, recovery, and self-care, and a lot of it exists to treat problems created by the comfort that was supposed to prevent them. You sit all day because your job is optimized for minimal physical effort. Then you pay for a gym membership. Then you pay for a recovery app. Then you pay for a massage because the gym made you sore. Then you take a supplement stack to optimize your sleep because the screen time is wrecking it. Each solution is downstream of a problem that was downstream of a convenience.</p>
+        <p>The original ritual of comfort was supposed to <em>serve</em> resilience. You rest so you can work. You eat so you can move. You recover so you can stress again. But at some point the rituals of ease became their own closed loop. Rest that doesn't follow effort. Recovery from nothing in particular. Self-care as a standing practice rather than a response to actual depletion. The ritual replaced the principle it was supposed to support, and we kept the vocabulary of wellness while losing the thing the vocabulary pointed at.</p>
+
+        <hr class="note-rule">
+        <p><strong class="note-section">Knowing isn't the same as choosing.</strong></p>
+        <p><a href="https://en.wikipedia.org/wiki/Phronesis" target="_blank" rel="noopener">Aristotle</a> had a concept called <em>phronesis</em>, which translates roughly as practical wisdom. It's different from theoretical knowledge. You can know, in the abstract, that stairs are better for you than the elevator. Phronesis is the thing that makes you take them on a Tuesday morning when you're tired and nobody's watching and the elevator is right there. It's knowledge that lives in your choices, not in your head. The kind of understanding that only shows up when it costs you something to act on it.</p>
+        <p>I think that distinction matters more now than it used to, because information about what's good for us has never been more abundant. Everyone knows they should move more, sleep better, eat less sugar, spend less time on their phone. The knowledge is free. What's scarce is the <em>willingness to choose the harder thing when the easier thing is available and nobody will know the difference</em>. That's phronesis. And it's a 2% trait.</p>
+
+        <hr class="note-rule">
+        <p><strong class="note-section">The elevator isn't the problem.</strong></p>
+        <p>Nobody's single elevator ride is ruining their life. I want to be clear about that. The problem is more structural and more honest than any individual choice. We've built entire lives on the logic of the elevator. Minimum friction. Maximum convenience. Path of least resistance as the default path. And then we wonder why a lot of us feel like we're standing still. Like something is missing that we can't name. Like the comfort is real but the satisfaction wandered off somewhere and didn't leave a note.</p>
+        <p>The 2% who take the stairs probably aren't thinking about any of this. They just noticed, at some point, that ease and well-being had stopped traveling together. And they made a small, daily, invisible adjustment that nobody would congratulate them for. That's the thing about phronesis. It doesn't perform. It just chooses, over and over, in private.</p>
+      </article>
+    `,
+    grad:'linear-gradient(155deg,#F1EEFA 0%,#DAD3EF 52%,#AFA4D7 100%)',
   },
   {
     id:'neumorphism', title:'Neumorphic Widget',
@@ -981,6 +1175,59 @@ const WORKS = [
     cover:'assets/play/carousel_cover.gif',
     preview:'assets/play/carousel_cover.gif',
     grad:'linear-gradient(155deg,#FFE4B5 0%,#FFB6C1 52%,#FF8AA8 100%)',
+  },
+  {
+    id:'note-04', title:'The Dinner Party Index',
+    desc:'A think piece on taste, cultural abundance, and why particularity has become the last honest signal.',
+    cats:['notes'],
+    tools:['notes'],
+    stack:{
+      Format:['Think piece'],
+      Topic:['Taste','Culture'],
+      Focus:['Particularity','Conviction'],
+    },
+    mediaType:'writing',
+    cover:'assets/play/note-04_cover.svg',
+    body:`
+      <article class="note-essay">
+        <h3>The Dinner Party Index</h3>
+        <p>I was at a dinner party in San Francisco a few months ago. Eight people, all smart, all accomplished, all roughly in the same orbit of media and tech and culture. Within the first hour, three separate people had mentioned the same book. Two of them had the same therapist's framework for describing why they were bad at relationships. Everyone had a take on the same podcast episode. The conversation was fluent, informed, and completely interchangeable. You could have swapped any person at that table for someone else in their same demographic and the evening would have sounded identical.</p>
+        <p>Nobody said anything wrong. That's what stuck with me. Every opinion was defensible. Every reference was current. The problem wasn't quality. The problem was that none of it told you anything about the person saying it.</p>
+        <figure class="note-figure">
+          <img src="assets/play/dinner-party_figure.png" alt="Illustrated dinner party table">
+          <figcaption class="note-caption">Eight people, same three books. Nobody said anything wrong. Nobody said anything that was theirs.</figcaption>
+        </figure>
+
+        <hr class="note-rule">
+        <p><strong class="note-section">Everyone has access to everything now.</strong></p>
+        <p>This is worth stating plainly because I think we're still adjusting to it. Cultural consumption used to be a real differentiator. Knowing the right films, reading the right books, having opinions on the right music. All of that used to signal something because access was limited. You had to find the bookstore. You had to know someone who had the record. You had to <em>seek</em> in a way that was effortful enough to function as identity.</p>
+        <p>That's gone. Every book is a click away. Every film is streaming somewhere. Every opinion has been pre-formed and distributed across a hundred newsletters and podcast episodes before you encounter the source material. The consumption itself has become frictionless, which means consuming the right things no longer tells anyone who you are. It tells them what algorithm you're on.</p>
+
+        <hr class="note-rule">
+        <p><strong class="note-section">Taste used to be about access. Now it's about conviction.</strong></p>
+        <p>When access was scarce, taste looked like knowledge. You'd read something obscure, and that alone was a signal. But when access is <a href="https://en.wikipedia.org/wiki/Information_overload" target="_blank" rel="noopener">abundant</a>, knowledge is just the floor. Everyone at that dinner party had read the book. The question that actually differentiated people wasn't <em>what have you consumed</em> but <em>what do you care about that you didn't have to care about</em>.</p>
+        <p>This is where I keep thinking about two people I know. One is a historian who collects sneakers. Not in a hypebeast way. In a deeply particular way. He can talk for an hour about the engineering decisions in a specific Air Max sole and how they relate to the economics of Nike's manufacturing contracts in the early nineties. The other is a trader at a big fund who does ceramics. Wheel-thrown pottery, every weekend, for years. Neither of these interests optimizes their professional brand. Neither makes them more legible as a "type." And both of them are among the most interesting people I've ever talked to, specifically because the thing they care about doesn't make sense on a resume.</p>
+        <figure class="note-figure">
+        </figure>
+
+        <hr class="note-rule">
+        <p><strong class="note-section">Consensus opinion is mostly unexamined assumption.</strong></p>
+        <p>Here's the thing about the dinner party that made it feel airless. It wasn't that people were wrong. It was that nobody seemed to have arrived at their opinions through any path that was <em>their own</em>. The book was good. Sure. The podcast raised interesting points. Fine. But the way people talked about them had the quality of inherited furniture. Everything fit. Nothing had been chosen.</p>
+        <p><a href="https://en.wikipedia.org/wiki/Will_to_power" target="_blank" rel="noopener">Nietzsche</a> wrote about the will to impose your values on an indifferent world. Not to receive them, not to absorb the consensus and repeat it back with minor personal inflection, but to <em>decide</em> what matters before anyone else has weighed in. That's a high bar, and I don't think most people clear it most of the time. I certainly don't. But I think the gap between genuine conviction and well-curated consensus is becoming the most important distinction in how we read other people, and most of us can feel it even when we can't name it.</p>
+        <p>The dinner party felt flat not because the opinions were bad but because they were <em>shared</em> in a way that made them feel pre-owned. Like walking into an apartment where every piece of furniture came from the same catalog. The taste was visible. The person behind it wasn't.</p>
+
+        <hr class="note-rule">
+        <p><strong class="note-section">Particularity is the last honest signal.</strong></p>
+        <p>I keep coming back to the sneaker historian and the ceramics trader because they represent something I think we're all quietly recalibrating toward. In a world where everyone can access the same culture, consume the same ideas, and perform the same sophistication, the only remaining signal that you're a <em>real person</em> is the willingness to care about something that doesn't scale. Something that doesn't optimize. Something the algorithm would never have suggested because it only makes sense in the specific context of your life.</p>
+        <p>That's what taste means now. Not what you consume. What you're willing to be particular about when nobody's keeping score. The conviction to say <em>this matters to me</em> without needing it to matter to anyone else first.</p>
+
+        <hr class="note-rule">
+        <p><strong class="note-section">The interesting ones never make sense on paper.</strong></p>
+        <p>The most interesting people I've met in the last few years all share one quality, and it has nothing to do with what they've read or watched or listened to. They care about something that doesn't fit. Something specific and unexplainable and slightly inconvenient. They didn't arrive at it through a recommendation engine. They arrived at it through some personal chain of curiosity that only makes sense if you're them.</p>
+        <p>That's the thing the dinner party was missing. Not intelligence. Not taste, in the consumption sense. Just someone willing to say something that couldn't have come from anyone else at the table. Particularity. The willingness to be interested in something before it's been approved. That's the whole signal now, and most people are still performing the old one. Consuming the right things, loudly, and wondering why it doesn't land the way it used to.</p>
+      </article>
+    `,
+    grad:'linear-gradient(155deg,#FAEAE2 0%,#E8CEC1 52%,#C9A998 100%)',
   },
   {
     id:'ascii-art', title:'ASCII Art',
@@ -1051,6 +1298,8 @@ function renderNavBtns() {
     btn.dataset.cat = cat.id;
     btn.innerHTML = `<span class="nav-btn-label">${cat.label}</span>`;
     btn.addEventListener('click', () => {
+      activeTools.clear();
+      syncDockDots();
       if (isAll) activeCats.clear();
       else { if (activeCats.has(cat.id)) activeCats.delete(cat.id); else activeCats.add(cat.id); }
       renderNavBtns(); applyFilters();
@@ -1066,10 +1315,12 @@ renderNavBtns();
 // CARD GRID
 // ──────────────────────────────────────────────────────────
 const grid = document.getElementById('screen-grid');
+const workById = new Map(WORKS.map(w => [w.id, w]));
 
 WORKS.forEach(w => {
   const card = document.createElement('div');
   card.className = 'work-card';
+  card.dataset.workId = w.id;
   card.dataset.cats  = w.cats.join(',');
   card.dataset.tools = w.tools.join(',');
   const coverStyle = `background-image:url('${w.cover}'),${w.grad};background-size:cover;background-position:center;`;
@@ -1085,10 +1336,16 @@ WORKS.forEach(w => {
     <div class="card-info">
     </div>
   `;
-  card.addEventListener('click', () => openPlayModal(w));
   card.addEventListener('mouseenter', () => { cur.className='open'; curLbl.innerHTML='open<br>work'; });
   card.addEventListener('mouseleave', () => setCur(''));
   grid.appendChild(card);
+});
+
+grid.addEventListener('click', e => {
+  const card = e.target.closest('.work-card:not(.ghost)');
+  if (!card || card.classList.contains('hidden')) return;
+  const work = workById.get(card.dataset.workId);
+  if (work) openPlayModal(work);
 });
 
 // ──────────────────────────────────────────────────────────
@@ -1109,7 +1366,9 @@ const dockShelf = document.getElementById('dock-shelf');
     <div class="app-dot"></div>
   `;
   wrap.addEventListener('click', () => {
+    activeCats.clear();
     activeTools.clear();
+    renderNavBtns();
     syncDockDots();
     applyFilters();
   });
@@ -1157,6 +1416,21 @@ APPS.forEach((app, idx) => {
   if (app.filterable) {
     wrap.addEventListener('click', () => {
       if (wrap.classList.contains('dragging')) return;
+      if (app.id === 'notes') {
+        activeCats.clear();
+        if (activeTools.has('notes')) {
+          activeTools.clear();
+        } else {
+          activeTools.clear();
+          activeTools.add('notes');
+        }
+        renderNavBtns();
+        syncDockDots();
+        applyFilters();
+        return;
+      }
+      activeCats.clear();
+      renderNavBtns();
       if (activeTools.has(app.id)) activeTools.delete(app.id);
       else activeTools.add(app.id);
       syncDockDots(); applyFilters();
@@ -1549,12 +1823,12 @@ function openPlayModal(w) {
     </div>`).join('');
 
   // Render link button as the rightmost section (only when link is real)
-  const linkBtn = w.link === '#'
-    ? ''
-    : `<div class="pm-stack-col">
+  const linkBtn = w.link && w.link !== '#'
+    ? `<div class="pm-stack-col">
          <div class="pm-stack-label">Status</div>
-         <a class="m-meta-btn" href="${w.link}" target="_blank" rel="noopener">${w.linkLabel.replace(/\s*↗\s*$/,'')}<span class="arr">↗</span></a>
-       </div>`;
+         <a class="m-meta-btn" href="${w.link}" target="_blank" rel="noopener">${(w.linkLabel || 'Open').replace(/\s*↗\s*$/,'')}<span class="arr">↗</span></a>
+       </div>`
+    : '';
 
   // Branch on media type — preview image(s), gif (same render), or long-form writing
   let mediaHtml = '';
