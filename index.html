@@ -228,6 +228,9 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
 .cb{display:flex;flex-direction:column;gap:5px;padding:0 2px}
 .ctitle{font-size:14px;font-weight:500;letter-spacing:-0.04em;color:var(--text);line-height:1.2;}
 .cdesc{font-size:14px;font-weight:500;letter-spacing:-0.04em;color:var(--text-muted);line-height:1.2;}
+.bg-lumbra{background:linear-gradient(180deg,#8b8c80 0%,#c4b45a 55%,#e8c21c 100%)}
+.cc.bg-lumbra::before{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(20,18,10,.38) 0%,transparent 46%);pointer-events:none;z-index:1}
+.cc.bg-lumbra .ci{z-index:2}
 .bg-intuit{background:linear-gradient(155deg,#0d1a2e 0%,#1a3a6e 52%,#1f5fa8 100%)}
 .bg-figma{background:linear-gradient(155deg,#1a0a24 0%,#3a1060 52%,#7928ca 100%)}
 .bg-libby{background:linear-gradient(155deg,#091d0f 0%,#183828 52%,#1e5535 100%)}
@@ -512,7 +515,7 @@ footer#ft{width:100%;display:flex;flex-direction:column;position:relative}
           <img src="assets/landing1.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;display:block;">
           <div class="wbig" style="background:transparent;position:absolute;inset:0;z-index:2">
             <div class="wname">Faye J.Stover</div>
-            <div class="wtagline">Designing tools that break down technical nuances into efficient and delightful work. Previously at <a href="https://www.intuit.com" target="_blank" class="wprev-co" style="color:inherit;text-decoration:none;cursor:none">Intuit</a> · <a href="https://www.figma.com" target="_blank" class="wprev-co" style="color:inherit;text-decoration:none;cursor:none">Figma</a> · <a href="https://www.viget.com" target="_blank" class="wprev-co" style="color:inherit;text-decoration:none;cursor:none">Viget</a></div>
+            <div class="wtagline">Designing tools that break down technical nuances into efficient and delightful work. Currently at <a href="https://lumbra.ai" target="_blank" class="wprev-co" style="color:inherit;text-decoration:none;cursor:none">Lumbra</a>, previously at <a href="https://www.intuit.com" target="_blank" class="wprev-co" style="color:inherit;text-decoration:none;cursor:none">Intuit</a> · <a href="https://www.figma.com" target="_blank" class="wprev-co" style="color:inherit;text-decoration:none;cursor:none">Figma</a> · <a href="https://www.viget.com" target="_blank" class="wprev-co" style="color:inherit;text-decoration:none;cursor:none">Viget</a></div>
           </div>
         </div>
         <div class="rh-edge rh-n" data-dir="n"></div><div class="rh-edge rh-s" data-dir="s"></div>
@@ -575,9 +578,21 @@ footer#ft{width:100%;display:flex;flex-direction:column;position:relative}
       <div class="wk-hd">
         <span class="wk-lbl">Selected Work</span>
         <div class="wk-line"></div>
-        <span class="wk-lbl">04 projects</span>
+        <span class="wk-lbl">05 projects</span>
       </div>
       <div class="cgrid">
+
+        <div class="cw" data-case="lumbra">
+          <div class="cc bg-lumbra" style="background-image:url('assets/lumbra_cover.png');background-size:cover;background-position:center">
+            <div class="ci">
+              <div class="badge"><div class="bdot"></div><span class="bco">Lumbra</span><span class="byr">· 2026</span></div>
+            </div>
+          </div>
+          <div class="cb">
+            <div class="ctitle">0→1 Design System for Nebula, an Agentic AI Platform.</div>
+            <p class="cdesc">Design Engineering, Design Systems, AI</p>
+          </div>
+        </div>
 
         <div class="cw" data-case="intuit">
           <div class="cc bg-intuit" style="background-image:url('assets/intuit_cover.png');background-size:cover;background-position:center">
@@ -645,7 +660,7 @@ footer#ft{width:100%;display:flex;flex-direction:column;position:relative}
       <div>
         <div class="ft-col-lbl">Connect</div>
         <a href="https://www.linkedin.com/in/fayejstover" target="_blank" class="ft-link">LinkedIn <span class="arr">↗</span></a>
-        <a href="https://drive.google.com/file/d/1NQFnbqJz2KkjVvQpp4jeBfD62jfv5fdN/view?usp=sharing" target="_blank" class="ft-link">Resume <span class="arr">↗</span></a>
+        <a href="https://drive.google.com/file/d/1u6FE5V24glUBhPNVYmxmYy_KQu_EATVB/view" target="_blank" class="ft-link">Resume <span class="arr">↗</span></a>
         <a href="mailto:hello@fayejstover.com" class="ft-link-email">hello@fayejstover.com</a>
       </div>
       <div>
@@ -990,6 +1005,12 @@ document.addEventListener('mousemove', () => { _anyDrag = true; }, {capture:true
 });
 
 // ── CASE STUDY CARDS ─────────────────────────────────────────
+document.querySelectorAll('.wprev-co').forEach(a => {
+  a.addEventListener('click', e => e.stopPropagation());
+  a.addEventListener('mouseenter', () => setCur('hand'));
+  a.addEventListener('mouseleave', () => setCurGo('↓ work'));
+});
+
 document.querySelectorAll('.cw').forEach(c => {
   c.addEventListener('mouseenter', () => { cur.className='open'; curLbl.innerHTML='open<br>study'; });
   c.addEventListener('mouseleave', () => setCur(''));
@@ -998,6 +1019,18 @@ document.querySelectorAll('.cw').forEach(c => {
 
 // ── MODAL DATA ────────────────────────────────────────────────
 const data = {
+  lumbra:{
+    co:'Lumbra',
+    navTitle:'Design System for Nebula',
+    tl:'2026 – Present',
+    role:'Design Engineer',
+    team:'Product engineering',
+    type:'Current role',
+    bg:'linear-gradient(155deg,#0c0e12 0%,#161a22 52%,#2a3140 100%)',
+    locked: false,
+    sections: ['Overview'],
+    desc:'I joined Lumbra as its first designer, when the product was an AI-generated prototype fragmented across disconnected surfaces with no shared system behind it. My job became building that system from the ground up — tokens, themes, and component primitives resilient enough to hold up under a live 2.0 rearchitecture of Nebula, our agentic AI platform, while the application kept changing underneath it.\n\nThat foundation now supports dense analytical surfaces like knowledge graphs and evaluation dashboards, real-time AI interaction patterns such as streaming output and tool-call visualization, and a component library adopted across every surface of the product — all held to WCAG accessibility for highly technical users working in both government-restricted and commercial environments. What started as one fragmented product is now a single, scalable platform built to support everything the company builds next.',
+  },
   intuit:{
     co:'Intuit',
     navTitle:'Human-in-the-Loop AI System',
@@ -1165,7 +1198,7 @@ figma:{
 let isFS = false;
 let currentKey = null;
 const unlockedCases = new Set();
-const caseOrder = ['intuit','figma','libby','ktp'];
+const caseOrder = ['lumbra','intuit','figma','libby','ktp'];
 
 function sectionId(label) {
   return 'ms-' + label.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');
@@ -1186,7 +1219,7 @@ function buildPrevNext(key) {
   const next = caseOrder[(idx + 1) % caseOrder.length];
   const card = (k, dir) => {
     const d2 = data[k];
-    const heroSrc = { intuit: IMGS['intuit_hero'], figma: IMGS['figma_hero'], libby: IMGS['libby_hero'], ktp: IMGS['ktp_hero'] }[k];
+    const heroSrc = { lumbra: 'assets/lumbra_cover.png', intuit: IMGS['intuit_hero'], figma: IMGS['figma_hero'], libby: IMGS['libby_hero'], ktp: IMGS['ktp_hero'] }[k];
     const bgStyle = heroSrc
       ? `background:${d2.bg};background-image:url(${heroSrc});background-size:cover;background-position:center`
       : `background:${d2.bg}`;
@@ -1207,12 +1240,14 @@ function buildModalContent(key) {
   const statsHtml = d.stats ? `<div class="mstats">${d.stats.map(([n,l])=>`<div class="mstat"><div class="mstat-n">${n}</div><div class="mstat-l">${l}</div></div>`).join('')}</div>` : '';
 
   const heroBg = {
+    lumbra: 'linear-gradient(180deg,#8b8c80 0%,#c4b45a 55%,#e8c21c 100%)',
     intuit: 'linear-gradient(155deg,#0d1a2e 0%,#1a3a6e 52%,#1f5fa8 100%)',
     figma:  'linear-gradient(155deg,#1a0a24 0%,#3a1060 52%,#7928ca 100%)',
     libby:  'linear-gradient(155deg,#091d0f 0%,#183828 52%,#1e5535 100%)',
     ktp:    'linear-gradient(155deg,#0a1a14 0%,#0e3322 52%,#1a5c3a 100%)',
   };
   const heroImgSrc = {
+    lumbra: 'assets/lumbra_cover.png',
     intuit: IMGS['intuit_hero'] || '',
     figma:  IMGS['figma_hero'] || '',
     libby:  IMGS['libby_hero'] || '',
@@ -1739,9 +1774,10 @@ if (lk === 'final designs' || lk === 'gallery') {
       const content = contentMap[lk] ?? null;
       const extraImg = genericSectionImgs[key]?.[lk] ?? '';
       if (label === 'Overview' || label === 'Introduction') {
+        const paras = d.desc.split('\n\n').map(p=>`<p class="mp">${p}</p>`).join('');
         sectionsHtml += `<div class="ms-section" id="${sectionId(label)}">
           <div class="mh">${label}</div>
-          <p class="mp">${d.desc}</p>
+          ${paras}
           ${statsHtml}
         </div>`;
       } else if (isLocked) {
@@ -1758,8 +1794,20 @@ if (lk === 'final designs' || lk === 'gallery') {
   }
 
   if (isLocked) sectionsHtml += buildPwGate(key);
+  if (key === 'lumbra') {
+    sectionsHtml += `<div class="pw-gate" style="margin-top:36px">
+      <div class="pw-title">This work is ongoing.</div>
+      <div class="pw-sub">Message me for more information.</div>
+      <a href="mailto:hello@fayejstover.com?subject=Lumbra" class="m-meta-btn">Message me <span class="arr">↗</span></a>
+    </div>`;
+  }
 
   const metaHtml = {
+    lumbra: `<div class="mmeta">
+      <div class="mmeta-col"><div class="ml">Role</div><div class="mv">Design Engineer</div></div>
+      <div class="mmeta-col"><div class="ml">Team</div><div class="mv">Product engineering</div></div>
+      <div class="mmeta-col"><div class="ml">Status</div><div class="mv">Current role</div></div>
+    </div>`,
     intuit: `<div class="mmeta">
       <div class="mmeta-col"><div class="ml">Role</div><div class="mv">Product Design</div></div>
       <div class="mmeta-col"><div class="ml">Team</div><div class="mv"><span class="m-breadcrumb">Virtual Expert Platform</span><span class="m-breadcrumb-sep">›</span><span class="m-breadcrumb">Innovation Team</span></div></div>
@@ -1902,7 +1950,7 @@ function openModal(key) {
           btn.addEventListener('mouseenter', () => setCur('hand'));
           btn.addEventListener('mouseleave', () => setCur(''));
         });
-        scroller.querySelectorAll('.figma-social-link, .m-video-link').forEach(a => {
+        scroller.querySelectorAll('.figma-social-link, .m-video-link, .m-meta-btn').forEach(a => {
           a.addEventListener('mouseenter', () => setCur('hand'));
           a.addEventListener('mouseleave', () => setCur(''));
         });
@@ -1922,7 +1970,7 @@ function openModal(key) {
     btn.addEventListener('mouseenter', () => setCur('hand'));
     btn.addEventListener('mouseleave', () => setCur(''));
   });
-  scroller.querySelectorAll('.figma-social-link, .m-video-link').forEach(a => {
+  scroller.querySelectorAll('.figma-social-link, .m-video-link, .m-meta-btn').forEach(a => {
     a.addEventListener('mouseenter', () => setCur('hand'));
     a.addEventListener('mouseleave', () => setCur(''));
   });
